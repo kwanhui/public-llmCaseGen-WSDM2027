@@ -1,0 +1,11 @@
+{
+  "discipline": "marketing",
+  "learningObjective": "Reposition a sleep-aid brand for a younger working-adult segment without alienating its core 50+ customers.",
+  "difficulty": "novice",
+  "mustCoverConcepts": ["segmentation", "positioning statement", "brand equity", "cannibalisation risk"],
+  "targetLearnerProfile": {
+    "industry": "consumer health",
+    "role": "brand assistant",
+    "priorKnowledge": "novice"
+  }
+}

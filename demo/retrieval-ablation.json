@@ -1,0 +1,112 @@
+{
+  "generatedAt": "2026-05-29T16:03:02.486Z",
+  "results": [
+    {
+      "file": "finance.json",
+      "discipline": "finance",
+      "embedding": {
+        "provider": "embedding",
+        "coveredCount": 4,
+        "missingCount": 0,
+        "missing": [],
+        "totalConcepts": 4,
+        "groundingPassages": 5,
+        "provenance": [
+          "embedding:text-embedding-3-small",
+          "corpus:fin-pedagogy-assumptions (0.498)",
+          "corpus:fin-ddm (0.490)",
+          "corpus:fin-esg (0.434)",
+          "corpus:fin-terminal-value (0.430)",
+          "corpus:fin-dcf (0.423)"
+        ]
+      },
+      "promptPack": {
+        "provider": "prompt-pack",
+        "coveredCount": 4,
+        "missingCount": 0,
+        "missing": [],
+        "totalConcepts": 4,
+        "groundingPassages": 0,
+        "provenance": [
+          "discipline-pack:finance"
+        ]
+      }
+    },
+    {
+      "file": "marketing.json",
+      "discipline": "marketing",
+      "embedding": {
+        "provider": "embedding",
+        "coveredCount": 2,
+        "missingCount": 2,
+        "missing": [
+          "segmentation",
+          "cannibalisation risk"
+        ],
+        "totalConcepts": 4,
+        "groundingPassages": 5,
+        "provenance": [
+          "embedding:text-embedding-3-small",
+          "corpus:mkt-repositioning (0.550)",
+          "corpus:mkt-positioning-statement (0.476)",
+          "corpus:mkt-pedagogy-framing (0.474)",
+          "corpus:mkt-segmentation-bases (0.436)",
+          "corpus:mkt-stp (0.417)"
+        ]
+      },
+      "promptPack": {
+        "provider": "prompt-pack",
+        "coveredCount": 2,
+        "missingCount": 2,
+        "missing": [
+          "segmentation",
+          "cannibalisation risk"
+        ],
+        "totalConcepts": 4,
+        "groundingPassages": 0,
+        "provenance": [
+          "discipline-pack:marketing"
+        ]
+      }
+    },
+    {
+      "file": "social-work.json",
+      "discipline": "social_work",
+      "embedding": {
+        "provider": "embedding",
+        "coveredCount": 1,
+        "missingCount": 3,
+        "missing": [
+          "family-systems framing",
+          "least-restrictive setting",
+          "dual relationship risk"
+        ],
+        "totalConcepts": 4,
+        "groundingPassages": 5,
+        "provenance": [
+          "embedding:text-embedding-3-small",
+          "corpus:sw-pedagogy-framing (0.511)",
+          "corpus:sw-adult-safeguarding (0.474)",
+          "corpus:sw-least-restrictive (0.443)",
+          "corpus:sw-family-systems (0.436)",
+          "corpus:sw-self-determination (0.428)"
+        ]
+      },
+      "promptPack": {
+        "provider": "prompt-pack",
+        "coveredCount": 1,
+        "missingCount": 3,
+        "missing": [
+          "family-systems framing",
+          "least-restrictive setting",
+          "dual relationship risk"
+        ],
+        "totalConcepts": 4,
+        "groundingPassages": 0,
+        "provenance": [
+          "discipline-pack:social_work"
+        ]
+      }
+    }
+  ]
+}

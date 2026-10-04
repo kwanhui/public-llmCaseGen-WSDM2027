@@ -1,0 +1,47 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the companion paper."
+title: "PersCase"
+abstract: >
+  PersCase is a web tool with which instructors draft professional case
+  studies in four stages: input, retrieval, generation, and editing by the
+  instructor. It retrieves notes written by the authors, generates a
+  structured draft, and produces one variant per student team. Finance,
+  marketing and social work are included.
+authors:
+  - family-names: Lim
+    given-names: Kwan Hui
+    affiliation: "Singapore University of Social Sciences"
+  - family-names: Lim
+    given-names: Lyndon
+    affiliation: "Singapore University of Social Sciences"
+  - family-names: Ng
+    given-names: Vincent
+    affiliation: "Singapore University of Social Sciences"
+  - family-names: Lee
+    given-names: Marcus
+    affiliation: "Singapore University of Social Sciences"
+  - family-names: Ding
+    given-names: Ding
+    affiliation: "Singapore University of Social Sciences"
+type: software
+license: MIT
+repository-code: "https://github.com/kwanhui/public-llmCaseGen-WSDM2027"
+url: "https://llmcasegen.vercel.app"
+preferred-citation:
+  type: conference-paper
+  title: "PersCase: A Retrieval-Augmented LLM Authoring Tool for Personalised Professional Case Studies"
+  authors:
+    - family-names: Lim
+      given-names: Kwan Hui
+    - family-names: Lim
+      given-names: Lyndon
+    - family-names: Ng
+      given-names: Vincent
+    - family-names: Lee
+      given-names: Marcus
+    - family-names: Ding
+      given-names: Ding
+  collection-title: "Proceedings of the 20th ACM International Conference on Web Search and Data Mining (WSDM 2027), Demonstrations Track"
+  year: 2027
+  status: submitted
+  notes: "Under review."

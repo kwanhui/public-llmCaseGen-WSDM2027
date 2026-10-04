@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-05-29T16:01:00.242Z",
+  "model": "gpt-4o-mini",
+  "embeddingModel": "text-embedding-3-small",
+  "input": {
+    "discipline": "social_work",
+    "learningObjective": "Recommend an eldercare placement when adult siblings disagree on home care versus assisted living, and the older parent's stated preference shifts mid-assessment.",
+    "difficulty": "advanced",
+    "mustCoverConcepts": [
+      "capacity assessment",
+      "family-systems framing",
+      "least-restrictive setting",
+      "dual relationship risk"
+    ],
+    "targetLearnerProfile": {
+      "industry": "community eldercare",
+      "role": "MSW-track student on placement",
+      "priorKnowledge": "advanced"
+    }
+  },
+  "provenance": [
+    "embedding:text-embedding-3-small",
+    "corpus:sw-pedagogy-framing (0.511)",
+    "corpus:sw-adult-safeguarding (0.474)",
+    "corpus:sw-least-restrictive (0.443)",
+    "corpus:sw-family-systems (0.436)",
+    "corpus:sw-self-determination (0.428)"
+  ],
+  "output": {
+    "scenario": "Ms. Clara Thompson, an 82-year-old widow, lives in a small apartment in a suburban neighborhood in Canada. Clara has been experiencing increasing difficulties with daily activities due to her advanced age and mild Parkinson's disease. Recently, she had a minor stroke that has exacerbated her mobility issues, leading her two adult children, Sarah (50) and Mark (48), to become deeply concerned about her safety. Sarah, who lives nearby, believes that it is time for Clara to move into an assisted living facility, where she would receive 24/7 support. Mark, who lives in another province, is adamant that Clara should remain in her home with increased in-home care, citing her strong desire for independence and the emotional distress a move would cause her.\n\nClara, during her assessment, initially expresses a wish to stay in her apartment, stating, \"This is my home, and I don’t want to leave it.\" However, as the conversation progresses, she begins to voice concerns about feeling lonely and overwhelmed with the responsibilities of maintaining her home. This shift raises questions about her capacity to make an informed decision. You, as the social worker, are tasked with conducting a capacity assessment and making a recommendation to the family and the agency within a week.\n\nComplicating matters, Clara's cultural background as a first-generation immigrant from Italy influences her views on family, independence, and aging. The family has a history of close-knit ties, often leading to conflicts when discussing sensitive topics. Clara's extended family members, particularly her siblings, weigh in on the decision-making process, each expressing differing opinions based on their own experiences with aging parents.\n\nYou need to navigate this complex family dynamic while determining Clara's best interests, ensuring her autonomy is respected, and addressing the conflicting perspectives of her children. The agency’s policy emphasizes a least-restrictive approach to eldercare, which prioritizes home care wherever feasible. However, with Clara’s apparent shift in preference and concerns about her safety, you face an ethical dilemma: how to honor her autonomy while also considering her safety and the well-being of her family. You must recommend a placement that respects Clara’s wishes but also addresses the potential risks associated with her living alone.  \n\n**Discussion questions:**  \n1. How do you interpret Clara’s shifting preferences regarding her living situation, and what might this indicate about her capacity to make decisions?  \n2. In what ways do the family dynamics influence Clara’s decision-making process, and how can you map these relationships effectively?  \n3. What ethical principles are at play in this scenario, and how do you prioritize them when making your recommendation?  \n4. What steps would you take to engage both Sarah and Mark in a constructive dialogue about Clara’s options, considering their differing views?  \n5. How can you ensure that Clara feels supported and involved in the decision-making process, despite the pressure from her family?",
+    "discussionQuestions": [
+      "How do you interpret Clara’s shifting preferences regarding her living situation, and what might this indicate about her capacity to make decisions?",
+      "In what ways do the family dynamics influence Clara’s decision-making process, and how can you map these relationships effectively?",
+      "What ethical principles are at play in this scenario, and how do you prioritize them when making your recommendation?",
+      "What steps would you take to engage both Sarah and Mark in a constructive dialogue about Clara’s options, considering their differing views?",
+      "How can you ensure that Clara feels supported and involved in the decision-making process, despite the pressure from her family?"
+    ],
+    "modelAnswers": [
+      "Clara’s shifting preferences may indicate ambivalence about her current situation and her capacity to make decisions may be impacted by her emotional state. Initially expressing a desire to remain in her home aligns with her autonomy, but her later concerns about loneliness suggest a need for more support. This duality is crucial for assessing her decision-making capacity. The challenge lies in balancing her expressed wish for independence against her emerging vulnerabilities.",
+      "Family dynamics play a significant role in Clara’s decision-making. Sarah’s push for assisted living may stem from protective instincts, while Mark’s preference for home care reflects a commitment to her independence. Mapping these relationships using a genogram could clarify alliances, conflicts, and the roles of extended family members, allowing for a more systemic understanding of the pressures Clara faces.",
+      "Key ethical principles include respect for Clara’s autonomy, the principle of least restriction, and the duty to protect her from harm. Prioritizing autonomy involves acknowledging her expressed wishes, while also considering the risks associated with her living alone. It’s essential to find a balance where Clara’s choices are honored while ensuring her safety, possibly through enhanced in-home support that allows her to remain in her home longer.",
+      "To engage Sarah and Mark, I would facilitate a family meeting to create a safe space for dialogue. I would encourage each sibling to express their concerns and desires openly, using active listening skills to validate their feelings while guiding them towards a shared understanding of Clara’s needs. Introducing a neutral third party, such as a geriatric care manager, could also help mediate discussions.",
+      "Ensuring Clara feels supported involves actively including her in conversations about her care options, respecting her voice and preferences. I would encourage her to express her feelings and desires while also providing her with information about her options. Using a strengths-based approach, I would highlight her capabilities and past strengths to empower her, reinforcing that her choices matter in this process."
+    ],
+    "rubric": "Case understanding (25%) — demonstrates a nuanced understanding of Clara's situation and the shifting dynamics involved. Ethical reasoning (25%) — identifies and prioritizes competing ethical principles clearly and thoughtfully. Intervention quality (25%) — proposes actionable steps for family engagement and decision-making support that are realistic and respectful. Cultural/relational sensitivity (25%) — reflects a deep understanding of Clara's cultural background and family dynamics in shaping her care decisions."
+  }
+}

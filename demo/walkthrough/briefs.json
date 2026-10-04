@@ -1,0 +1,203 @@
+{
+  "note": "The six briefs of the walkthrough reported in the paper, two per discipline. Each entry holds the brief as it was entered on the hosted instance (the CaseInput that the create route accepts), the two team profiles used for the variants, and the case id on that instance. briefSource records how the brief was written. `pnpm walkthrough-report --briefs demo/walkthrough/briefs.json --csv-out demo/walkthrough/case-study.csv` reads the six cases from the database and rewrites case-study.csv.",
+  "briefs": [
+    {
+      "label": "Finance: expansion",
+      "briefSource": "ai-drafted-reviewed",
+      "caseId": "35ad953b-0a4d-4234-a712-79ad66036579",
+      "brief": {
+        "discipline": "finance",
+        "learningObjective": "Decide whether a family-owned food manufacturer should fund a second production line, by building the project's cash flows, discounting them at an appropriate rate, and testing how the decision changes with the key assumptions.",
+        "difficulty": "intermediate",
+        "mustCoverConcepts": [
+          "net present value",
+          "internal rate of return",
+          "WACC",
+          "sensitivity analysis"
+        ],
+        "targetLearnerProfile": {
+          "industry": "Food manufacturing and distribution",
+          "role": "Finance manager preparing a capital request for the owners",
+          "priorKnowledge": "Time value of money and basic financial statements; has not appraised a project before"
+        }
+      },
+      "teams": [
+        {
+          "displayName": "Team A: family-owned F&B",
+          "industry": "Food manufacturing, family-owned",
+          "role": "Finance manager"
+        },
+        {
+          "displayName": "Team B: logistics SME",
+          "industry": "Third-party logistics, private company",
+          "role": "Operations director who owns the budget"
+        }
+      ]
+    },
+    {
+      "label": "Finance: liquidity",
+      "briefSource": "ai-drafted-reviewed",
+      "caseId": "e228508d-6ed0-4c45-bf74-fbab54445a54",
+      "brief": {
+        "discipline": "finance",
+        "learningObjective": "Explain why a profitable neighbourhood retail chain keeps running short of cash, by reading its working-capital position and proposing changes to its collection, stock and supplier terms.",
+        "difficulty": "novice",
+        "mustCoverConcepts": [
+          "working capital",
+          "cash conversion cycle",
+          "current ratio",
+          "trade credit"
+        ],
+        "targetLearnerProfile": {
+          "industry": "Retail, small multi-outlet chain",
+          "role": "Store operations lead moving into a finance role",
+          "priorKnowledge": "Reads a profit and loss statement; no formal finance training"
+        }
+      },
+      "teams": [
+        {
+          "displayName": "Team A: minimart chain",
+          "industry": "Convenience retail, five outlets",
+          "role": "Operations lead"
+        },
+        {
+          "displayName": "Team B: dental clinic group",
+          "industry": "Private healthcare clinics",
+          "role": "Practice manager"
+        }
+      ]
+    },
+    {
+      "label": "Marketing: positioning",
+      "briefSource": "ai-drafted-reviewed",
+      "caseId": "b139d163-34e2-445b-8436-fb9810150ef6",
+      "brief": {
+        "discipline": "marketing",
+        "learningObjective": "Position a part-time data analytics certificate for mid-career professionals in a crowded continuing-education market, by choosing a target segment, stating the offer's value proposition, and mapping the enquiry-to-enrolment journey.",
+        "difficulty": "intermediate",
+        "mustCoverConcepts": [
+          "market segmentation",
+          "positioning",
+          "value proposition",
+          "customer journey"
+        ],
+        "targetLearnerProfile": {
+          "industry": "Adult and continuing education provider",
+          "role": "Programme marketing executive",
+          "priorKnowledge": "Runs social media campaigns; has not written a positioning statement"
+        }
+      },
+      "teams": [
+        {
+          "displayName": "Team A: university CET unit",
+          "industry": "University continuing-education unit",
+          "role": "Programme marketing executive"
+        },
+        {
+          "displayName": "Team B: private bootcamp",
+          "industry": "Private technology training company",
+          "role": "Growth marketing lead"
+        }
+      ]
+    },
+    {
+      "label": "Marketing: churn",
+      "briefSource": "ai-drafted-reviewed",
+      "caseId": "173ab236-71eb-411a-b77a-bf6d42d50084",
+      "brief": {
+        "discipline": "marketing",
+        "learningObjective": "Recommend how a meal-kit subscription service should respond to rising cancellations after its first price increase, by estimating what a retained customer is worth and comparing retention offers against a change in pricing.",
+        "difficulty": "advanced",
+        "mustCoverConcepts": [
+          "customer lifetime value",
+          "churn rate",
+          "retention strategy",
+          "pricing strategy"
+        ],
+        "targetLearnerProfile": {
+          "industry": "Direct-to-consumer food subscription",
+          "role": "Head of customer marketing",
+          "priorKnowledge": "Manages CRM campaigns and reads dashboards; comfortable with spreadsheets"
+        }
+      },
+      "teams": [
+        {
+          "displayName": "Team A: meal-kit service",
+          "industry": "Meal-kit subscription",
+          "role": "Head of customer marketing"
+        },
+        {
+          "displayName": "Team B: fitness studio app",
+          "industry": "Boutique fitness studio with a class-pass app",
+          "role": "Membership manager"
+        }
+      ]
+    },
+    {
+      "label": "Social work: discharge",
+      "briefSource": "ai-drafted-reviewed",
+      "caseId": "4f9ed40b-ae5c-43fd-8737-6f6f0394bb99",
+      "brief": {
+        "discipline": "social_work",
+        "learningObjective": "Plan the discharge of an older adult after a fall when the daughter who has been caring for him says she cannot continue, by assessing the caregiver's situation, keeping the older adult's own preferences central, and convening the family to agree on a care plan.",
+        "difficulty": "intermediate",
+        "mustCoverConcepts": [
+          "caregiver burden",
+          "person-centred care",
+          "care planning",
+          "family conference"
+        ],
+        "targetLearnerProfile": {
+          "industry": "Acute hospital, medical social work department",
+          "role": "Medical social worker in the first year of practice",
+          "priorKnowledge": "Completed placement in a community agency; new to hospital discharge work"
+        }
+      },
+      "teams": [
+        {
+          "displayName": "Team A: hospital social work",
+          "industry": "Acute hospital, medical social work",
+          "role": "Medical social worker"
+        },
+        {
+          "displayName": "Team B: community eldercare",
+          "industry": "Community eldercare centre",
+          "role": "Care coordinator"
+        }
+      ]
+    },
+    {
+      "label": "Social work: school refusal",
+      "briefSource": "ai-drafted-reviewed",
+      "caseId": "d78e756e-f5b2-4997-98b6-ccef07a8ec71",
+      "brief": {
+        "discipline": "social_work",
+        "learningObjective": "Work with a fourteen-year-old who has stopped attending school since her parents separated, by mapping the systems around her, building on what she and her family already do well, engaging a parent who distrusts services, and coordinating the school, the family service centre and the parents on one plan.",
+        "difficulty": "advanced",
+        "mustCoverConcepts": [
+          "ecological systems",
+          "strengths-based practice",
+          "engagement",
+          "case coordination"
+        ],
+        "targetLearnerProfile": {
+          "industry": "Family service centre, youth and family casework",
+          "role": "Social worker with two years of experience taking on youth cases",
+          "priorKnowledge": "Adult casework and group work; limited experience with adolescents and schools"
+        }
+      },
+      "teams": [
+        {
+          "displayName": "Team A: family service centre",
+          "industry": "Family service centre",
+          "role": "Youth and family social worker"
+        },
+        {
+          "displayName": "Team B: school social work",
+          "industry": "Secondary school, student welfare",
+          "role": "School social worker"
+        }
+      ]
+    }
+  ]
+}

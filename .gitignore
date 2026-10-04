@@ -1,0 +1,57 @@
+# Next.js
+.next/
+out/
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Node
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vercel
+.vercel/
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Demo build artifacts (large videos, screencasts)
+demo/*.mp4
+demo/*.mov
+demo/*.gif
+
+# Testing
+playwright-report/
+test-results/
+coverage/
+.vercel
+.env*.local
+
+# default output of scripts/figure2.mjs
+figures-out/
+
+# walkthrough-session sign-in state
+.walkthrough-state.json
+
+# Python
+__pycache__/
