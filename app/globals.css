@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Colour tokens are HSL triplets, used as hsl(var(--token) / alpha) through
+   tailwind.config.ts. The neutrals lean slightly toward the teal primary so
+   that grey reads as chosen rather than inherited. Contrast ratios (WCAG 2)
+   are noted where a pair carries text. */
+@layer base {
+  :root {
+    --background: 200 25% 98.6%;
+    --foreground: 205 40% 11%; /* 16.5:1 on background, 17.0:1 on card */
+    /* Raised surfaces (panels, tables, fields) sit a step whiter than the page. */
+    --card: 0 0% 100%;
+    --card-foreground: 205 40% 11%;
+    --primary: 173 58% 30%; /* 5.2:1 with white both ways */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 173 60% 24%; /* 7.2:1 with white */
+    --muted: 200 22% 95%;
+    --muted-hover: 200 18% 90.5%;
+    --muted-foreground: 205 14% 37%; /* 6.3:1 on background, 6.4:1 on card */
+    --accent: 200 22% 95%;
+    --accent-foreground: 205 40% 11%;
+    /* Second accent, for the student lane: 7.1:1 with white. */
+    --student: 234 52% 50%;
+    --student-foreground: 0 0% 100%;
+    --border: 200 18% 90%;
+    --input: 200 14% 80%;
+    --ring: 173 58% 36%;
+    --flag: 32 95% 32%; /* 5.5:1 on white */
+    --radius: 0.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --background: 205 32% 7.5%;
+      --foreground: 200 20% 95%;
+      --card: 205 26% 10.5%;
+      --card-foreground: 200 20% 95%;
+      --primary: 173 58% 49%;
+      --primary-foreground: 205 32% 7.5%;
+      --primary-hover: 173 58% 42%;
+      --muted: 205 22% 15%;
+      --muted-hover: 205 20% 20%;
+      --muted-foreground: 205 14% 68%;
+      --accent: 205 22% 15%;
+      --accent-foreground: 200 20% 95%;
+      --student: 232 85% 76%;
+      --student-foreground: 205 32% 7.5%;
+      --border: 205 20% 17.5%;
+      --input: 205 16% 28%;
+      --ring: 173 58% 49%;
+      --flag: 32 95% 56%;
+    }
+  }
+
+  *,
+  ::before,
+  ::after {
+    @apply border-border;
+    /* Ring offsets take the page colour, not white, so they vanish in dark mode. */
+    --tw-ring-offset-color: hsl(var(--background));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Kerning and ligatures as with optimizeLegibility, but with unhinted
+       glyph advances. With hinting on, Chromium on Linux rounds each advance
+       and opens gaps inside words ("CREAT ED", "dat a"). */
+    text-rendering: geometricPrecision;
+  }
+
+  body {
+    @apply bg-background font-sans text-base text-foreground selection:bg-primary/20;
+    line-height: 1.55;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  /* One visible focus outline for every focusable element: links, buttons,
+     inputs, selects, details > summary and anything with tabIndex. A
+     component that draws its own ring sets focus-visible:outline-none, a
+     utility, which wins over this base rule. */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

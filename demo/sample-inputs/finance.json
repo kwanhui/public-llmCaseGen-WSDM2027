@@ -1,0 +1,11 @@
+{
+  "discipline": "finance",
+  "learningObjective": "Apply DDM to value a regional bank under uncertainty in earnings growth and cost of equity.",
+  "difficulty": "intermediate",
+  "mustCoverConcepts": ["DDM", "cost of equity", "terminal value", "sensitivity analysis"],
+  "targetLearnerProfile": {
+    "industry": "retail banking",
+    "role": "junior analyst",
+    "priorKnowledge": "intermediate"
+  }
+}

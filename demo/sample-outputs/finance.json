@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-05-29T16:00:15.948Z",
+  "model": "gpt-4o-mini",
+  "embeddingModel": "text-embedding-3-small",
+  "input": {
+    "discipline": "finance",
+    "learningObjective": "Apply DDM to value a regional bank under uncertainty in earnings growth and cost of equity.",
+    "difficulty": "intermediate",
+    "mustCoverConcepts": [
+      "DDM",
+      "cost of equity",
+      "terminal value",
+      "sensitivity analysis"
+    ],
+    "targetLearnerProfile": {
+      "industry": "retail banking",
+      "role": "junior analyst",
+      "priorKnowledge": "intermediate"
+    }
+  },
+  "provenance": [
+    "embedding:text-embedding-3-small",
+    "corpus:fin-pedagogy-assumptions (0.498)",
+    "corpus:fin-ddm (0.490)",
+    "corpus:fin-esg (0.434)",
+    "corpus:fin-terminal-value (0.430)",
+    "corpus:fin-dcf (0.423)"
+  ],
+  "output": {
+    "scenario": "You are a junior analyst at Green River Bank, a regional retail bank based in the Midwest United States. The bank has experienced steady growth over the past five years, with total assets of $3 billion and a net income of $100 million. Green River Bank has a conservative capital structure with a Tier 1 capital ratio of 12% and a debt-to-equity ratio of 1:1, reflecting its focus on maintaining a strong balance sheet. The bank has consistently paid an annual dividend of $1.50 per share to its shareholders, which has increased by 5% annually over the past three years.\n\nAs part of your role, you are tasked with valuing Green River Bank using the Dividend Discount Model (DDM). However, the CFO is concerned about future earnings growth and the cost of equity, particularly in light of increasing competition and potential economic uncertainty.\n\nTo assist with this valuation, you gather the following data:\n- Historical dividend growth rate: 5%  \n- Current dividend per share: $1.50  \n- Expected long-term growth rate: between 3% and 5%  \n- Estimated cost of equity: between 8% and 10%  \n- Comparable regional banks have a P/E ratio range of 12x to 15x.\n\nThe CFO has asked you to provide a valuation of the bank using the DDM, incorporating different scenarios for growth rates and the cost of equity. She emphasizes the importance of understanding how sensitive the valuation is to changes in these inputs, particularly since the bank's strategic plans depend on attracting new investors and maintaining shareholder confidence. \n\nYou realize that you will need to perform a sensitivity analysis on both the growth rate and the cost of equity to assess the implications for the bank's valuation and ultimately guide the CFO in her decisions regarding dividend policy and future growth strategies. Your specific question is: **How should you approach the valuation using the DDM under the scenario of varying growth rates and costs of equity, and what are the implications of your findings?**",
+    "discussionQuestions": [
+      "Using the DDM, what is the intrinsic value of Green River Bank's stock under a 3% growth rate and a 10% cost of equity? Show your calculations.",
+      "How does the intrinsic value change if the growth rate is adjusted to 5% with the cost of equity remaining at 10%? What does this sensitivity analysis reveal about the growth assumptions?",
+      "If the cost of equity is lowered to 8% while maintaining a 5% growth rate, what impact does this have on the intrinsic value? How should the CFO interpret these results?",
+      "Which assumptions regarding growth rates and the cost of equity are most critical to your valuation? How might changes in the competitive landscape affect these assumptions?",
+      "Based on your analysis, what recommendations would you make regarding Green River Bank's dividend policy and growth strategy?",
+      "What additional information would you seek to enhance the robustness of your valuation, and how would it address uncertainties about your key assumptions?"
+    ],
+    "modelAnswers": [
+      "Under a 3% growth rate and a 10% cost of equity, the value of the stock using DDM can be calculated as follows: V = D / (r - g) = 1.50 / (0.10 - 0.03) = 21.43. Thus, the intrinsic value of the stock is approximately $21.43 per share.",
+      "If the growth rate is adjusted to 5% with the cost of equity still at 10%, the calculation becomes: V = 1.50 / (0.10 - 0.05) = 30.00. The increase in intrinsic value from $21.43 to $30.00 highlights that the valuation is sensitive to the growth rate assumption, indicating that growth is a key driver of value.",
+      "Lowering the cost of equity to 8% while maintaining a 5% growth rate results in: V = 1.50 / (0.08 - 0.05) = 50.00. This significant increase suggests that a lower perceived risk can greatly enhance the intrinsic value, which should encourage the CFO to consider strategies that improve the bank’s risk profile.",
+      "The most critical assumptions are the growth rates and the cost of equity. A change in the competitive landscape, such as new entrants or regulatory changes, could pressure both the growth rate and the cost of equity, necessitating a reassessment of these inputs regularly.",
+      "Based on the analysis, I would recommend that Green River Bank consider maintaining its dividend while focusing on strategies to enhance growth. This could include investing in digital banking solutions or marketing to attract younger demographics. At the same time, they should monitor their cost of equity closely to maintain a favorable valuation.",
+      "To enhance the robustness of the valuation, I would seek information on market trends, economic forecasts, and competitor performance. Understanding these factors would provide insights into potential changes in growth rates and the cost of equity, allowing for a more informed valuation approach."
+    ],
+    "rubric": "Numerical accuracy (30%): calculations are correctly executed and align with the DDM principles. Depth of reasoning (30%): connections are drawn between valuation outcomes and underlying assumptions. Treatment of assumptions (20%): critical assumptions are explicitly identified and explored. Recommendation quality (20%): actionable insights are provided based on the analysis."
+  }
+}

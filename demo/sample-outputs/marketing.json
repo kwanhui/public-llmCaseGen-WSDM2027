@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-05-29T16:00:33.306Z",
+  "model": "gpt-4o-mini",
+  "embeddingModel": "text-embedding-3-small",
+  "input": {
+    "discipline": "marketing",
+    "learningObjective": "Reposition a sleep-aid brand for a younger working-adult segment without alienating its core 50+ customers.",
+    "difficulty": "novice",
+    "mustCoverConcepts": [
+      "segmentation",
+      "positioning statement",
+      "brand equity",
+      "cannibalisation risk"
+    ],
+    "targetLearnerProfile": {
+      "industry": "consumer health",
+      "role": "brand assistant",
+      "priorKnowledge": "novice"
+    }
+  },
+  "provenance": [
+    "embedding:text-embedding-3-small",
+    "corpus:mkt-repositioning (0.550)",
+    "corpus:mkt-positioning-statement (0.476)",
+    "corpus:mkt-pedagogy-framing (0.474)",
+    "corpus:mkt-segmentation-bases (0.436)",
+    "corpus:mkt-stp (0.417)"
+  ],
+  "output": {
+    "scenario": "SleepWell, a brand established in 2010, has become a trusted name in the sleep-aid category, primarily catering to consumers aged 50 and above. With its main product, a natural melatonin supplement, SleepWell's formula is marketed as a solution for age-related sleep disturbances. The brand has built strong loyalty among seniors, with a Net Promoter Score (NPS) of 75, indicating a high level of satisfaction. However, in recent years, the brand has faced stagnation in growth as the overall sleep-aid market shifts towards a younger demographic. Market research indicates that working adults aged 25-40 are increasingly struggling with sleep issues due to stress, technology use, and demanding work schedules. This age group is more inclined towards modern branding and innovative solutions, leading to a growing preference for products that align with lifestyle wellness. \n\nThe new CMO, Maria, is eager to capitalize on this trend but is concerned about alienating the existing customer base. The brand's strong equity is rooted in its association with trust, efficacy, and a gentle approach to sleep aid — qualities that are highly valued by the 50+ demographic. Maria is contemplating a repositioning strategy that would introduce a new product line tailored to younger adults, incorporating trendy ingredients like CBD or adaptogens and promoting them in vibrant, energetic packaging. Her challenge lies in balancing this new direction without losing the brand's core identity. \n\nAs Maria prepares her proposal to the executive team, she knows she must articulate a clear segmentation strategy that defines how SleepWell can appeal to this younger audience while keeping its loyal customers engaged. She faces the critical decision of whether to fully embrace this new segment with a bold repositioning, or to take a more conservative approach that gradually integrates new offerings without jeopardizing the existing brand equity. The board has set a deadline for her recommendation, and she must be ready to address the potential risks of cannibalization and brand dilution as she lays out her vision for SleepWell’s future.",
+    "discussionQuestions": [
+      "What market signals indicate a need for SleepWell to reposition towards a younger audience?",
+      "How can Maria define the new target segment without alienating the existing customer base?",
+      "What would an effective positioning statement for the new product line look like?",
+      "What strategies can ensure that the introduction of new products doesn't negatively impact SleepWell's brand equity?",
+      "How would you measure the success of the repositioning in the first six months post-launch?"
+    ],
+    "modelAnswers": [
+      "The growing prevalence of sleep issues among younger adults, particularly those aged 25-40, suggests a significant opportunity for SleepWell. The market research indicates their sleep disturbances are often linked to lifestyle factors such as stress and technology use, which differ from the needs of older adults. This segment values innovative solutions and is willing to try new products, making it a ripe target for SleepWell’s expansion. Additionally, the trend towards natural ingredients in wellness products highlights the need for SleepWell to evolve its offerings.",
+      "To define the new target segment, Maria should focus on the jobs-to-be-done (JTBD) for younger consumers. This includes understanding their motivations to seek sleep aids, which may revolve around stress relief, work-life balance, and wellness. Segmenting based on lifestyle and behaviors rather than just demographics can help SleepWell tailor its messaging and product formulations to resonate with this audience while maintaining its appeal to older customers through unique messaging and maintaining existing products.",
+      "An effective positioning statement for the new product line could be: \"For busy young professionals seeking restful sleep, SleepWell offers a rejuvenating sleep aid with natural ingredients designed to help you unwind and recharge, unlike traditional sleep aids that may feel outdated and ineffective.\" This clearly defines the target, the category, the unique features, and the benefit, setting clear boundaries for the brand's positioning.",
+      "To protect SleepWell's brand equity while introducing new products, strategies could include maintaining separate branding for the new line to avoid dilution, using co-branding tactics, or developing a sub-brand that aligns with the younger audience's image. This would allow the core brand to remain associated with its traditional values while exploring new territory. Communication strategies that emphasize the brand’s heritage in quality can help reassure loyal customers.",
+      "To measure the success of the repositioning, key performance indicators (KPIs) should include sales growth in the new segment, customer feedback through surveys focusing on brand perception, and retention rates of the existing customer base. Additionally, monitoring online engagement and social media sentiment can provide insight into how well the new product is resonating with its intended audience."
+    ],
+    "rubric": "Analysis quality (30%) — Excellent responses clearly identify and elaborate on key market signals that justify the need for repositioning. Customer insight (30%) — Responses effectively highlight the jobs-to-be-done for both target segments, showcasing understanding of diverse customer needs. Strategic coherence (20%) — Strong answers present a clear and logical positioning statement that aligns with strategic goals while emphasizing trade-offs. Executional realism (20%) — Excellent responses propose actionable measurement strategies that include specific KPIs to track success over time."
+  }
+}

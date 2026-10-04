@@ -1,0 +1,24 @@
+{
+  "commit": "f0038c207effd05dfd41e29148635a511d55b17a",
+  "dirty": true,
+  "generatedAt": "2026-09-20T19:43:23.599Z",
+  "modelId": "openai.chat:gpt-4o-mini",
+  "source": "demo/sample-outputs, with the instructor edits in scripts/seed-demo.ts applied, personalised per team",
+  "deterministic": false,
+  "files": [
+    "finance-retail.json",
+    "finance-treasury.json",
+    "finance-credit-risk.json",
+    "finance-equity-research.json",
+    "finance-wealth-advisory.json",
+    "marketing-consumer-health.json",
+    "marketing-retail.json",
+    "marketing-d2c.json",
+    "social-work-community.json",
+    "social-work-hospital.json"
+  ],
+  "rewrittenThisRun": [
+    "marketing-consumer-health.json",
+    "marketing-d2c.json"
+  ]
+}

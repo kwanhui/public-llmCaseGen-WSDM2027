@@ -1,0 +1,11 @@
+{
+  "discipline": "social_work",
+  "learningObjective": "Recommend an eldercare placement when adult siblings disagree on home care versus assisted living, and the older parent's stated preference shifts mid-assessment.",
+  "difficulty": "advanced",
+  "mustCoverConcepts": ["capacity assessment", "family-systems framing", "least-restrictive setting", "dual relationship risk"],
+  "targetLearnerProfile": {
+    "industry": "community eldercare",
+    "role": "MSW-track student on placement",
+    "priorKnowledge": "advanced"
+  }
+}

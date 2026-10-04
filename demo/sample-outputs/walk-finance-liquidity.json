@@ -1,0 +1,48 @@
+{
+  "presetId": "walk-finance-liquidity",
+  "capturedAt": "2026-09-26T04:29:03.510Z",
+  "caseId": "e228508d-6ed0-4c45-bf74-fbab54445a54",
+  "provenance": [
+    "embedding:text-embedding-3-small",
+    "corpus:fin-working-capital (0.555)",
+    "corpus:fin-pedagogy-framing (0.474)",
+    "corpus:fin-three-statements (0.437)",
+    "corpus:fin-ratios (0.426)",
+    "corpus:fin-fcf (0.398)"
+  ],
+  "content": {
+    "rubric": "Numerical accuracy (30%): calculations related to ratios and cycles are correct and follow logically. Depth of reasoning (30%): provides insights into the implications of financial metrics and growth on cash flow. Treatment of assumptions (20%): identifies key assumptions influencing working capital decisions. Recommendation quality (20%): proposes actionable strategies with clear pros and cons outlined.",
+    "glossary": [
+      {
+        "term": "Current Ratio",
+        "definition": "A liquidity ratio that measures a company's ability to pay short-term obligations, calculated as current assets divided by current liabilities."
+      },
+      {
+        "term": "Cash Conversion Cycle",
+        "definition": "A metric that indicates the time taken to convert investments in inventory and receivables into cash flows from sales, calculated by adding days inventory outstanding to days sales outstanding and subtracting days payable outstanding."
+      },
+      {
+        "term": "Working Capital",
+        "definition": "The difference between current assets and current liabilities, representing the liquidity available to a business for its day-to-day operations."
+      },
+      {
+        "term": "Trade Credit",
+        "definition": "An arrangement in which a company buys goods or services from a supplier and pays for them later, effectively using the supplier's credit to manage cash flow."
+      }
+    ],
+    "scenario": "Urban Trends is a neighbourhood retail chain in Singapore with five stores selling home decor and lifestyle products in HDB town centres. The business is owned by its founder, Mrs Tan, and you have just moved from running two of the stores into the newly created role of finance lead. Last year the chain made S$3 million in sales with a net profit margin of 10%, and sales are growing at 20% a year. Yet Mrs Tan tells you that the bank account is often close to empty before the month-end supplier payments, and twice this year she has delayed paying staff bonuses to cover stock orders.\n\nThe latest balance sheet shows current assets of S$800,000: S$300,000 of accounts receivable, S$400,000 of inventory and S$100,000 of cash. The receivables come from corporate customers (offices, showflats and a hotel group) who buy in bulk on trade credit and are given 45 days to pay. Current liabilities are S$500,000, of which S$300,000 is trade payables to suppliers and the rest is short-term obligations such as GST and rent deposits due. The current ratio is therefore 1.6 (800,000 / 500,000).\n\nStock sits in the stores and the warehouse for about 60 days before it is sold. Suppliers give the chain 30 days of trade credit, and Mrs Tan has always paid on time to protect the relationship. Cash is therefore tied up in inventory and receivables for much longer than it is available from suppliers, and every new store and every 20% of growth ties up more.\n\nMrs Tan has asked you to explain, in plain terms, why a profitable business keeps running short of cash, and to propose specific changes to the credit terms offered to corporate customers, the stock the stores carry, and the terms negotiated with suppliers. She wants to know what each change would free up, and what it might cost in lost sales or supplier goodwill.",
+    "modelAnswers": [
+      "The current ratio of 1.6 shows that Urban Trends has S$800,000 in current assets compared to S$500,000 in current liabilities. This means the company can cover its short-term debts, as a ratio above 1 indicates good liquidity. However, having excess inventory or cash may suggest that resources are not being optimally utilized. Despite the acceptable ratio, the frequent cash shortages indicate underlying cash flow issues that highlight a need for better working capital management.",
+      "To calculate the cash conversion cycle (CCC), we use the formula: CCC = Days Inventory Outstanding + Days Sales Outstanding - Days Payable Outstanding. For Urban Trends, the calculation is: CCC = 60 days (inventory) + 45 days (receivables) - 30 days (payables) = 75 days. This means it takes Urban Trends 75 days to convert its inventory and receivables back into cash, which indicates inefficiencies in managing working capital, as a shorter cycle is generally preferred for better liquidity.",
+      "A 20% rise takes sales from S$3 million to S$3.6 million. Net operating working capital is receivables plus inventory less trade payables: 300,000 + 400,000 - 300,000 = S$400,000, which is about 13% of sales. If collection, stock and payment periods stay as they are, the extra S$600,000 of sales ties up about 13% of it, roughly S$80,000 more, before any of the new sales turn into cash. Another way to see the same thing: at S$3.6 million a year the chain sells about S$9,900 a day, and a 75-day cash conversion cycle means about S$740,000 is tied up at any time, up from about S$620,000 today. Profit is recorded when goods are sold, but cash arrives only when the customer pays and after the supplier and the stock have been paid for, so a growing, profitable chain can run short of cash every month.",
+      "Three levers follow from the cycle. First, shorten the collection period for corporate customers from 45 to 30 days: receivables would fall from about S$300,000 to S$200,000, freeing about S$100,000, at the risk that some corporate buyers move to a competitor who still offers 45 days. Second, cut the stock holding period from 60 to 45 days by trimming slow lines and ordering more often: inventory would fall from about S$400,000 to S$300,000, freeing about S$100,000, at the risk of stockouts on fast-selling items. Third, negotiate supplier trade credit from 30 to 45 days: trade payables would rise from about S$300,000 to S$450,000, freeing about S$150,000, at the cost of some supplier goodwill or a lost early-payment discount. Together these would cut the cash conversion cycle from 75 to 30 days and free about S$350,000, more than enough to end the month-end squeeze. The recommendation is to start with stock and supplier terms, which do not depend on customers, and to tighten customer credit gradually."
+    ],
+    "schemaVersion": 1,
+    "discussionQuestions": [
+      "What is the significance of the current ratio for Urban Trends, and how does it relate to the company's liquidity position?",
+      "Calculate Urban Trends' cash conversion cycle based on the information provided. What does this metric indicate about the company's efficiency in managing working capital?",
+      "Given that Urban Trends has a 20% growth rate, how might this impact working capital requirements? Discuss the potential cash flow implications.",
+      "What specific changes could you propose to the credit terms for corporate customers, the stock the stores carry, and the supplier trade credit terms? Estimate what each would free up and evaluate its trade-offs."
+    ]
+  }
+}

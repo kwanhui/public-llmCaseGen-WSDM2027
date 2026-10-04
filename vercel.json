@@ -1,0 +1,27 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["sin1"],
+  "functions": {
+    "app/api/admin/cases/[id]/generate/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/admin/cases/[id]/regenerate-section/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/admin/cases/[id]/variants/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/admin/cases/[id]/compare/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/demo/generate/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/demo/personalise/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/demo/student/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}

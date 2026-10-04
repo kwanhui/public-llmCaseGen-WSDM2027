@@ -1,0 +1,450 @@
+{
+  "commit": "f3650aadc88ce899f53f07ed3625b5aca8c10af8",
+  "dirty": false,
+  "generatedAt": "2026-10-04T16:12:34.821Z",
+  "method": "Lexical check. A retrieved note counts as reflected when one of its distinctive tags appears in the text and is not already in the brief. A tag is distinctive within its discipline corpus when at most two notes carry it and it is either a term of two or more words, an acronym, or a single word that only one note of the corpus uses. Tags such as \"decision\", \"debt\" or \"neglect\" fail that test, so a match on them is shown but not counted. A tag the brief supplies is shown as in the brief and not counted either, because every output written from that brief carries it whether or not the note was used. A note left with no tag that could count is not countable, and the reading is reported over the countable notes.",
+  "distinctiveTagMethod": "lexical: the earlier distinctive-tag rule, under which a retrieved passage counted as reflected if one of its distinctive tags appeared in the generated case text, whether or not the brief supplied that tag",
+  "anyTagMethod": "lexical: the original any-tag rule, under which a retrieved passage counted as reflected if any of its corpus tags appeared in the generated case text, generic tags included",
+  "source": "demo/sample-outputs, the raw generations. The seeded demo cases carry instructor edits applied on top of these (see scripts/seed-demo.ts), so their figures differ.",
+  "corpus": [
+    {
+      "discipline": "finance",
+      "notes": 33,
+      "tags": 110,
+      "distinctive": 76,
+      "notesWithNoDistinctiveTag": [
+        "fin-pedagogy-framing",
+        "fin-pedagogy-assumptions"
+      ]
+    },
+    {
+      "discipline": "marketing",
+      "notes": 32,
+      "tags": 108,
+      "distinctive": 66,
+      "notesWithNoDistinctiveTag": [
+        "mkt-promotion-margin",
+        "mkt-pedagogy-framing",
+        "mkt-pedagogy-evidence"
+      ]
+    },
+    {
+      "discipline": "social_work",
+      "notes": 32,
+      "tags": 93,
+      "distinctive": 57,
+      "notesWithNoDistinctiveTag": [
+        "sw-pedagogy-framing"
+      ]
+    }
+  ],
+  "perCase": [
+    {
+      "discipline": "finance",
+      "used": 0,
+      "countable": 4,
+      "usedDistinctiveTag": 1,
+      "usedAnyTag": 3,
+      "total": 5,
+      "notes": [
+        {
+          "id": "fin-pedagogy-assumptions",
+          "caseDesign": true,
+          "countable": false,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "assumptions"
+          ],
+          "countableTags": [],
+          "distinctiveTags": [],
+          "tags": [
+            "pedagogy",
+            "assumptions",
+            "judgment"
+          ]
+        },
+        {
+          "id": "fin-ddm",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": true,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [
+            "DDM"
+          ],
+          "genericMatches": [
+            "dividends",
+            "banks"
+          ],
+          "countableTags": [
+            "equity valuation"
+          ],
+          "distinctiveTags": [
+            "DDM",
+            "equity valuation"
+          ],
+          "tags": [
+            "DDM",
+            "dividends",
+            "equity valuation",
+            "banks"
+          ]
+        },
+        {
+          "id": "fin-esg",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": false,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [],
+          "countableTags": [
+            "ESG",
+            "materiality",
+            "discount rate"
+          ],
+          "distinctiveTags": [
+            "ESG",
+            "materiality",
+            "discount rate"
+          ],
+          "tags": [
+            "ESG",
+            "sustainability",
+            "materiality",
+            "discount rate"
+          ]
+        },
+        {
+          "id": "fin-terminal-value",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": false,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [],
+          "countableTags": [
+            "Gordon growth",
+            "exit multiple"
+          ],
+          "distinctiveTags": [
+            "terminal value",
+            "Gordon growth",
+            "exit multiple"
+          ],
+          "tags": [
+            "terminal value",
+            "Gordon growth",
+            "exit multiple"
+          ]
+        },
+        {
+          "id": "fin-dcf",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "valuation"
+          ],
+          "countableTags": [
+            "DCF",
+            "present value"
+          ],
+          "distinctiveTags": [
+            "DCF",
+            "present value"
+          ],
+          "tags": [
+            "DCF",
+            "valuation",
+            "present value"
+          ]
+        }
+      ]
+    },
+    {
+      "discipline": "marketing",
+      "used": 1,
+      "countable": 4,
+      "usedDistinctiveTag": 2,
+      "usedAnyTag": 5,
+      "total": 5,
+      "notes": [
+        {
+          "id": "mkt-repositioning",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "repositioning",
+            "brand"
+          ],
+          "countableTags": [
+            "segment shift"
+          ],
+          "distinctiveTags": [
+            "segment shift"
+          ],
+          "tags": [
+            "repositioning",
+            "brand",
+            "segment shift"
+          ]
+        },
+        {
+          "id": "mkt-positioning-statement",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": true,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [
+            "positioning statement"
+          ],
+          "genericMatches": [],
+          "countableTags": [
+            "value proposition"
+          ],
+          "distinctiveTags": [
+            "positioning statement",
+            "value proposition"
+          ],
+          "tags": [
+            "positioning statement",
+            "value proposition",
+            "differentiation"
+          ]
+        },
+        {
+          "id": "mkt-pedagogy-framing",
+          "caseDesign": true,
+          "countable": false,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "decision"
+          ],
+          "countableTags": [],
+          "distinctiveTags": [],
+          "tags": [
+            "pedagogy",
+            "framing",
+            "decision"
+          ]
+        },
+        {
+          "id": "mkt-segmentation-bases",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": true,
+          "reflectedDistinctiveTag": true,
+          "reflectedAnyTag": true,
+          "matchedTags": [
+            "demographics",
+            "behaviour"
+          ],
+          "briefMatches": [],
+          "genericMatches": [
+            "segmentation",
+            "needs"
+          ],
+          "countableTags": [
+            "demographics",
+            "behaviour"
+          ],
+          "distinctiveTags": [
+            "demographics",
+            "behaviour"
+          ],
+          "tags": [
+            "segmentation",
+            "demographics",
+            "behaviour",
+            "needs"
+          ]
+        },
+        {
+          "id": "mkt-stp",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "segmentation",
+            "targeting",
+            "positioning"
+          ],
+          "countableTags": [
+            "STP"
+          ],
+          "distinctiveTags": [
+            "STP"
+          ],
+          "tags": [
+            "STP",
+            "segmentation",
+            "targeting",
+            "positioning"
+          ]
+        }
+      ]
+    },
+    {
+      "discipline": "social_work",
+      "used": 0,
+      "countable": 3,
+      "usedDistinctiveTag": 0,
+      "usedAnyTag": 3,
+      "total": 5,
+      "notes": [
+        {
+          "id": "sw-pedagogy-framing",
+          "caseDesign": true,
+          "countable": false,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "dilemma"
+          ],
+          "countableTags": [],
+          "distinctiveTags": [],
+          "tags": [
+            "pedagogy",
+            "framing",
+            "dilemma"
+          ]
+        },
+        {
+          "id": "sw-adult-safeguarding",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": false,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [],
+          "countableTags": [
+            "elder abuse",
+            "vulnerable adult"
+          ],
+          "distinctiveTags": [
+            "elder abuse",
+            "vulnerable adult"
+          ],
+          "tags": [
+            "safeguarding",
+            "elder abuse",
+            "vulnerable adult",
+            "neglect"
+          ]
+        },
+        {
+          "id": "sw-least-restrictive",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": false,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [],
+          "countableTags": [
+            "proportionality",
+            "care planning"
+          ],
+          "distinctiveTags": [
+            "least-restrictive setting",
+            "proportionality",
+            "care planning"
+          ],
+          "tags": [
+            "least-restrictive setting",
+            "proportionality",
+            "care planning"
+          ]
+        },
+        {
+          "id": "sw-family-systems",
+          "caseDesign": false,
+          "countable": false,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "dynamics",
+            "roles"
+          ],
+          "countableTags": [],
+          "distinctiveTags": [
+            "family-systems"
+          ],
+          "tags": [
+            "family-systems",
+            "dynamics",
+            "roles"
+          ]
+        },
+        {
+          "id": "sw-self-determination",
+          "caseDesign": false,
+          "countable": true,
+          "reflected": false,
+          "reflectedDistinctiveTag": false,
+          "reflectedAnyTag": true,
+          "matchedTags": [],
+          "briefMatches": [],
+          "genericMatches": [
+            "autonomy"
+          ],
+          "countableTags": [
+            "self-determination"
+          ],
+          "distinctiveTags": [
+            "self-determination"
+          ],
+          "tags": [
+            "self-determination",
+            "autonomy",
+            "ethics"
+          ]
+        }
+      ]
+    }
+  ],
+  "totalUsed": 1,
+  "totalCountable": 11,
+  "totalUsedDistinctiveTag": 3,
+  "totalUsedAnyTag": 11,
+  "totalRetrieved": 15
+}

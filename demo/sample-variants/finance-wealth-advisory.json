@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "scenario": "You are a portfolio adviser at WealthWise Advisory, a wealth management firm based in the Midwest United States. Your firm has been engaged by Green River Bank, a regional retail bank, to assist with an important valuation decision. Green River Bank has experienced steady growth over the past five years, with total assets of $3 billion and a net income of $100 million. Green River Bank has a conservative capital structure with a Tier 1 capital ratio of 12% and a debt-to-equity ratio of 1:1, reflecting its focus on maintaining a strong balance sheet. The bank has consistently paid an annual dividend of $1.50 per share to its shareholders, which has increased by 5% annually over the past three years.\n\nAs part of your role, you are tasked with valuing Green River Bank using the Dividend Discount Model (DDM). However, the CFO is concerned about future earnings growth and the cost of equity, particularly in light of increasing competition and potential economic uncertainty.\n\nTo assist with this valuation, you gather the following data:\n- Historical dividend growth rate: 5%  \n- Current dividend per share: $1.50  \n- Expected long-term growth rate: between 3% and 5%  \n- Estimated cost of equity: between 8% and 10%  \n- Comparable regional banks have a P/E ratio range of 12x to 15x.\n\nThe CFO has asked you to provide a valuation of the bank using the DDM, incorporating different scenarios for growth rates and the cost of equity. She emphasizes the importance of understanding how sensitive the valuation is to changes in these inputs, particularly since the bank's strategic plans depend on attracting new investors and maintaining shareholder confidence.\n\nNote the horizon you are working with. The single-stage DDM has no explicit forecast period, so the figure it returns is a terminal value: it prices every future dividend at once under one permanent growth assumption. Treat the long-term growth rate you choose as a statement about the steady state, not about the next three years.\n\nYou realize that you will need to perform a sensitivity analysis on both the growth rate and the cost of equity to assess the implications for the bank's valuation and ultimately guide the CFO in her decisions regarding dividend policy and future growth strategies. Your specific question is: **How should you approach the valuation using the DDM under the scenario of varying growth rates and costs of equity, and what are the implications of your findings?**",
+  "discussionQuestions": [
+    "Using the DDM, what is the intrinsic value of Green River Bank's stock under a 3% growth rate and a 10% cost of equity? Show your calculations.",
+    "How does the intrinsic value change if the growth rate is adjusted to 5% with the cost of equity remaining at 10%? What does this sensitivity analysis reveal about the growth assumption embedded in the terminal value?",
+    "If the cost of equity is lowered to 8% while maintaining a 5% growth rate, what impact does this have on the intrinsic value? How should the CFO interpret these results?",
+    "Which assumptions regarding growth rates and the cost of equity are most critical to your valuation? How might changes in the competitive landscape affect these assumptions?",
+    "Based on your analysis, what recommendations would you make regarding Green River Bank's dividend policy and growth strategy?",
+    "What additional information would you seek to enhance the robustness of your valuation, and how would it address uncertainties about your key assumptions?"
+  ],
+  "modelAnswers": [
+    "Under a 3% growth rate and a 10% cost of equity, the value of the stock using DDM can be calculated as follows: V = D1 / (r - g) = 1.545 / (0.10 - 0.03) = 22.07. Thus, the intrinsic value of the stock is approximately $22.07 per share. The numerator is next year's dividend, D1 = D0(1 + g); discounting the dividend just paid understates the value.",
+    "If the growth rate is adjusted to 5% with the cost of equity still at 10%, the calculation becomes: V = D1 / (r - g) = 1.575 / (0.10 - 0.05) = 31.50. The increase in intrinsic value from $22.07 to $31.50 highlights that the valuation is sensitive to the growth rate assumption, indicating that growth is a key driver of value. Because the whole figure is a terminal value, the growth rate compounds forever inside it, so a one-point change in growth moves the answer further than a one-point change in the cost of equity at these levels.",
+    "Lowering the cost of equity to 8% while maintaining a 5% growth rate results in: V = D1 / (r - g) = 1.575 / (0.08 - 0.05) = 52.50. This significant increase suggests that a lower perceived risk can greatly enhance the intrinsic value, which should encourage the CFO to consider strategies that improve the bank’s risk profile.",
+    "The most critical assumptions are the growth rates and the cost of equity. A change in the competitive landscape, such as new entrants or regulatory changes, could pressure both the growth rate and the cost of equity, necessitating a reassessment of these inputs regularly.",
+    "Based on the analysis, I would recommend that Green River Bank consider maintaining its dividend while focusing on strategies to enhance growth. This could include investing in digital banking solutions or marketing to attract younger demographics. At the same time, they should monitor their cost of equity closely to maintain a favorable valuation.",
+    "To enhance the robustness of the valuation, I would seek information on market trends, economic forecasts, and competitor performance. Understanding these factors would provide insights into potential changes in growth rates and the cost of equity, allowing for a more informed valuation approach."
+  ],
+  "rubric": "Numerical accuracy (30%): calculations are correctly executed and align with the DDM principles. Depth of reasoning (30%): connections are drawn between valuation outcomes and underlying assumptions. Treatment of assumptions (20%): critical assumptions are explicitly identified and explored. Recommendation quality (20%): actionable insights are provided based on the analysis.",
+  "glossary": [
+    {
+      "term": "Dividend discount model (DDM)",
+      "definition": "A way to value a share as the present value of the dividends it is expected to pay."
+    },
+    {
+      "term": "Cost of equity",
+      "definition": "The return shareholders require for holding the stock, used as the discount rate."
+    },
+    {
+      "term": "Terminal growth rate",
+      "definition": "The constant rate at which dividends are assumed to grow forever after the forecast horizon."
+    },
+    {
+      "term": "Sensitivity analysis",
+      "definition": "Re-running the valuation while changing one assumption to see how much the answer moves."
+    }
+  ]
+}

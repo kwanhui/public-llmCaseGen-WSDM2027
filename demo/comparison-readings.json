@@ -1,0 +1,206 @@
+{
+  "commit": "9c625eae578b261dabb7215e4ec466a5156dad3a",
+  "dirty": false,
+  "generatedAt": "2026-09-20T20:09:45.174Z",
+  "source": "the cached baselines in case_comparisons and each case's current draft, read from the database. No model calls.",
+  "conceptMethod": "Lexical check over the scenario, the discussion questions and the model answers. The rubric and the glossary are not read. A concept matches inside a single sentence, either as its words in order or as its content words within a short window, after normalising spelling variants, plurals and simple stems. A concept written as a tension (X vs Y, X/Y) is split, and each half has to match somewhere in those sections.",
+  "noteMethod": "Lexical check. A retrieved note counts as reflected when one of its distinctive tags appears in the text and is not already in the brief. A tag is distinctive within its discipline corpus when at most two notes carry it and it is either a term of two or more words, an acronym, or a single word that only one note of the corpus uses. Tags such as \"decision\", \"debt\" or \"neglect\" fail that test, so a match on them is shown but not counted. A tag the brief supplies is shown as in the brief and not counted either, because every output written from that brief carries it whether or not the note was used. A note left with no tag that could count is not countable, and the reading is reported over the countable notes.",
+  "note": "The third arm is the case's current draft, instructor edits included, not a fresh generation. The two baselines are one sample each.",
+  "cases": [
+    {
+      "caseId": "seed-case-finance",
+      "discipline": "finance",
+      "status": "released",
+      "learningObjective": "Apply DDM to value a regional bank under uncertainty in earnings growth and cost of equity.",
+      "mustCoverConcepts": [
+        "DDM",
+        "cost of equity",
+        "terminal value",
+        "sensitivity analysis"
+      ],
+      "baselinesCached": true,
+      "comparisonGeneratedAt": "2026-09-20T18:37:59.243Z",
+      "modelId": "openai.chat:gpt-4o-mini",
+      "arms": [
+        {
+          "arm": "plain",
+          "label": "Plain prompt",
+          "conceptsCovered": 4,
+          "conceptsTotal": 4,
+          "conceptsMissing": [],
+          "notesReflected": 2,
+          "notesCountable": 4,
+          "notesReflectedDistinctiveTag": 3,
+          "notesReflectedAnyTag": 4,
+          "notesTotal": 5,
+          "sectionsPresent": 3,
+          "sectionsTotal": 4,
+          "wordCount": 644
+        },
+        {
+          "arm": "structured",
+          "label": "Structured, no retrieval",
+          "conceptsCovered": 3,
+          "conceptsTotal": 4,
+          "conceptsMissing": [
+            "terminal value"
+          ],
+          "notesReflected": 0,
+          "notesCountable": 4,
+          "notesReflectedDistinctiveTag": 1,
+          "notesReflectedAnyTag": 3,
+          "notesTotal": 5,
+          "sectionsPresent": 4,
+          "sectionsTotal": 4,
+          "wordCount": 712
+        },
+        {
+          "arm": "perscase",
+          "label": "This case, current draft",
+          "conceptsCovered": 4,
+          "conceptsTotal": 4,
+          "conceptsMissing": [],
+          "notesReflected": 0,
+          "notesCountable": 4,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 4,
+          "notesTotal": 5,
+          "sectionsPresent": 4,
+          "sectionsTotal": 4,
+          "wordCount": 963
+        }
+      ]
+    },
+    {
+      "caseId": "seed-case-marketing",
+      "discipline": "marketing",
+      "status": "released",
+      "learningObjective": "Reposition a sleep-aid brand for a younger working-adult segment without alienating its core 50+ customers.",
+      "mustCoverConcepts": [
+        "segmentation",
+        "positioning statement",
+        "brand equity",
+        "cannibalisation risk"
+      ],
+      "baselinesCached": true,
+      "comparisonGeneratedAt": "2026-09-20T18:38:07.521Z",
+      "modelId": "openai.chat:gpt-4o-mini",
+      "arms": [
+        {
+          "arm": "plain",
+          "label": "Plain prompt",
+          "conceptsCovered": 4,
+          "conceptsTotal": 4,
+          "conceptsMissing": [],
+          "notesReflected": 1,
+          "notesCountable": 4,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 4,
+          "notesTotal": 5,
+          "sectionsPresent": 3,
+          "sectionsTotal": 4,
+          "wordCount": 584
+        },
+        {
+          "arm": "structured",
+          "label": "Structured, no retrieval",
+          "conceptsCovered": 2,
+          "conceptsTotal": 4,
+          "conceptsMissing": [
+            "positioning statement",
+            "cannibalisation risk"
+          ],
+          "notesReflected": 2,
+          "notesCountable": 4,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 5,
+          "notesTotal": 5,
+          "sectionsPresent": 4,
+          "sectionsTotal": 4,
+          "wordCount": 712
+        },
+        {
+          "arm": "perscase",
+          "label": "This case, current draft",
+          "conceptsCovered": 4,
+          "conceptsTotal": 4,
+          "conceptsMissing": [],
+          "notesReflected": 1,
+          "notesCountable": 4,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 5,
+          "notesTotal": 5,
+          "sectionsPresent": 4,
+          "sectionsTotal": 4,
+          "wordCount": 825
+        }
+      ]
+    },
+    {
+      "caseId": "seed-case-social-work",
+      "discipline": "social_work",
+      "status": "released",
+      "learningObjective": "Recommend an eldercare placement when adult siblings disagree on home care versus assisted living, and the older parent's stated preference shifts mid-assessment.",
+      "mustCoverConcepts": [
+        "capacity assessment",
+        "family-systems framing",
+        "least-restrictive setting",
+        "dual relationship risk"
+      ],
+      "baselinesCached": true,
+      "comparisonGeneratedAt": "2026-09-20T18:38:18.225Z",
+      "modelId": "openai.chat:gpt-4o-mini",
+      "arms": [
+        {
+          "arm": "plain",
+          "label": "Plain prompt",
+          "conceptsCovered": 4,
+          "conceptsTotal": 4,
+          "conceptsMissing": [],
+          "notesReflected": 0,
+          "notesCountable": 3,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 4,
+          "notesTotal": 5,
+          "sectionsPresent": 2,
+          "sectionsTotal": 4,
+          "wordCount": 712
+        },
+        {
+          "arm": "structured",
+          "label": "Structured, no retrieval",
+          "conceptsCovered": 1,
+          "conceptsTotal": 4,
+          "conceptsMissing": [
+            "family-systems framing",
+            "least-restrictive setting",
+            "dual relationship risk"
+          ],
+          "notesReflected": 2,
+          "notesCountable": 3,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 5,
+          "notesTotal": 5,
+          "sectionsPresent": 4,
+          "sectionsTotal": 4,
+          "wordCount": 715
+        },
+        {
+          "arm": "perscase",
+          "label": "This case, current draft",
+          "conceptsCovered": 4,
+          "conceptsTotal": 4,
+          "conceptsMissing": [],
+          "notesReflected": 0,
+          "notesCountable": 3,
+          "notesReflectedDistinctiveTag": 2,
+          "notesReflectedAnyTag": 4,
+          "notesTotal": 5,
+          "sectionsPresent": 4,
+          "sectionsTotal": 4,
+          "wordCount": 1147
+        }
+      ]
+    }
+  ]
+}
