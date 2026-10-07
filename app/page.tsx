@@ -112,7 +112,7 @@ export default async function LandingPage() {
       </details>
 
       <footer className="mt-24 border-t pt-6 text-xs text-muted-foreground">
-        Corpus: 97 notes written by the authors (33 finance, 32 marketing, 32 social work).
+        Corpus: 97 notes written based on the domains of finance, marketing and social work (33 finance, 32 marketing, 32 social work).
       </footer>
     </main>
     </>

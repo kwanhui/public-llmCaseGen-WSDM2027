@@ -6,7 +6,7 @@ Materials for the WSDM 2027 Demonstrations Track submission.
 
 - Hosted instance: https://llmcasegen.vercel.app (Vercel, region `sin1`).
 - Sign-in: the demonstration account given in the [main README](../README.md).
-- Video: https://youtu.be/jZ3hNEE_4Jc, recorded on an earlier version of the interface.
+- Video: https://youtu.be/imaTWm3BzPE (2:59).
 - To run an instance of your own, follow the quick start in the [main README](../README.md).
 
 ## Files in this directory

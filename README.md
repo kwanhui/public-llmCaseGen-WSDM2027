@@ -2,13 +2,13 @@
 
 PersCase is a web tool with which instructors draft professional case studies in four stages: input, retrieval, generation, and editing by the instructor.
 The instructor writes a brief (discipline, learning objective, difficulty, must-cover concepts and a learner profile).
-PersCase embeds the brief, retrieves notes from a corpus written by the authors, and asks a language model for a structured draft: scenario, discussion questions, model answers, rubric and key terms.
+PersCase embeds the brief, retrieves notes from a corpus of notes written for each discipline, and asks a language model for a structured draft: scenario, discussion questions, model answers, rubric and key terms.
 The instructor edits or regenerates any section and approves the case.
 After approval, one variant of the case can be generated per student team, each with its own link, and the instructor moves the cohort through a sequence of phases.
 Three disciplines are included: finance, marketing and social work.
 
 A hosted instance runs at https://llmcasegen.vercel.app.
-To try the instructor view there, sign in with username `admin` and password `demo1234`. This demonstration account is shared, so its seeded example cases are read-only.
+To try the instructor view there, sign in with username `admin` and password `demo1234`. This demonstration account is shared, so its seeded example cases and the six walkthrough cases of `demo/walkthrough/briefs.json` are read-only. The single shared account and its printed password are for demonstration purposes only. Anyone who deploys PersCase for their own use should replace them with individual accounts and stronger security, such as a password manager-generated secret, rate limiting on sign-in, and a spend cap on the model provider.
 
 ## Quick start
 
@@ -199,7 +199,7 @@ The counters are kept in memory per serverless instance, so traffic spread over 
 
 ## Demo materials, stack and version
 
-A video of the tool, recorded on an earlier version of the interface, is at https://youtu.be/jZ3hNEE_4Jc.
+A video of the tool (2:59) is at https://youtu.be/imaTWm3BzPE.
 `demo/README.md` lists the sample briefs, sample drafts and sample variants, and gives the steps of a manual walkthrough.
 The stack is Next.js 16 (App Router), TypeScript, Tailwind, Auth.js v5, the Vercel AI SDK, Postgres through `@vercel/postgres` with Drizzle, and Recharts; the hosted instance runs on Vercel in region `sin1`.
 The version submitted to WSDM 2027 carries the tag `wsdm2027-submission`.
@@ -207,7 +207,7 @@ The version submitted to WSDM 2027 carries the tag `wsdm2027-submission`.
 ## Licence and citation
 
 The code is released under the MIT licence (see `LICENSE`).
-The 97 corpus notes in `lib/retrieval/corpus/` were written by the authors, are not extracts from textbooks or papers, and are released under the same licence.
+The 97 corpus notes in `lib/retrieval/corpus/` were written based on the domains of finance, marketing and social work, are not extracts from textbooks or papers, and are released under the same licence.
 
 To cite PersCase, use `CITATION.cff` or:
 

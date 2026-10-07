@@ -399,8 +399,8 @@ export function StepRetrievalPreview({
                   The brief is embedded with{" "}
                   <code className="font-mono text-xs">text-embedding-3-small</code> and scored
                   by cosine similarity against the {corpusSize} notes in the{" "}
-                  {pack.label.toLowerCase()} corpus. The notes were written by the authors of
-                  PersCase; they are not extracts from textbooks or published papers.
+                  {pack.label.toLowerCase()} corpus. The notes were written for each
+                  discipline; they are not extracts from textbooks or published papers.
                 </p>
                 <p>
                   A note is eligible at a similarity score of {retrieval.minScore.toFixed(2)} or

@@ -12,7 +12,7 @@ import { SpawnVariantsForm } from "@/components/admin/spawn-variants-form";
 import { VariantList } from "@/components/admin/variant-list";
 import { CaseContentSchema } from "@/lib/generation/schema";
 import { checkConceptCoverage } from "@/lib/generation/generate-case";
-import { isSeededCase } from "@/lib/case/seeded";
+import { isReadOnlyCase } from "@/lib/case/seeded";
 import { getDisciplinePack } from "@/lib/disciplines";
 import { CARD, NOTE_MUTED } from "@/components/admin/styles";
 import { EXAMPLE_CASE_NOTICE } from "@/components/admin/status-pill";
@@ -164,9 +164,9 @@ export default async function VariantsPage({
     r.learnerProfile.displayName ?? `${r.learnerProfile.role} · ${r.learnerProfile.industry}`;
   variantRows.sort((a, b) => teamSortName(a).localeCompare(teamSortName(b)));
 
-  // Seeded example cases keep their teams as seeded; generating more is refused
+  // Example cases (seeded or walkthrough) keep their teams; generating more is refused
   // server-side, so the form is left out and the list shown on its own.
-  const seeded = isSeededCase(id);
+  const seeded = isReadOnlyCase(id);
   const canSpawn = (row.status === "approved" || row.status === "released") && !seeded;
 
   return (
