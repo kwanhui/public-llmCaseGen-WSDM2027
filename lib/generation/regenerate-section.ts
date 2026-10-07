@@ -49,7 +49,7 @@ export interface RegenerateSectionInput {
 
 const SECTION_INSTRUCTIONS: Record<CaseSection, string> = {
   scenario:
-    "Regenerate the scenario only. Keep the discussion questions, model answers, and rubric unchanged. Preserve the learning objective and must-cover concepts. Make the scenario tighter, fresher, or more specific to the learner profile — depending on the editor's note.",
+    "Regenerate the scenario only. Keep the discussion questions, model answers, and rubric unchanged. Preserve the learning objective and must-cover concepts. Make the scenario tighter, fresher, or more specific to the learner profile, depending on the editor's note.",
   discussionQuestions:
     "Regenerate the discussion questions and the matching model answers only. Keep the scenario and rubric unchanged. Maintain a 1:1 correspondence between questions and answers. Return each question as its own item in the array, and each answer as its own item: never several questions or answers in one string, and no leading numbers. Apply the editor's note if given.",
   modelAnswers:
@@ -139,7 +139,7 @@ export async function regenerateSection({
     `## Discipline grounding`,
     retrieval.groundingText,
     ``,
-    `## Current case content (for context — do not modify other sections)`,
+    `## Current case content (for context only, do not modify other sections)`,
     `### Scenario`,
     currentContent.scenario,
     ``,

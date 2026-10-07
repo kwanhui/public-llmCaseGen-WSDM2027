@@ -33,7 +33,7 @@ import {
 import { corpusForDiscipline } from "@/lib/retrieval/corpus";
 import { groundingUtilisation } from "@/lib/retrieval/grounding";
 import { loadTeamProvenance } from "@/lib/generation/compare-store";
-import { isSeededCase } from "@/lib/case/seeded";
+import { isReadOnlyCase } from "@/lib/case/seeded";
 import { DISCIPLINE_PACKS } from "@/lib/disciplines";
 import { CARD, LINK, NOTE_MUTED } from "@/components/admin/styles";
 import { cn } from "@/lib/utils";
@@ -93,10 +93,10 @@ export default async function CaseDetailPage({
   const phases = (row.phasesJson as PhaseDefinition[]) ?? [];
   const isReleased = row.status === "released";
   const isApproved = row.status === "approved" || isReleased;
-  // Seeded showcase cases are read-only on the shared demo sign-in; the API
-  // refuses the mutating routes for them, so the controls are taken away here
+  // Seeded showcase cases and the walkthrough cases are read-only on the shared
+  // demo sign-in; the API refuses the mutating routes for them, so the controls are taken away here
   // rather than left to fail.
-  const seeded = isSeededCase(id);
+  const seeded = isReadOnlyCase(id);
   const locked = isApproved || seeded;
 
   // Live retrieval preview for step 2 (one embedding call). A failed call

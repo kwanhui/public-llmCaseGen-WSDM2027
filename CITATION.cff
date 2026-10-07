@@ -4,8 +4,8 @@ title: "PersCase"
 abstract: >
   PersCase is a web tool with which instructors draft professional case
   studies in four stages: input, retrieval, generation, and editing by the
-  instructor. It retrieves notes written by the authors, generates a
-  structured draft, and produces one variant per student team. Finance,
+  instructor. It retrieves notes written for each discipline, generates
+  a structured draft, and produces one variant per student team. Finance,
   marketing and social work are included.
 authors:
   - family-names: Lim

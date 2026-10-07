@@ -249,7 +249,7 @@ export async function GET(
     L.push(`- Retrieval note: ${note}`);
   }
   L.push(
-    `The corpus notes are written by the authors of PersCase, not by a teaching department.`,
+    `The corpus notes were written for each discipline; they were not supplied by a teaching department.`,
   );
   L.push("");
   L.push(`## Phase plan`);

@@ -36,7 +36,7 @@ import { caseEvents, caseVariants, cases } from "../lib/db/schema";
 loadEnv({ path: ".env.local", quiet: true });
 loadEnv({ quiet: true });
 
-const BASE_URL = (process.env.BASE_URL ?? "https://llmcasegen.vercel.app").replace(/\/$/, "");
+const BASE_URL = (process.env.BASE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 const USER = process.env.WALKTHROUGH_USER ?? "";
 const PASS = process.env.WALKTHROUGH_PASS ?? "";
 const STATE = process.env.WALKTHROUGH_STATE ?? ".walkthrough-state.json";

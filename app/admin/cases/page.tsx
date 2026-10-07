@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { CaseActions } from "@/components/admin/case-actions";
 import { ExamplePill, StatusPill } from "@/components/admin/status-pill";
 import { formatDate } from "@/lib/format-date";
-import { isSeededCase } from "@/lib/case/seeded";
+import { isReadOnlyCase } from "@/lib/case/seeded";
 import { CARD, TABLE, TD, TH, THEAD_ROW, TR } from "@/components/admin/styles";
 import { cn } from "@/lib/utils";
 
@@ -115,7 +115,7 @@ export default async function CasesPage() {
             width the table squeezed the objective into a column a word wide. */}
         <ul className="mt-8 space-y-3 md:hidden">
           {myCases.map((c) => {
-            const seeded = isSeededCase(c.id);
+            const seeded = isReadOnlyCase(c.id);
             return (
               <li key={c.id} className={cn(CARD, "px-4 py-3")}>
                 <Link
@@ -163,7 +163,7 @@ export default async function CasesPage() {
             </thead>
             <tbody>
               {myCases.map((c) => {
-                const seeded = isSeededCase(c.id);
+                const seeded = isReadOnlyCase(c.id);
                 return (
                   <tr key={c.id} className={cn(TR, "transition-colors hover:bg-muted/40")}>
                     <td className={cn(TD, "min-w-0")}>
