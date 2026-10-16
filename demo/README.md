@@ -22,6 +22,7 @@ Materials for the WSDM 2027 Demonstrations Track submission.
 | `comparison-readings.json` | The contrastive view's readings for the three seeded cases. Written by `pnpm compare-report`. |
 | `retrieval-ablation.json` | Drafts with and without retrieval on the three briefs. Written by `pnpm retrieval-ablation`. |
 | `walkthrough/briefs.json`, `walkthrough/case-study.csv` | The six briefs of the walkthrough in the paper, with their team profiles and case ids on the hosted instance, and the row per case that `pnpm walkthrough-report` wrote from the database on 2026-09-23. The paper's walkthrough table is built from the same rows. |
+| `walkthrough/cases/` | The six walkthrough cases as stored on the hosted instance, one file per case: the case row, its two team variants, its event log and, for "Social work: discharge", the cached contrastive comparison. Exported with read-only queries on 2026-10-17. The team links are replaced by fixed placeholders (`walk-<label>-a` and `-b`); nothing else was changed. `pnpm seed-demo` loads them. |
 | `deployment.md` | Operator notes for the hosted instance. |
 
 Generation is not deterministic, so re-running a script that generates text replaces the committed file with a different sample.

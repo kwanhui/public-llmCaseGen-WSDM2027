@@ -14,6 +14,16 @@
 // --regenerate-comparisons to generate the baselines again and rewrite those
 // files.
 //
+// It also loads the six walkthrough cases of demo/walkthrough/briefs.json from
+// demo/walkthrough/cases, one file per case, exported from the hosted
+// instance's database: the case, its two team variants, its event log and, for
+// the one case whose contrastive view was run, the cached comparison. Their
+// team links are fixed placeholders rather than the hosted instance's links.
+// These cases keep the ids they have on the hosted instance, so they do not
+// carry the "seed-" prefix. A walkthrough case whose id is already in the
+// database is left as it is, which makes a re-run a no-op for them and leaves
+// the originals on the hosted instance untouched; --clean does not remove them.
+//
 // The seeded baselines are pinned because the readings in
 // demo/comparison-readings.json are read off them. Regenerating them changes
 // those numbers.
@@ -29,9 +39,9 @@
 //   pnpm tsx scripts/seed-demo.ts --yes-shared-database     # allow a non-local host
 
 import { config as loadEnv } from "dotenv";
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { db } from "../lib/db/client";
 import {
   users,
@@ -42,6 +52,7 @@ import {
   caseComparisons,
 } from "../lib/db/schema";
 import { getDisciplinePack } from "../lib/disciplines";
+import { WALKTHROUGH_CASE_IDS } from "../lib/case/seeded";
 import type { CaseInput, DisciplineId } from "../lib/disciplines/types";
 import {
   generatePlainCase,
@@ -774,6 +785,153 @@ async function regenerateComparisons(cfgs: CaseCfg[]) {
   return written;
 }
 
+// The walkthrough cases
+//
+// Each file in demo/walkthrough/cases holds one case as it is stored on the
+// hosted instance, with the column names of lib/db/schema.ts. The timestamps
+// are the original ones, so `pnpm walkthrough-report` on a seeded database
+// reads the same figures as demo/walkthrough/case-study.csv.
+
+const WALKTHROUGH_DIR = join(process.cwd(), "demo/walkthrough/cases");
+
+interface WalkthroughFile {
+  case: {
+    id: string;
+    discipline: string;
+    learningObjective: string;
+    difficulty: string;
+    mustCoverConcepts: unknown;
+    targetLearnerProfile: unknown;
+    contentJson: unknown;
+    phasesJson: unknown;
+    currentPhaseId: string | null;
+    status: string;
+    authoringStartedAt: string;
+    authoringApprovedAt: string | null;
+    authoringSecondsLogged: number | null;
+    regenerationCount: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+  variants: {
+    id: string;
+    learnerProfileJson: unknown;
+    contentJson: unknown;
+    inviteToken: string;
+    createdAt: string;
+    expiresAt: string | null;
+    firstViewedAt: string | null;
+    lastViewedAt: string | null;
+    viewCount: number;
+  }[];
+  events: { timestampIso: string; variantId: string | null; eventType: string; metadata: unknown }[];
+  comparison: {
+    id: string;
+    plainText: string;
+    structuredJson: unknown;
+    structuredProvenance: unknown;
+    modelId: string;
+    generatedAt: string;
+  } | null;
+}
+
+const dateOrNull = (s: string | null) => (s ? new Date(s) : null);
+
+function readWalkthroughFiles(): { file: string; data: WalkthroughFile }[] {
+  const files = readdirSync(WALKTHROUGH_DIR)
+    .filter((f) => f.endsWith(".json"))
+    .sort();
+  const out = files.map((file) => ({
+    file,
+    data: JSON.parse(readFileSync(join(WALKTHROUGH_DIR, file), "utf8")) as WalkthroughFile,
+  }));
+  // The files and the read-only list in lib/case/seeded.ts name the same six
+  // cases; a mismatch would load a case the shared sign-in could change.
+  const ids = new Set(out.map((f) => f.data.case.id));
+  for (const id of WALKTHROUGH_CASE_IDS) {
+    if (!ids.has(id)) throw new Error(`demo/walkthrough/cases has no file for walkthrough case ${id}`);
+  }
+  for (const id of ids) {
+    if (!WALKTHROUGH_CASE_IDS.has(id)) throw new Error(`${id} in demo/walkthrough/cases is not in WALKTHROUGH_CASE_IDS`);
+  }
+  return out;
+}
+
+async function seedWalkthroughCases() {
+  let inserted = 0;
+  let skipped = 0;
+  for (const { file, data } of readWalkthroughFiles()) {
+    const c = data.case;
+    const [existing] = await db.select({ id: cases.id }).from(cases).where(eq(cases.id, c.id));
+    if (existing) {
+      skipped++;
+      console.log(`  walkthrough case ${c.id} (${file}) is already in the database; left as it is`);
+      continue;
+    }
+    // One transaction per case, so that a failed run leaves no half-loaded
+    // case that a re-run would then skip.
+    await db.transaction(async (tx) => {
+      await tx.insert(cases).values({
+        id: c.id,
+        instructorId: ADMIN_ID,
+        discipline: c.discipline,
+        learningObjective: c.learningObjective,
+        difficulty: c.difficulty,
+        mustCoverConcepts: c.mustCoverConcepts,
+        targetLearnerProfile: c.targetLearnerProfile,
+        contentJson: c.contentJson,
+        phasesJson: c.phasesJson,
+        currentPhaseId: c.currentPhaseId,
+        status: c.status,
+        authoringStartedAt: new Date(c.authoringStartedAt),
+        authoringApprovedAt: dateOrNull(c.authoringApprovedAt),
+        authoringSecondsLogged: c.authoringSecondsLogged,
+        regenerationCount: c.regenerationCount,
+        createdAt: new Date(c.createdAt),
+        updatedAt: new Date(c.updatedAt),
+      });
+      for (const v of data.variants) {
+        await tx.insert(caseVariants).values({
+          id: v.id,
+          caseId: c.id,
+          learnerProfileJson: v.learnerProfileJson,
+          contentJson: v.contentJson,
+          inviteToken: v.inviteToken,
+          createdAt: new Date(v.createdAt),
+          expiresAt: dateOrNull(v.expiresAt),
+          firstViewedAt: dateOrNull(v.firstViewedAt),
+          lastViewedAt: dateOrNull(v.lastViewedAt),
+          viewCount: v.viewCount,
+        });
+      }
+      // In file order, which is the order the hosted instance logged them in.
+      for (const e of data.events) {
+        await tx.insert(caseEvents).values({
+          timestampIso: e.timestampIso,
+          caseId: c.id,
+          variantId: e.variantId,
+          eventType: e.eventType,
+          metadata: (e.metadata ?? null) as object | null,
+        });
+      }
+      if (data.comparison) {
+        await tx.insert(caseComparisons).values({
+          id: data.comparison.id,
+          caseId: c.id,
+          plainText: data.comparison.plainText,
+          structuredJson: data.comparison.structuredJson,
+          structuredProvenance: data.comparison.structuredProvenance,
+          modelId: data.comparison.modelId,
+          generatedAt: new Date(data.comparison.generatedAt),
+        });
+      }
+    });
+    inserted++;
+    console.log(`  walkthrough case ${c.id} loaded from ${file}`);
+  }
+  return { inserted, skipped };
+}
+
 async function seed() {
   await clean();
   await db
@@ -795,8 +953,10 @@ async function seed() {
     : regenerating
       ? await regenerateComparisons([FINANCE, MARKETING, SOCIAL_WORK])
       : await seedPinnedComparisons([FINANCE, MARKETING, SOCIAL_WORK]);
+  const walkthrough = await seedWalkthroughCases();
   console.log(
-    `seeded ${CASE_IDS.length} cases (incl. 1 draft), ${teams} teams, ${events} events, ${comparisons} cached comparisons`,
+    `seeded ${CASE_IDS.length} cases (incl. 1 draft), ${teams} teams, ${events} events, ${comparisons} cached comparisons; ` +
+      `walkthrough cases: ${walkthrough.inserted} loaded, ${walkthrough.skipped} already present`,
   );
 }
 
@@ -831,7 +991,7 @@ function describePlan(): void {
     `  delete: every row whose case id is one of ${CASE_IDS.join(", ")}, ` +
       "together with the team variants, events, student responses and cached " +
       "comparisons that hang off them. Rows created through the interface are " +
-      "left alone.",
+      "left alone, and so are the six walkthrough cases.",
   );
   if (cleaning) return;
   console.log(
@@ -844,7 +1004,9 @@ function describePlan(): void {
           ? " a cached contrastive comparison for each released case, generated afresh" +
             " (2 model calls per case) and written back over demo/sample-comparisons."
           : " a cached contrastive comparison for each released case, read from" +
-            " demo/sample-comparisons. No model calls."),
+            " demo/sample-comparisons. No model calls.") +
+      " Then the six walkthrough cases from demo/walkthrough/cases, each only if" +
+      " its id is not in the database yet.",
   );
 }
 

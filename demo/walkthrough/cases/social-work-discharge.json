@@ -1,0 +1,459 @@
+{
+  "note": "Walkthrough case \"Social work: discharge\" of demo/walkthrough/briefs.json, exported from the hosted instance's database: the case row, its team variants, its event log and, where one was run, its cached contrastive comparison. Each team link (inviteToken) is replaced by a fixed placeholder; nothing else is changed. Loaded by scripts/seed-demo.ts.",
+  "case": {
+    "id": "4f9ed40b-ae5c-43fd-8737-6f6f0394bb99",
+    "instructorId": "admin",
+    "discipline": "social_work",
+    "learningObjective": "Plan the discharge of an older adult after a fall when the daughter who has been caring for him says she cannot continue, by assessing the caregiver's situation, keeping the older adult's own preferences central, and convening the family to agree on a care plan.",
+    "difficulty": "intermediate",
+    "mustCoverConcepts": [
+      "caregiver burden",
+      "person-centred care",
+      "care planning",
+      "family conference"
+    ],
+    "targetLearnerProfile": {
+      "role": "Medical social worker in the first year of practice",
+      "industry": "Acute hospital, medical social work department",
+      "priorKnowledge": "Completed placement in a community agency; new to hospital discharge work"
+    },
+    "contentJson": {
+      "rubric": "Case understanding (25%): identifies key elements of Mr. Jameson's situation and his preferences. Ethical reasoning (25%): articulates the tension between self-determination and caregiver concerns. Intervention quality (25%): develops a realistic care plan with actionable steps. Cultural/relational sensitivity (25%): respects the family dynamics and cultural context in the decision-making process.",
+      "glossary": [
+        {
+          "term": "Caregiver burden",
+          "definition": "The physical, emotional, and financial stress experienced by individuals who provide care to someone with a chronic illness, disability, or age-related condition."
+        },
+        {
+          "term": "Person-centred care",
+          "definition": "An approach that places the individual at the forefront of decision-making regarding their care, taking into account their preferences, values, and needs."
+        },
+        {
+          "term": "Psychosocial assessment",
+          "definition": "A comprehensive evaluation of an individual's psychological and social functioning, which informs care planning and interventions."
+        },
+        {
+          "term": "Family conference",
+          "definition": "A planned meeting involving family members and relevant professionals to discuss care options, address concerns, and collaboratively develop a care plan."
+        }
+      ],
+      "scenario": "Mr Tan Ah Kow, 76, was admitted to a public hospital after a fall at home in his three-room flat in Bedok, where he has lived alone since his wife died five years ago. He has mild dementia, walks with a stick, and is expected to be medically ready for discharge within a week. His daughter, Mei Ling, 45, works full time, has two school-age children, and has been visiting daily to cook, manage his medication and take him to appointments. On the ward she tells you, the medical social worker, that she cannot continue: she has used up her leave, her employer is losing patience, and she is frightened that he will fall again when no one is there. She would prefer a nursing home. Mr Tan is clear that he wants to go home, says he managed well enough before the fall, and does not want to be a burden or to live among strangers.\n\nThe ward team has asked for a discharge recommendation and a care plan. Mr Tan's son, who lives in Jurong and has been less involved, has said he will come to a family conference if one is arranged, and Mei Ling's husband is worried about the cost of any paid care. Mr Tan has not yet been asked in detail what a good day at home would look like for him or what help he would accept, and the extent to which his dementia affects his understanding of the risks has not been documented beyond the admission notes.\n\nYou have three days before the family conference. You need to assess Mei Ling's situation as a caregiver, keep Mr Tan's own preferences at the centre of the plan, and bring the family to an agreement on a care plan that is realistic for all of them. Options that could be part of a plan include home personal-care and nursing services, a senior day care centre near the flat, meal delivery, a medical escort service, home modifications such as grab bars and a bed rail, caregiver training and respite for Mei Ling, and, if home is not workable, a stay in a community hospital or a nursing home. Referrals for these services go through the hospital's care coordination team.",
+      "modelAnswers": [
+        "To facilitate Mr Tan's voice during the family conference, I can use person-centred care strategies such as inviting him to share his thoughts and preferences directly. Encouraging Mr Tan to express what a good day at home looks like ensures his autonomy is respected. Additionally, I can reassure him that his independence is valued, creating a supportive environment where Mei Ling and her husband can listen to his needs. This will help integrate his wishes into the care plan while also fostering open communication among family members.",
+        "To assess Mei Ling's caregiver burden, I would conduct a structured caregiver strain conversation, exploring her time, emotional, physical, financial, and work demands. It’s essential to understand her feelings of fear and fatigue regarding her father's care. I can also discuss respite options, such as caregiver training and support services, to alleviate her burden and improve her capability to provide support for Mr Tan after discharge.",
+        "The ethical tension stems from Mr Tan's desire for independence, which clashes with Mei Ling's concerns about his safety post-discharge. Navigating this dilemma involves recognising Mr Tan's right to self-determination while also addressing the very real risks associated with his mild dementia. I would facilitate open discussions with the family, exploring compromises that balance his wishes with Mei Ling's worries, which may include exploring home modifications or professional support to help mitigate risks.",
+        "Plan for a trial return home, reviewed after four weeks. Mr Tan's role: he chooses which help he accepts, keeps to the routine he describes as a good day, and agrees to carry a personal alert device and to use the grab bars and bed rail installed before discharge. Mei Ling's role: she visits on two fixed evenings and one weekend day rather than daily, holds the medication list, and is the family contact for services, with the son in Jurong taking one weekend visit and the medical escort role for appointments. Services, referred through the hospital's care coordination team: home personal care three mornings a week for bathing and medication prompts, senior day care on the other two weekdays with transport, meal delivery on weekdays, and a home safety assessment before discharge. Mei Ling attends caregiver training before discharge and has a respite option booked so that she can take a break without the plan failing. If Mr Tan falls, the alert device calls the response line, the ward's follow-up clinic reassesses him, and the family agrees now that a second fall triggers a review of the community hospital or nursing home options rather than another argument. Capacity: his understanding of the risks is assessed and documented with the medical team before the conference, and he takes part in every decision to the extent he can. Family conference: Mr Tan, Mei Ling and her husband, the son, the ward doctor or nurse for ten minutes, and you as facilitator. Agenda: Mr Tan states what he wants first; the team describes his condition and the fall risk; each option is set against his preferences and the family's limits, including cost; the plan above is agreed with names and dates; the review date is fixed. Keeping his voice central means asking him before each decision, not after, and recording his words in the plan."
+      ],
+      "schemaVersion": 1,
+      "discussionQuestions": [
+        "What strategies can you use to facilitate Mr Tan's voice in the family conference, ensuring his preferences are respected?",
+        "How would you assess Mei Ling's caregiver burden and explore her capacity to support her father post-discharge?",
+        "What ethical tensions arise from Mr Tan's desire for independence and Mei Ling's concerns about safety, and how can you navigate these in your planning?",
+        "Outline a preliminary care plan for Mr Tan's return home, including his own role, Mei Ling's role, the services involved, what happens if he falls again, and how you would structure the family conference to reach agreement on it."
+      ]
+    },
+    "phasesJson": [
+      {
+        "id": "sw-understanding",
+        "label": "Case understanding",
+        "order": 0,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "1. Case understanding",
+        "studentPrompt": "Read the case and write a brief **psychosocial summary** of the client/family in your own words. Distinguish presenting concerns from underlying needs. List the clarifying questions you'd want answered before proceeding.",
+        "disciplineHint": "Write about the client as a person, and put strengths and protective factors in the summary alongside the concerns."
+      },
+      {
+        "id": "sw-mapping",
+        "label": "Ecological & stakeholder mapping",
+        "order": 1,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "2. Ecological & stakeholder mapping",
+        "studentPrompt": "Map the **person-in-environment**: who are the stakeholders (family, agency, community, legal/cultural systems), what are their relationships, and where are the alliances or tensions? Note any cultural, religious, or linguistic factors that shape the field.",
+        "disciplineHint": "Sketch a quick ecomap if it helps. Watch for stakeholders whose voice is missing from the case as written."
+      },
+      {
+        "id": "sw-assessment",
+        "label": "Risk & needs assessment",
+        "order": 2,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "3. Risk & needs assessment",
+        "studentPrompt": "Conduct a structured assessment: what are the **risk factors**, the **protective factors**, the **immediate safety concerns** (if any), and the **needs** (practical, emotional, relational, systemic)? What practice frameworks apply here?",
+        "disciplineHint": "List risks and needs in two separate lists. A case can be high-need and low-risk, or the other way round."
+      },
+      {
+        "id": "sw-intervention",
+        "label": "Intervention planning",
+        "order": 3,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "4. Intervention planning",
+        "studentPrompt": "Propose a **graduated intervention plan**. What would you do first, in what setting, with whose involvement? What are you explicitly *not* doing yet, and why? How does the plan honour the client's self-determination while addressing legitimate concerns?",
+        "disciplineHint": "List the steps of the intervention in order, starting with the first conversation."
+      },
+      {
+        "id": "sw-reflection",
+        "label": "Ethical reflection",
+        "order": 4,
+        "activities": [
+          "notes",
+          "answer_attempt"
+        ],
+        "studentTitle": "5. Ethical reflection",
+        "studentPrompt": "Reflect on the **ethical dimensions** of your plan. Which professional values were in tension (e.g. autonomy vs. protection, confidentiality vs. duty to protect)? Which value did you ultimately privilege and why? What would you bring to supervision about this case?",
+        "disciplineHint": "Name the value you gave up and say why, then say what you would take to supervision."
+      }
+    ],
+    "currentPhaseId": null,
+    "status": "approved",
+    "authoringStartedAt": "2026-09-23T07:34:16.482Z",
+    "authoringApprovedAt": "2026-09-23T07:37:14.733Z",
+    "authoringSecondsLogged": 178,
+    "regenerationCount": 1,
+    "createdAt": "2026-09-23T07:34:16.482Z",
+    "updatedAt": "2026-09-23T07:37:14.733Z"
+  },
+  "variants": [
+    {
+      "id": "b72bdb65-de9b-471c-970b-c4bccdac6925",
+      "learnerProfileJson": {
+        "role": "Medical social worker",
+        "industry": "Acute hospital, medical social work",
+        "teamSize": 4,
+        "displayName": "Team A: hospital social work",
+        "priorKnowledge": "Completed placement in a community agency; new to hospital discharge work"
+      },
+      "contentJson": {
+        "rubric": "Case understanding (25%): identifies key elements of Mr. Tan's situation and his preferences. Ethical reasoning (25%): articulates the tension between self-determination and caregiver concerns. Intervention quality (25%): develops a realistic care plan with actionable steps. Cultural/relational sensitivity (25%): respects the family dynamics and cultural context in the decision-making process.",
+        "glossary": [
+          {
+            "term": "Caregiver burden",
+            "definition": "The physical, emotional, and financial stress experienced by individuals who provide care to someone with a chronic illness, disability, or age-related condition."
+          },
+          {
+            "term": "Person-centred care",
+            "definition": "An approach that places the individual at the forefront of decision-making regarding their care, taking into account their preferences, values, and needs."
+          },
+          {
+            "term": "Psychosocial assessment",
+            "definition": "A comprehensive evaluation of an individual's psychological and social functioning, which informs care planning and interventions."
+          },
+          {
+            "term": "Family conference",
+            "definition": "A planned meeting involving family members and relevant professionals to discuss care options, address concerns, and collaboratively develop a care plan."
+          }
+        ],
+        "scenario": "Mr Tan Ah Kow, 76, was admitted to a public hospital after a fall at home in his three-room flat in Bedok, where he has lived alone since his wife died five years ago. He has mild dementia, walks with a stick, and is expected to be medically ready for discharge within a week. His daughter, Mei Ling, 45, works full time, has two school-age children, and has been visiting daily to cook, manage his medication and take him to appointments. On the ward she tells you, the medical social worker, that she cannot continue: she has used up her leave, her employer is losing patience, and she is frightened that he will fall again when no one is there. She would prefer a nursing home. Mr Tan is clear that he wants to go home, says he managed well enough before the fall, and does not want to be a burden or to live among strangers.\n\nThe ward team has asked for a discharge recommendation and a care plan. Mr Tan's son, who lives in Jurong and has been less involved, has said he will come to a family conference if one is arranged, and Mei Ling's husband is worried about the cost of any paid care. Mr Tan has not yet been asked in detail what a good day at home would look like for him or what help he would accept, and the extent to which his dementia affects his understanding of the risks has not been documented beyond the admission notes.\n\nYou have three days before the family conference. You need to assess Mei Ling's situation as a caregiver, keep Mr Tan's own preferences at the centre of the plan, and bring the family to an agreement on a care plan that is realistic for all of them. Options that could be part of a plan include home personal-care and nursing services, a senior day care centre near the flat, meal delivery, a medical escort service, home modifications such as grab bars and a bed rail, caregiver training and respite for Mei Ling, and, if home is not workable, a stay in a community hospital or a nursing home. Referrals for these services go through the hospital's care coordination team.",
+        "modelAnswers": [
+          "To facilitate Mr Tan's voice during the family conference, I can use person-centred care strategies such as inviting him to share his thoughts and preferences directly. Encouraging Mr Tan to express what a good day at home looks like ensures his autonomy is respected. Additionally, I can reassure him that his independence is valued, creating a supportive environment where Mei Ling and her husband can listen to his needs. This will help integrate his wishes into the care plan while also fostering open communication among family members.",
+          "To assess Mei Ling's caregiver burden, I would conduct a structured caregiver strain conversation, exploring her time, emotional, physical, financial, and work demands. It’s essential to understand her feelings of fear and fatigue regarding her father's care. I can also discuss respite options, such as caregiver training and support services, to alleviate her burden and improve her capability to provide support for Mr Tan after discharge.",
+          "The ethical tension stems from Mr Tan's desire for independence, which clashes with Mei Ling's concerns about his safety post-discharge. Navigating this dilemma involves recognising Mr Tan's right to self-determination while also addressing the very real risks associated with his mild dementia. I would facilitate open discussions with the family, exploring compromises that balance his wishes with Mei Ling's worries, which may include exploring home modifications or professional support to help mitigate risks.",
+          "Plan for a trial return home, reviewed after four weeks. Mr Tan's role: he chooses which help he accepts, keeps to the routine he describes as a good day, and agrees to carry a personal alert device and to use the grab bars and bed rail installed before discharge. Mei Ling's role: she visits on two fixed evenings and one weekend day rather than daily, holds the medication list, and is the family contact for services, with the son in Jurong taking one weekend visit and the medical escort role for appointments. Services, referred through the hospital's care coordination team: home personal care three mornings a week for bathing and medication prompts, senior day care on the other two weekdays with transport, meal delivery on weekdays, and a home safety assessment before discharge. Mei Ling attends caregiver training before discharge and has a respite option booked so that she can take a break without the plan failing. If Mr Tan falls, the alert device calls the response line, the ward's follow-up clinic reassesses him, and the family agrees now that a second fall triggers a review of the community hospital or nursing home options rather than another argument. Capacity: his understanding of the risks is assessed and documented with the medical team before the conference, and he takes part in every decision to the extent he can. Family conference: Mr Tan, Mei Ling and her husband, the son, the ward doctor or nurse for ten minutes, and you as facilitator. Agenda: Mr Tan states what he wants first; the team describes his condition and the fall risk; each option is set against his preferences and the family's limits, including cost; the plan above is agreed with names and dates; the review date is fixed. Keeping his voice central means asking him before each decision, not after, and recording his words in the plan."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "What strategies can you use to facilitate Mr Tan's voice in the family conference, ensuring his preferences are respected?",
+          "How would you assess Mei Ling's caregiver burden and explore her capacity to support her father post-discharge?",
+          "What ethical tensions arise from Mr Tan's desire for independence and Mei Ling's concerns about safety, and how can you navigate these in your planning?",
+          "Outline a preliminary care plan for Mr Tan's return home, including his own role, Mei Ling's role, the services involved, what happens if he falls again, and how you would structure the family conference to reach agreement on it."
+        ]
+      },
+      "inviteToken": "walk-social-work-discharge-a",
+      "createdAt": "2026-09-23T07:37:32.454Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    },
+    {
+      "id": "195e9fa6-69f0-4c8a-b6d7-6725ef45d0c7",
+      "learnerProfileJson": {
+        "role": "Care coordinator",
+        "industry": "Community eldercare centre",
+        "teamSize": 4,
+        "displayName": "Team B: community eldercare",
+        "priorKnowledge": "Completed placement in a community agency; new to hospital discharge work"
+      },
+      "contentJson": {
+        "rubric": "Case understanding (25%): identifies key elements of Mr. Tan's situation and his preferences. Ethical reasoning (25%): articulates the tension between self-determination and caregiver concerns. Intervention quality (25%): develops a realistic care plan with actionable steps. Cultural/relational sensitivity (25%): respects the family dynamics and cultural context in the decision-making process.",
+        "glossary": [
+          {
+            "term": "Caregiver burden",
+            "definition": "The physical, emotional, and financial stress experienced by individuals who provide care to someone with a chronic illness, disability, or age-related condition."
+          },
+          {
+            "term": "Person-centred care",
+            "definition": "An approach that places the individual at the forefront of decision-making regarding their care, taking into account their preferences, values, and needs."
+          },
+          {
+            "term": "Psychosocial assessment",
+            "definition": "A comprehensive evaluation of an individual's psychological and social functioning, which informs care planning and interventions."
+          },
+          {
+            "term": "Family conference",
+            "definition": "A planned meeting involving family members and relevant professionals to discuss care options, address concerns, and collaboratively develop a care plan."
+          }
+        ],
+        "scenario": "Mr Tan Ah Kow, 76, was admitted to a public hospital after a fall at home in his three-room flat in Bedok, where he has lived alone since his wife died five years ago. He has mild dementia, walks with a stick, and is expected to be medically ready for discharge within a week. His daughter, Mei Ling, 45, works full time, has two school-age children, and has been visiting daily to cook, manage his medication and take him to appointments. On the ward she tells you, the care coordinator, that she cannot continue: she has used up her leave, her employer is losing patience, and she is frightened that he will fall again when no one is there. She would prefer a nursing home. Mr Tan is clear that he wants to go home, says he managed well enough before the fall, and does not want to be a burden or to live among strangers.\n\nThe ward team has asked for a discharge recommendation and a care plan. Mr Tan's son, who lives in Jurong and has been less involved, has said he will come to a family conference if one is arranged, and Mei Ling's husband is worried about the cost of any paid care. Mr Tan has not yet been asked in detail what a good day at home would look like for him or what help he would accept, and the extent to which his dementia affects his understanding of the risks has not been documented beyond the admission notes.\n\nYou have three days before the family conference. You need to assess Mei Ling's situation as a caregiver, keep Mr Tan's own preferences at the centre of the plan, and bring the family to an agreement on a care plan that is realistic for all of them. Options that could be part of a plan include home personal-care and nursing services, a senior day care centre near the flat, meal delivery, a medical escort service, home modifications such as grab bars and a bed rail, caregiver training and respite for Mei Ling, and, if home is not workable, a stay in a community hospital or a nursing home. Referrals for these services go through the hospital's care coordination team.",
+        "modelAnswers": [
+          "To facilitate Mr Tan's voice during the family conference, I can use person-centred care strategies such as inviting him to share his thoughts and preferences directly. Encouraging Mr Tan to express what a good day at home looks like ensures his autonomy is respected. Additionally, I can reassure him that his independence is valued, creating a supportive environment where Mei Ling and her husband can listen to his needs. This will help integrate his wishes into the care plan while also fostering open communication among family members.",
+          "To assess Mei Ling's caregiver burden, I would conduct a structured caregiver strain conversation, exploring her time, emotional, physical, financial, and work demands. It’s essential to understand her feelings of fear and fatigue regarding her father's care. I can also discuss respite options, such as caregiver training and support services, to alleviate her burden and improve her capability to provide support for Mr Tan after discharge.",
+          "The ethical tension stems from Mr Tan's desire for independence, which clashes with Mei Ling's concerns about his safety post-discharge. Navigating this dilemma involves recognising Mr Tan's right to self-determination while also addressing the very real risks associated with his mild dementia. I would facilitate open discussions with the family, exploring compromises that balance his wishes with Mei Ling's worries, which may include exploring home modifications or professional support to help mitigate risks.",
+          "Plan for a trial return home, reviewed after four weeks. Mr Tan's role: he chooses which help he accepts, keeps to the routine he describes as a good day, and agrees to carry a personal alert device and to use the grab bars and bed rail installed before discharge. Mei Ling's role: she visits on two fixed evenings and one weekend day rather than daily, holds the medication list, and is the family contact for services, with the son in Jurong taking one weekend visit and the medical escort role for appointments. Services, referred through the hospital's care coordination team: home personal care three mornings a week for bathing and medication prompts, senior day care on the other two weekdays with transport, meal delivery on weekdays, and a home safety assessment before discharge. Mei Ling attends caregiver training before discharge and has a respite option booked so that she can take a break without the plan failing. If Mr Tan falls, the alert device calls the response line, the ward's follow-up clinic reassesses him, and the family agrees now that a second fall triggers a review of the community hospital or nursing home options rather than another argument. Capacity: his understanding of the risks is assessed and documented with the medical team before the conference, and he takes part in every decision to the extent he can. Family conference: Mr Tan, Mei Ling and her husband, the son, the ward doctor or nurse for ten minutes, and you as facilitator. Agenda: Mr Tan states what he wants first; the team describes his condition and the fall risk; each option is set against his preferences and the family's limits, including cost; the plan above is agreed with names and dates; the review date is fixed. Keeping his voice central means asking him before each decision, not after, and recording his words in the plan."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "What strategies can you use to facilitate Mr Tan's voice in the family conference, ensuring his preferences are respected?",
+          "How would you assess Mei Ling's caregiver burden and explore her capacity to support her father post-discharge?",
+          "What ethical tensions arise from Mr Tan's desire for independence and Mei Ling's concerns about safety, and how can you navigate these in your planning?",
+          "Outline a preliminary care plan for Mr Tan's return home, including his own role, Mei Ling's role, the services involved, what happens if he falls again, and how you would structure the family conference to reach agreement on it."
+        ]
+      },
+      "inviteToken": "walk-social-work-discharge-b",
+      "createdAt": "2026-09-23T07:37:32.429Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    }
+  ],
+  "events": [
+    {
+      "timestampIso": "2026-09-23T15:34:16.485Z",
+      "variantId": null,
+      "eventType": "created",
+      "metadata": {
+        "difficulty": "intermediate",
+        "discipline": "social_work"
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:34:17.249Z",
+      "variantId": null,
+      "eventType": "generation_started",
+      "metadata": null
+    },
+    {
+      "timestampIso": "2026-09-23T15:34:31.030Z",
+      "variantId": null,
+      "eventType": "generation_completed",
+      "metadata": {
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:sw-pedagogy-framing (0.457)",
+          "corpus:sw-case-management (0.448)",
+          "corpus:sw-adult-safeguarding (0.435)",
+          "corpus:sw-safeguarding-duty (0.382)",
+          "corpus:sw-child-protection (0.374)"
+        ],
+        "scenarioLen": 2013,
+        "groundingUsed": 0,
+        "questionCount": 4,
+        "groundingTotal": 5,
+        "conceptsCovered": [
+          "caregiver burden",
+          "person-centred care",
+          "care planning",
+          "family conference"
+        ],
+        "conceptsMissing": [],
+        "retrievalScores": [
+          {
+            "id": "sw-pedagogy-framing",
+            "weak": false,
+            "score": 0.457
+          },
+          {
+            "id": "sw-case-management",
+            "weak": false,
+            "score": 0.448
+          },
+          {
+            "id": "sw-adult-safeguarding",
+            "weak": false,
+            "score": 0.435
+          },
+          {
+            "id": "sw-safeguarding-duty",
+            "weak": false,
+            "score": 0.382
+          },
+          {
+            "id": "sw-child-protection",
+            "weak": false,
+            "score": 0.374
+          }
+        ],
+        "groundingCountable": 4
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:36:04.391Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "scenario": 3
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "scenario"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:36:13.239Z",
+      "variantId": null,
+      "eventType": "section_regenerated",
+      "metadata": {
+        "section": "modelAnswers",
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:sw-pedagogy-framing (0.457)",
+          "corpus:sw-case-management (0.448)",
+          "corpus:sw-adult-safeguarding (0.435)",
+          "corpus:sw-safeguarding-duty (0.382)",
+          "corpus:sw-child-protection (0.374)"
+        ],
+        "editorNote": "Write for a first-year medical social worker in a Singapore public hospital, using the names and details in the scenario (Mr Tan, Mei Ling, the son in Jurong). Do not state any legal duty or cite any law; where the older adult's capacity to decide matters, say that it should be assessed and documented with the medical team and that he should take part in decisions to the extent he can. In the caregiver answer name a structured way to explore caregiver burden (for example a brief caregiver strain conversation covering time, physical, emotional, financial and work demands) and the respite and training options in the scenario. In the care plan answer give a concrete plan with named services from the scenario, who does what, what happens if a fall occurs, and a review date, and structure the family conference: who attends, the agenda, and how Mr Tan's voice is kept central.",
+        "missingConceptsPassed": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:37:13.964Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "modelAnswers": 1292,
+          "discussionQuestions": 77
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "discussionQuestions",
+          "modelAnswers"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:37:14.737Z",
+      "variantId": null,
+      "eventType": "approved",
+      "metadata": {
+        "capped": false,
+        "authoringSeconds": 178
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:37:32.458Z",
+      "variantId": "b72bdb65-de9b-471c-970b-c4bccdac6925",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: hospital social work",
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:37:32.463Z",
+      "variantId": "195e9fa6-69f0-4c8a-b6d7-6725ef45d0c7",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: community eldercare",
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-24T07:12:23.365Z",
+      "variantId": null,
+      "eventType": "comparison_run",
+      "metadata": {
+        "arms": [
+          "plain",
+          "structured",
+          "perscase"
+        ],
+        "modelId": "openai.chat:gpt-4o-mini",
+        "readings": {
+          "plain": {
+            "wordCount": 567,
+            "notesTotal": 5,
+            "conceptsTotal": 4,
+            "notesReflected": 0,
+            "conceptsCovered": 4
+          },
+          "perscase": {
+            "wordCount": 1062,
+            "notesTotal": 5,
+            "conceptsTotal": 4,
+            "notesReflected": 1,
+            "conceptsCovered": 4
+          },
+          "structured": {
+            "wordCount": 733,
+            "notesTotal": 5,
+            "conceptsTotal": 4,
+            "notesReflected": 0,
+            "conceptsCovered": 4
+          }
+        }
+      }
+    }
+  ],
+  "comparison": {
+    "id": "ff2357cb-d621-4ab4-9281-99ededc4e20a",
+    "plainText": "## Teaching Case Study: Discharge Planning for Mr. Thompson\n\n### Background\n\n**Patient Profile:**\n- Name: Mr. Arthur Thompson\n- Age: 82 years\n- Medical History: Hypertension, Osteoarthritis, History of Falls\n- Current Situation: Admitted to the hospital after a fall at home that resulted in a fractured wrist. Mr. Thompson is stable but requires assistance with daily activities and mobility.\n\n**Family Profile:**\n- Caregiver: Ms. Sarah Thompson, 55 years old, Mr. Thompson's daughter.\n- Current Situation: Ms. Thompson has been the primary caregiver for her father since her mother passed away two years ago. She works full-time and has expressed a desire to reduce her caregiving responsibilities due to stress and burnout.\n\n### Scenario\n\nAs a newly appointed medical social worker in the hospital's medical social work department, you are tasked with developing a discharge plan for Mr. Thompson. During your assessment, Ms. Thompson expresses her inability to continue providing full-time care for her father. This presents a challenge, as Mr. Thompson values his independence and wishes to remain in his home environment.\n\n### Goals\n\n1. **Assess Caregiver Burden:** Understand Ms. Thompson's situation, her feelings about caregiving, and the extent of her stress.\n2. **Person-Centred Care:** Ensure Mr. Thompson's preferences and values are central to the discharge planning process.\n3. **Care Planning:** Develop a comprehensive care plan that addresses Mr. Thompson's needs and the realities of his daughter's situation.\n4. **Family Conference:** Facilitate a family meeting to discuss options and reach a consensus on the future care plan.\n\n### Discussion Questions\n\n1. **Assessment of Caregiver Burden:**\n   - What specific challenges is Ms. Thompson facing in her role as a caregiver? \n   - How might Ms. Thompson's work commitments and personal life contribute to her feelings of stress?\n\n2. **Incorporating Person-Centred Care:**\n   - What are Mr. Thompson's preferences regarding his care and living arrangements after discharge?\n   - How can we ensure that Mr. Thompson’s desires are respected in the discharge plan?\n\n3. **Care Planning Strategies:**\n   - What community resources can be explored to support Mr. Thompson post-discharge?\n   - How can home modifications or assistive devices be incorporated into the care plan?\n\n4. **Facilitating the Family Conference:**\n   - What strategies can be used to align the family's perspectives and reach a consensus on the care plan?\n   - How would you address any conflicts or differing opinions among family members during the conference?\n\n### Assessing Answers\n\n1. **For Caregiver Burden:**\n   - Look for recognition of specific stressors (emotional, physical, financial) faced by Ms. Thompson. Answers should show understanding of how these factors contribute to caregiver burden.\n\n2. **For Person-Centred Care:**\n   - Assess if learners can articulate Mr. Thompson's preferences in care clearly. Look for suggestions that highlight his autonomy and desire for independence.\n\n3. **For Care Planning:**\n   - Evaluate the identification of resources (e.g., home health aides, meal delivery services, physical therapy) and practical solutions that consider Mr. Thompson’s safety and quality of life.\n\n4. **For Family Conference:**\n   - Determine if learners can propose conflict resolution techniques, such as active listening, reflecting feelings, and finding common ground. Answers should highlight the importance of communication and collaboration.\n\n### Conclusion\n\nThis case study provides an opportunity for learners to practice and enhance their skills in discharge planning for older adults, with a focus on caregiver burden, person-centred care, care planning, and effective family communication. By working through the discussion questions, learners will gain valuable insights that will be applicable in their professional practice.",
+    "structuredJson": {
+      "rubric": "Case understanding (25%): Excellent understanding centers on Mr. Johnson's autonomy and care preferences while addressing caregiver dynamics. Ethical reasoning (25%): Excellent responses identify and prioritize values in tension, such as autonomy versus caregiver burden. Intervention quality (25%): Excellent plans outline actionable steps that integrate family perspectives and available resources. Cultural/relational sensitivity (25%): Excellent approaches recognize and honor the relationships and cultural context of both Mr. Johnson and Sarah in decision-making.",
+      "glossary": [
+        {
+          "term": "Caregiver burden",
+          "definition": "The physical, emotional, and financial strain experienced by individuals who provide care for another person, often leading to stress and exhaustion."
+        },
+        {
+          "term": "Person-centred care",
+          "definition": "An approach that ensures care is tailored to the individual preferences, needs, and values of the person receiving care, promoting autonomy and participation in decision-making."
+        },
+        {
+          "term": "Family conference",
+          "definition": "A structured meeting involving family members and relevant professionals to discuss and plan care, ensuring that all voices are heard and decisions are made collaboratively."
+        },
+        {
+          "term": "Discharge planning",
+          "definition": "The process of preparing a patient for their transition from a healthcare facility to their home or another care setting, involving assessments and coordination of services to ensure safety and support."
+        }
+      ],
+      "scenario": "Mr. Johnson, a 79-year-old widower, has been admitted to a local acute care hospital in Toronto, Canada, following a fall at his home. He sustained a minor fracture in his left wrist but is otherwise in good health. Mr. Johnson has a history of high blood pressure and mild arthritis, but he remains independent in his daily activities. He lives in a two-bedroom apartment and is known for being sociable and active in his community, often participating in local senior programs. \n\nHis daughter, Sarah, who lives nearby and has been his primary caregiver since his wife passed away two years ago, is encountering significant strain. She works full-time as an elementary school teacher and has two children aged 10 and 12. Sarah expresses her feelings of caregiver burden, stating she cannot continue to manage her father’s needs alone, especially after his recent fall. Although Mr. Johnson wants to return home, Sarah is concerned about his safety and well-being, particularly if a similar incident occurs in the future. \n\nYou, as the medical social worker, are tasked with planning Mr. Johnson’s discharge within the next week. This situation presents an opportunity to convene a family conference to address Mr. Johnson's preferences and Sarah's concerns while exploring additional support options.\n\nMr. Johnson has expressed that he would prefer to remain in his own home and to not move into a long-term care facility. He believes that with some support, he can maintain his independence. However, Sarah is hesitant and believes that a home care service may only be a temporary fix and that eventually, he may require a higher level of care. \n\nThe agency’s policy emphasizes the importance of person-centred care and respecting client independence, but it also acknowledges the need to consider caregiver capacity. As the social worker, you now need to assess the family dynamics, identify potential resources, and facilitate a discussion that allows for all voices to be heard, especially Mr. Johnson's.",
+      "modelAnswers": [
+        "Mr. Johnson's clear preference is to return home, which is central to person-centred care. His expressed desire to maintain independence should guide the care planning process, emphasizing the importance of involving him in decisions about his living arrangements and support services, particularly as he has the capacity to contribute to these discussions.",
+        "Assessing Sarah’s caregiver burden involves exploring her feelings of stress and her capacity to care for her father, while also recognizing Mr. Johnson's autonomy. Conducting a psychosocial assessment can help identify her specific concerns, stressors, and the impact on her family life, allowing for a nuanced understanding of both their needs.",
+        "Engaging the family collaboratively means creating a safe space for open dialogue where both Mr. Johnson's wishes and Sarah's concerns can be expressed. A family conference can help facilitate this, ensuring that all voices are heard, and that they work towards a plan that respects Mr. Johnson's independence while addressing Sarah's caregiving limitations.",
+        "Potential resources may include home care services, meal delivery programs, or community support groups for seniors, which can provide Mr. Johnson with needed assistance while alleviating some of Sarah's stress. Connecting Sarah with local caregiver support resources can also help her feel less isolated in her responsibilities.",
+        "Navigating the tension between Mr. Johnson's autonomy and Sarah's concerns requires balancing their wishes. Encouraging a plan that includes regular check-ins with Sarah and potential emergency response systems can provide reassurance for Sarah while respecting Mr. Johnson's desire to remain independent."
+      ],
+      "discussionQuestions": [
+        "What are Mr. Johnson's expressed wishes regarding his care and living situation, and how do they inform your planning process?",
+        "How can you assess Sarah's caregiver burden while ensuring her father's needs and preferences are prioritized?",
+        "In what ways can you engage the family in a collaborative care planning process that addresses both Mr. Johnson's desire for independence and Sarah's concerns?",
+        "What potential resources or support services could you introduce to ease Sarah's burden while respecting Mr. Johnson's wishes?",
+        "How will you navigate the tensions between Mr. Johnson's autonomy and Sarah's need for reassurance about his safety?"
+      ]
+    },
+    "structuredProvenance": [
+      "discipline-pack:social_work"
+    ],
+    "modelId": "openai.chat:gpt-4o-mini",
+    "generatedAt": "2026-09-23T23:12:22.877Z"
+  }
+}

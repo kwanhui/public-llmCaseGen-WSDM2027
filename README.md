@@ -67,6 +67,7 @@ pnpm seed-demo --yes-shared-database          # optional: the example cases the 
 ```
 
 `pnpm seed-demo` loads the three released example cases (finance, marketing, social work) with their team variants, one finance draft, synthetic student activity for the analytics page, and the cached contrastive baselines, all from files under `demo/`.
+It also loads the six walkthrough cases of `demo/walkthrough/briefs.json` from `demo/walkthrough/cases/`.
 It makes no model call.
 The flag is needed because a Neon host is not `localhost`; the script prints the host before it writes, and "Seeding the demo data" below says what it deletes.
 The public page `/demo` writes nothing to the database, and most of it needs no seeding: its nine preset briefs are in `components/demo/presets.ts` and its fallback draft in `demo/sample-outputs/walk-finance-liquidity.json`.
@@ -98,10 +99,12 @@ There is no unit test suite; `pnpm smoke-check` (see "Checking a deployment") dr
 With the CLI, steps 2 to 4 can also be done from the clone: `vercel link`, `vercel env add NAME production` for each variable, and `vercel --prod`.
 `pnpm change-admin-password --vercel-production` writes a new hash to the linked project and redeploys it; `demo/deployment.md` has the other operator notes (health, rollback, backups).
 
-### What a copy of your own does not have
+### The walkthrough cases
 
-The hosted instance also holds the six walkthrough cases of `demo/walkthrough/briefs.json`, which were created through the interface on that instance.
-Only their briefs and the measures read from them (`demo/walkthrough/case-study.csv`) are committed, so a new database has the seeded example cases but not these six.
+The six walkthrough cases of `demo/walkthrough/briefs.json` were created through the interface on the hosted instance.
+They are exported from its database into `demo/walkthrough/cases/`, one file per case with the case, its two team variants, its event log and, for the one case whose contrastive view was run, the cached comparison, and `pnpm seed-demo` loads them.
+They keep their ids from the hosted instance, so they open at the same `/admin/cases/<id>` address and are read-only in the same way.
+The team links are the one thing that differs: each is a fixed placeholder (for example `/case/walk-finance-expansion-a`) instead of the hosted instance's link.
 Everything else that the hosted build uses (code, `vercel.json`, migrations, corpus and its vectors, prompts, demo presets and rate limits) is in this repository.
 
 ### Repository maintenance
@@ -124,7 +127,7 @@ Generation is not, and a re-run of a generating script overwrites the committed 
 | Contrastive readings of the three example cases, which back the readings in the paper | `pnpm seed-demo`, then `pnpm compare-report` | `demo/comparison-readings.json` | yes on a freshly seeded database; only the commit, dirty flag and date at the top of the file differ (no model calls) |
 | Draft with retrieval against draft without retrieval on the three sample briefs | `pnpm retrieval-ablation` | `demo/retrieval-ablation.json` | no (six generation calls, a few US cents) |
 | Sample drafts and the ten team variants | `pnpm tsx scripts/generate-samples.ts`, `pnpm tsx scripts/generate-demo-variants.ts` | `demo/sample-outputs/`, `demo/sample-variants/` | no (generation calls) |
-| Walkthrough table of the paper: six briefs, time to first approval, regenerations, flagged and resolved concepts, notes reflected, variants passing | `pnpm walkthrough-report --briefs demo/walkthrough/briefs.json --csv-out demo/walkthrough/case-study.csv` | `demo/walkthrough/case-study.csv` | needs the database that holds the six cases, which is the hosted instance's (no model calls) |
+| Walkthrough table of the paper: six briefs, time to first approval, regenerations, flagged and resolved concepts, notes reflected, variants passing | `pnpm walkthrough-report --briefs demo/walkthrough/briefs.json --csv-out demo/walkthrough/case-study.csv` | `demo/walkthrough/case-study.csv` | yes on a database seeded with `pnpm seed-demo`, or on the hosted instance's (no model calls) |
 | Figure 2 of the paper | `node scripts/figure2.mjs` | `shot-retrieval.png` and `shot-contrastive.png` in the directory named by `FIG_DIR` | needs a seeded, running instance |
 | Smoke check of a deployment: public pages, sign-in, contrastive view | `pnpm smoke-check` | pass or fail per step | needs a running instance |
 
@@ -204,6 +207,11 @@ On a database already in use, anything attached to the `seed-` rows, such as stu
 
 `--no-comparisons` leaves the contrastive cache empty; `--regenerate-comparisons` generates new baselines instead, six model calls, and rewrites the committed files, which changes the committed readings.
 `pnpm seed-demo --clean` removes the seeded rows.
+
+The six walkthrough cases are loaded after the `seed-` rows, from `demo/walkthrough/cases/`, each in one transaction.
+They keep the ids they have on the hosted instance, which `lib/case/seeded.ts` lists as read-only, and their timestamps are the original ones, so `pnpm walkthrough-report` reads the same figures from a seeded copy.
+A walkthrough case whose id is already in the database is left as it is, so a second run inserts nothing for them, and on the hosted instance the originals are never touched.
+`--clean` does not remove them.
 
 ## The committed vector store
 

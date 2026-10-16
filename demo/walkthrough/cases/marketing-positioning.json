@@ -1,0 +1,404 @@
+{
+  "note": "Walkthrough case \"Marketing: positioning\" of demo/walkthrough/briefs.json, exported from the hosted instance's database: the case row, its team variants, its event log and, where one was run, its cached contrastive comparison. Each team link (inviteToken) is replaced by a fixed placeholder; nothing else is changed. Loaded by scripts/seed-demo.ts.",
+  "case": {
+    "id": "b139d163-34e2-445b-8436-fb9810150ef6",
+    "instructorId": "admin",
+    "discipline": "marketing",
+    "learningObjective": "Position a part-time data analytics certificate for mid-career professionals in a crowded continuing-education market, by choosing a target segment, stating the offer's value proposition, and mapping the enquiry-to-enrolment journey.",
+    "difficulty": "intermediate",
+    "mustCoverConcepts": [
+      "market segmentation",
+      "positioning",
+      "value proposition",
+      "customer journey"
+    ],
+    "targetLearnerProfile": {
+      "role": "Programme marketing executive",
+      "industry": "Adult and continuing education provider",
+      "priorKnowledge": "Runs social media campaigns; has not written a positioning statement"
+    },
+    "contentJson": {
+      "rubric": "Analysis quality (30%): identifies relevant segments with supporting evidence. Customer insight (30%): understands the target’s needs and pain points. Strategic coherence (20%): aligns value proposition with chosen segments. Executional realism (20%): proposes actionable metrics to measure impact.",
+      "glossary": [
+        {
+          "term": "Segmentation",
+          "definition": "The process of dividing a market into distinct groups of buyers who have different needs, characteristics, or behaviors."
+        },
+        {
+          "term": "Value Proposition",
+          "definition": "A statement that outlines the unique value offered by a product or service to its customers, explaining why it is better than the competition."
+        },
+        {
+          "term": "Customer Journey",
+          "definition": "The complete sum of experiences that customers go through when interacting with a company and its products or services, from initial awareness to purchase and beyond."
+        },
+        {
+          "term": "Enrolment Funnel",
+          "definition": "The stages that prospective students go through, from gaining awareness of a program to ultimately enrolling, often visualized as a funnel to show conversion rates at each stage."
+        },
+        {
+          "term": "Return on Investment (ROI)",
+          "definition": "A performance measure used to evaluate the efficiency or profitability of an investment, calculated as the ratio of net profit to the cost of the investment."
+        },
+        {
+          "term": "Funnel Conversion",
+          "definition": "The process of tracking the percentage of potential customers who move from one stage of the marketing funnel to the next, indicating effectiveness in attracting and retaining customers."
+        }
+      ],
+      "scenario": "DataPro Academy is a private continuing-education provider in Singapore that launched a part-time Data Analytics Certificate for mid-career professionals eighteen months ago. The eight-month programme runs on two weekday evenings and alternate Saturdays, is built around projects drawn from partner companies, and pairs each learner with a mentor who works in analytics. It is approved for SkillsFuture funding, so most Singaporean learners pay a fraction of the S$6,800 fee out of pocket.\n\nEnrolment is at 15% of the quarter's target. The head of marketing, Sarah, is under pressure to fix this before the next intake opens in ten weeks. The market is crowded: a university continuing-education unit offers a similar certificate with a recognised brand, a large private academy discounts 20% for early registration, and a coding bootcamp is known for its alumni network and placement support. All three spend more on advertising than DataPro can.\n\nDataPro's own enquiry data show that most prospects are working professionals aged 30 to 45, many with young children, who ask about schedule flexibility, whether the certificate is recognised by employers, and whether it will help them move into a data role or earn more in their current one. Enquiries come in through the website, SkillsFuture course listings, LinkedIn and word of mouth, but only one in twelve enquiries becomes an enrolment; most drop out between the first enquiry and the information session, and prospects report that they could not tell what makes DataPro different.\n\nSarah must decide which segment of the market DataPro should serve first, write a positioning statement and value proposition that set it apart from the three competitors, and map the customer journey from enquiry to enrolment so that the team can see where prospects are lost and what to change. The budget covers one campaign and a redesign of the enquiry process, not both at full scale.",
+      "modelAnswers": [
+        "Market segmentation here should combine occupational and needs-based bases rather than age alone, since all prospects are 30 to 45. The enquiry data suggest three candidate segments: (1) career switchers in non-technical roles such as marketing, operations or HR who want to move into a data role; (2) professionals who will stay in their role but need analytics to progress, for example finance and supply-chain executives; and (3) technical staff in IT who want a formal credential. DataPro should serve segment 2 first. The evidence is in the questions prospects ask: schedule flexibility and employer recognition matter more than placement, which is the bootcamp's strength, and this segment can use SkillsFuture funding and often employer sponsorship, so price competes less on the 20% discount. Segment 1 is larger but is the bootcamp's territory, and segment 3 is better served by the university certificate.",
+        "For mid-career professionals in STEM fields who seek to advance their careers, DataPro is the part-time data analytics certification program that offers practical, project-based experience with mentorship from industry experts, unlike university offerings which are more theoretical and less personalized because of its partnerships with companies providing real-world projects.",
+        "The journey from enquiry to enrolment has five stages: enquiry (website form, SkillsFuture listing or LinkedIn), first response, information session, application with funding paperwork, and payment. One in twelve enquiries enrols, and the scenario says most are lost between the enquiry and the information session, so the largest leak is at the first-response stage: prospects wait for a reply and cannot see what makes DataPro different. Changes, one per stage: a same-day reply that answers the three common questions (schedule, recognition, career outcome) and names the segment the course is built for; a short recorded session on the website so that a busy parent need not attend live; a one-page SkillsFuture funding walkthrough at application; and a payment plan for the out-of-pocket balance. Because the budget covers one campaign or the enquiry redesign, the redesign should come first, since it raises conversion for every enquiry the existing channels already produce.",
+        "Metrics to track include a target of generating 300 enquiries, achieving a conversion rate of 8% from enquiry to enrolment, and aiming for a total enrolment of 24 students in the next intake. Engagement metrics, such as a 50% attendance rate for webinars, will help gauge interest and inform adjustments to the outreach strategy. These targets should help contextualize the campaign's success and areas needing improvement."
+      ],
+      "schemaVersion": 1,
+      "discussionQuestions": [
+        "What segments can DataPro Academy target to maximize enrolment, and what evidence supports this choice?",
+        "How can DataPro Academy craft a compelling value proposition that differentiates it from its competitors?",
+        "What key touchpoints should DataPro Academy focus on in the customer journey from enquiry to enrolment, and why?",
+        "What metrics should Sarah track to evaluate the effectiveness of the new marketing strategy within the first three months?"
+      ]
+    },
+    "phasesJson": [
+      {
+        "id": "mkt-situation",
+        "label": "Situation & market scoping",
+        "order": 0,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "1. Situation & market scoping",
+        "studentPrompt": "Write a one-paragraph diagnosis: what is **actually happening** in the market for this brand? Distinguish symptoms (e.g. share decline) from underlying causes (e.g. customer-need shift, competitor entry, channel change). List your clarifying questions.",
+        "disciplineHint": "Write the symptom first, then the candidate cause, then what you would check to tell them apart."
+      },
+      {
+        "id": "mkt-customer",
+        "label": "Customer / segment discovery",
+        "order": 1,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "2. Customer / segment discovery",
+        "studentPrompt": "Who is the target customer, and what is their **job-to-be-done**? Define the relevant segment(s) using more than demographics. What customer evidence in the case supports your segment definition, and what evidence is missing?",
+        "disciplineHint": "Define the segment so that a different message would work better for it, and say what that message is."
+      },
+      {
+        "id": "mkt-strategy",
+        "label": "Strategy formulation",
+        "order": 2,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "3. Strategy formulation",
+        "studentPrompt": "Articulate a **positioning statement** in the form: *For [segment], [brand] is the [category frame] that [unique benefit] because [reason to believe]*. List 2–3 strategic options the brand could pursue, and the trade-off each one accepts.",
+        "disciplineHint": "Read your positioning against a competitor. If it would fit them too, add the claim only this brand can make."
+      },
+      {
+        "id": "mkt-tactical",
+        "label": "Channel & tactical plan",
+        "order": 3,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "4. Channel & tactical plan",
+        "studentPrompt": "Translate your strategy into specifics: which **channels**, what **creative direction**, what **price/promotion** moves, and what **budget allocation** would you propose? What's explicitly *not* in scope and why?",
+        "disciplineHint": "Name what you are cutting from scope, and say what would have to change for you to fund it."
+      },
+      {
+        "id": "mkt-metrics",
+        "label": "Metrics & KPIs",
+        "order": 4,
+        "activities": [
+          "notes",
+          "answer_attempt"
+        ],
+        "studentTitle": "5. Metrics & KPIs",
+        "studentPrompt": "How will you know your plan is working, and how will you know it isn't? Define **2–3 leading indicators** (early signals) and **1–2 lagging KPIs** (outcomes). What would cause you to abandon the plan, and at what threshold?",
+        "disciplineHint": "Write the threshold that would make you stop the plan, and write it before launch."
+      }
+    ],
+    "currentPhaseId": null,
+    "status": "approved",
+    "authoringStartedAt": "2026-09-23T07:30:01.469Z",
+    "authoringApprovedAt": "2026-09-23T07:32:56.758Z",
+    "authoringSecondsLogged": 175,
+    "regenerationCount": 1,
+    "createdAt": "2026-09-23T07:30:01.469Z",
+    "updatedAt": "2026-09-23T07:32:56.758Z"
+  },
+  "variants": [
+    {
+      "id": "3316b89a-72de-49f6-a958-9d255cc76ea1",
+      "learnerProfileJson": {
+        "role": "Programme marketing executive",
+        "industry": "University continuing-education unit",
+        "teamSize": 4,
+        "displayName": "Team A: university CET unit",
+        "priorKnowledge": "Runs social media campaigns; has not written a positioning statement"
+      },
+      "contentJson": {
+        "rubric": "Analysis quality (30%): identifies relevant segments with supporting evidence. Customer insight (30%): understands the target’s needs and pain points. Strategic coherence (20%): aligns value proposition with chosen segments. Executional realism (20%): proposes actionable metrics to measure impact.",
+        "glossary": [
+          {
+            "term": "Segmentation",
+            "definition": "The process of dividing a market into distinct groups of buyers who have different needs, characteristics, or behaviors."
+          },
+          {
+            "term": "Value Proposition",
+            "definition": "A statement that outlines the unique value offered by a product or service to its customers, explaining why it is better than the competition."
+          },
+          {
+            "term": "Customer Journey",
+            "definition": "The complete sum of experiences that customers go through when interacting with a company and its products or services, from initial awareness to purchase and beyond."
+          },
+          {
+            "term": "Enrolment Funnel",
+            "definition": "The stages that prospective students go through, from gaining awareness of a program to ultimately enrolling, often visualized as a funnel to show conversion rates at each stage."
+          },
+          {
+            "term": "Return on Investment (ROI)",
+            "definition": "A performance measure used to evaluate the efficiency or profitability of an investment, calculated as the ratio of net profit to the cost of the investment."
+          },
+          {
+            "term": "Funnel Conversion",
+            "definition": "The process of tracking the percentage of potential customers who move from one stage of the marketing funnel to the next, indicating effectiveness in attracting and retaining customers."
+          }
+        ],
+        "scenario": "DataPro Academy is a private continuing-education provider in Singapore that launched a part-time Data Analytics Certificate for mid-career professionals eighteen months ago. The eight-month programme runs on two weekday evenings and alternate Saturdays, is built around projects drawn from partner companies, and pairs each learner with a mentor who works in analytics. It is approved for SkillsFuture funding, so most Singaporean learners pay a fraction of the S$6,800 fee out of pocket.\n\nEnrolment is at 15% of the quarter's target. The head of marketing, Sarah, is under pressure to fix this before the next intake opens in ten weeks. The market is crowded: a university continuing-education unit offers a similar certificate with a recognised brand, a large private academy discounts 20% for early registration, and a coding bootcamp is known for its alumni network and placement support. All three spend more on advertising than DataPro can.\n\nDataPro's own enquiry data show that most prospects are working professionals aged 30 to 45, many with young children, who ask about schedule flexibility, whether the certificate is recognised by employers, and whether it will help them move into a data role or earn more in their current one. Enquiries come in through the website, SkillsFuture course listings, LinkedIn and word of mouth, but only one in twelve enquiries becomes an enrolment; most drop out between the first enquiry and the information session, and prospects report that they could not tell what makes DataPro different.\n\nYou are a programme marketing executive at DataPro Academy, working to Sarah. Sarah must decide which segment of the market DataPro should serve first, write a positioning statement and value proposition that set it apart from the three competitors, and map the customer journey from enquiry to enrolment so that the team can see where prospects are lost and what to change. The budget covers one campaign and a redesign of the enquiry process, not both at full scale.",
+        "modelAnswers": [
+          "Market segmentation here should combine occupational and needs-based bases rather than age alone, since all prospects are 30 to 45. The enquiry data suggest three candidate segments: (1) career switchers in non-technical roles such as marketing, operations or HR who want to move into a data role; (2) professionals who will stay in their role but need analytics to progress, for example finance and supply-chain executives; and (3) technical staff in IT who want a formal credential. DataPro should serve segment 2 first. The evidence is in the questions prospects ask: schedule flexibility and employer recognition matter more than placement, which is the bootcamp's strength, and this segment can use SkillsFuture funding and often employer sponsorship, so price competes less on the 20% discount. Segment 1 is larger but is the bootcamp's territory, and segment 3 is better served by the university certificate.",
+          "For mid-career professionals in STEM fields who seek to advance their careers, DataPro is the part-time data analytics certification program that offers practical, project-based experience with mentorship from industry experts, unlike university offerings which are more theoretical and less personalized because of its partnerships with companies providing real-world projects.",
+          "The journey from enquiry to enrolment has five stages: enquiry (website form, SkillsFuture listing or LinkedIn), first response, information session, application with funding paperwork, and payment. One in twelve enquiries enrols, and the scenario says most are lost between the enquiry and the information session, so the largest leak is at the first-response stage: prospects wait for a reply and cannot see what makes DataPro different. Changes, one per stage: a same-day reply that answers the three common questions (schedule, recognition, career outcome) and names the segment the course is built for; a short recorded session on the website so that a busy parent need not attend live; a one-page SkillsFuture funding walkthrough at application; and a payment plan for the out-of-pocket balance. Because the budget covers one campaign or the enquiry redesign, the redesign should come first, since it raises conversion for every enquiry the existing channels already produce.",
+          "Metrics to track include a target of generating 300 enquiries, achieving a conversion rate of 8% from enquiry to enrolment, and aiming for a total enrolment of 24 students in the next intake. Engagement metrics, such as a 50% attendance rate for webinars, will help gauge interest and inform adjustments to the outreach strategy. These targets should help contextualize the campaign's success and areas needing improvement."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "What segments can DataPro Academy target to maximize enrolment, and what evidence supports this choice?",
+          "How can DataPro Academy craft a compelling value proposition that differentiates it from its competitors?",
+          "What key touchpoints should DataPro Academy focus on in the customer journey from enquiry to enrolment, and why?",
+          "What metrics should Sarah track to evaluate the effectiveness of the new marketing strategy within the first three months?"
+        ]
+      },
+      "inviteToken": "walk-marketing-positioning-a",
+      "createdAt": "2026-09-23T07:33:08.186Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    },
+    {
+      "id": "6925cc6e-779f-44ae-a427-24450d58b8d2",
+      "learnerProfileJson": {
+        "role": "Growth marketing lead",
+        "industry": "Private technology training company",
+        "teamSize": 4,
+        "displayName": "Team B: private bootcamp",
+        "priorKnowledge": "Runs social media campaigns; has not written a positioning statement"
+      },
+      "contentJson": {
+        "rubric": "Analysis quality (30%): identifies relevant segments with supporting evidence. Customer insight (30%): understands the target’s needs and pain points. Strategic coherence (20%): aligns value proposition with chosen segments. Executional realism (20%): proposes actionable metrics to measure impact.",
+        "glossary": [
+          {
+            "term": "Segmentation",
+            "definition": "The process of dividing a market into distinct groups of buyers who have different needs, characteristics, or behaviors."
+          },
+          {
+            "term": "Value Proposition",
+            "definition": "A statement that outlines the unique value offered by a product or service to its customers, explaining why it is better than the competition."
+          },
+          {
+            "term": "Customer Journey",
+            "definition": "The complete sum of experiences that customers go through when interacting with a company and its products or services, from initial awareness to purchase and beyond."
+          },
+          {
+            "term": "Enrolment Funnel",
+            "definition": "The stages that prospective students go through, from gaining awareness of a program to ultimately enrolling, often visualized as a funnel to show conversion rates at each stage."
+          },
+          {
+            "term": "Return on Investment (ROI)",
+            "definition": "A performance measure used to evaluate the efficiency or profitability of an investment, calculated as the ratio of net profit to the cost of the investment."
+          },
+          {
+            "term": "Funnel Conversion",
+            "definition": "The process of tracking the percentage of potential customers who move from one stage of the marketing funnel to the next, indicating effectiveness in attracting and retaining customers."
+          }
+        ],
+        "scenario": "DataPro Academy is a private continuing-education provider in Singapore that launched a part-time Data Analytics Certificate for mid-career professionals eighteen months ago. The eight-month programme runs on two weekday evenings and alternate Saturdays, is built around projects drawn from partner companies, and pairs each learner with a mentor who works in analytics. It is approved for SkillsFuture funding, so most Singaporean learners pay a fraction of the S$6,800 fee out of pocket.\n\nEnrolment is at 15% of the quarter's target. The head of marketing, Sarah, is under pressure to fix this before the next intake opens in ten weeks. The market is crowded: a university continuing-education unit offers a similar certificate with a recognised brand, a large private academy discounts 20% for early registration, and a coding bootcamp is known for its alumni network and placement support. All three spend more on advertising than DataPro can.\n\nDataPro's own enquiry data show that most prospects are working professionals aged 30 to 45, many with young children, who ask about schedule flexibility, whether the certificate is recognised by employers, and whether it will help them move into a data role or earn more in their current one. Enquiries come in through the website, SkillsFuture course listings, LinkedIn and word of mouth, but only one in twelve enquiries becomes an enrolment; most drop out between the first enquiry and the information session, and prospects report that they could not tell what makes DataPro different.\n\nYou are the growth marketing lead at DataPro Academy, working to Sarah, who must decide which segment of the market DataPro should serve first, write a positioning statement and value proposition that set it apart from the three competitors, and map the customer journey from enquiry to enrolment so that the team can see where prospects are lost and what to change. The budget covers one campaign and a redesign of the enquiry process, not both at full scale.",
+        "modelAnswers": [
+          "Market segmentation here should combine occupational and needs-based bases rather than age alone, since all prospects are 30 to 45. The enquiry data suggest three candidate segments: (1) career switchers in non-technical roles such as marketing, operations or HR who want to move into a data role; (2) professionals who will stay in their role but need analytics to progress, for example finance and supply-chain executives; and (3) technical staff in IT who want a formal credential. DataPro should serve segment 2 first. The evidence is in the questions prospects ask: schedule flexibility and employer recognition matter more than placement, which is the bootcamp's strength, and this segment can use SkillsFuture funding and often employer sponsorship, so price competes less on the 20% discount. Segment 1 is larger but is the bootcamp's territory, and segment 3 is better served by the university certificate.",
+          "For mid-career professionals in STEM fields who seek to advance their careers, DataPro is the part-time data analytics certification program that offers practical, project-based experience with mentorship from industry experts, unlike university offerings which are more theoretical and less personalized because of its partnerships with companies providing real-world projects.",
+          "The journey from enquiry to enrolment has five stages: enquiry (website form, SkillsFuture listing or LinkedIn), first response, information session, application with funding paperwork, and payment. One in twelve enquiries enrols, and the scenario says most are lost between the enquiry and the information session, so the largest leak is at the first-response stage: prospects wait for a reply and cannot see what makes DataPro different. Changes, one per stage: a same-day reply that answers the three common questions (schedule, recognition, career outcome) and names the segment the course is built for; a short recorded session on the website so that a busy parent need not attend live; a one-page SkillsFuture funding walkthrough at application; and a payment plan for the out-of-pocket balance. Because the budget covers one campaign or the enquiry redesign, the redesign should come first, since it raises conversion for every enquiry the existing channels already produce.",
+          "Metrics to track include a target of generating 300 enquiries, achieving a conversion rate of 8% from enquiry to enrolment, and aiming for a total enrolment of 24 students in the next intake. Engagement metrics, such as a 50% attendance rate for webinars, will help gauge interest and inform adjustments to the outreach strategy. These targets should help contextualize the campaign's success and areas needing improvement."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "What segments can DataPro Academy target to maximize enrolment, and what evidence supports this choice?",
+          "How can DataPro Academy craft a compelling value proposition that differentiates it from its competitors?",
+          "What key touchpoints should DataPro Academy focus on in the customer journey from enquiry to enrolment, and why?",
+          "What metrics should Sarah track to evaluate the effectiveness of the new marketing strategy within the first three months?"
+        ]
+      },
+      "inviteToken": "walk-marketing-positioning-b",
+      "createdAt": "2026-09-23T07:33:08.456Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    }
+  ],
+  "events": [
+    {
+      "timestampIso": "2026-09-23T15:30:01.472Z",
+      "variantId": null,
+      "eventType": "created",
+      "metadata": {
+        "difficulty": "intermediate",
+        "discipline": "marketing"
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:30:02.259Z",
+      "variantId": null,
+      "eventType": "generation_started",
+      "metadata": null
+    },
+    {
+      "timestampIso": "2026-09-23T15:30:13.163Z",
+      "variantId": null,
+      "eventType": "generation_completed",
+      "metadata": {
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:mkt-pedagogy-framing (0.479)",
+          "corpus:mkt-funnel (0.418)",
+          "corpus:mkt-segmentation-bases (0.418)",
+          "corpus:mkt-privacy-ethics (0.413)",
+          "corpus:mkt-positioning-statement (0.399)"
+        ],
+        "scenarioLen": 2389,
+        "groundingUsed": 2,
+        "questionCount": 4,
+        "groundingTotal": 5,
+        "conceptsCovered": [
+          "positioning",
+          "value proposition",
+          "customer journey"
+        ],
+        "conceptsMissing": [
+          "market segmentation"
+        ],
+        "retrievalScores": [
+          {
+            "id": "mkt-pedagogy-framing",
+            "weak": false,
+            "score": 0.479
+          },
+          {
+            "id": "mkt-funnel",
+            "weak": false,
+            "score": 0.418
+          },
+          {
+            "id": "mkt-segmentation-bases",
+            "weak": false,
+            "score": 0.418
+          },
+          {
+            "id": "mkt-privacy-ethics",
+            "weak": false,
+            "score": 0.413
+          },
+          {
+            "id": "mkt-positioning-statement",
+            "weak": false,
+            "score": 0.399
+          }
+        ],
+        "groundingCountable": 4
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:32:23.035Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "scenario": -458
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "scenario"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:32:28.570Z",
+      "variantId": null,
+      "eventType": "section_regenerated",
+      "metadata": {
+        "section": "modelAnswers",
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:mkt-pedagogy-framing (0.479)",
+          "corpus:mkt-funnel (0.418)",
+          "corpus:mkt-segmentation-bases (0.418)",
+          "corpus:mkt-privacy-ethics (0.413)",
+          "corpus:mkt-positioning-statement (0.399)"
+        ],
+        "editorNote": "Use the term market segmentation and name the bases used (demographic, occupational, needs-based, behavioural). In the segmentation answer propose two or three candidate segments drawn from the scenario, choose one and give the evidence from the enquiry data; do not contradict the choice with the evidence. Write the value proposition as a positioning statement in the form: for (segment) who (need), DataPro is the (category) that (benefit), unlike (competitors) because (proof). In the customer journey answer name the stages from enquiry to enrolment, locate where prospects are lost using the one-in-twelve conversion in the scenario, and propose one change per stage. In the metrics answer give a target for each metric. Keep the Singapore and SkillsFuture context.",
+        "missingConceptsPassed": [
+          "market segmentation"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:32:56.009Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "modelAnswers": 872
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "modelAnswers"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:32:56.761Z",
+      "variantId": null,
+      "eventType": "approved",
+      "metadata": {
+        "capped": false,
+        "authoringSeconds": 175
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:33:08.460Z",
+      "variantId": "3316b89a-72de-49f6-a958-9d255cc76ea1",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: university CET unit",
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:33:08.465Z",
+      "variantId": "6925cc6e-779f-44ae-a427-24450d58b8d2",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: private bootcamp",
+        "conceptsMissing": []
+      }
+    }
+  ],
+  "comparison": null
+}
