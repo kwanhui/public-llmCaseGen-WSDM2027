@@ -1,10 +1,10 @@
 # Deployment notes
 
 Notes for whoever operates the hosted instance at https://llmcasegen.vercel.app.
-The environment variables and the first deploy are described in the [README](../README.md), under "Environment variables" and "Deploying to Vercel and checking a deployment"; they are not repeated here.
+The environment variables and the first deploy are described in the [README](../README.md), under "Run your own copy", "Environment variables" and "Checking a deployment"; they are not repeated here.
 `OPENAI_API_KEY` is needed whichever generation provider is chosen, because briefs are always embedded with OpenAI.
 
-`POSTGRES_URL` is set by Vercel when the project includes a Postgres store.
+`POSTGRES_URL` is set by Vercel when a Neon database is connected to the project in its Storage tab.
 After the first deploy, every push to `main` deploys to production.
 A deploy does not run migrations, so a schema change needs `pnpm db:migrate` run against the production `POSTGRES_URL`.
 
@@ -49,7 +49,7 @@ A promotion does not change the repository, so the next push to `main` deploys o
 
 ## Backups
 
-Vercel Postgres takes daily snapshots, which are restored from the dashboard.
+Neon keeps a history of the database from which it can be restored to an earlier point in time, from the Neon console; how far back depends on the Neon plan.
 For a copy outside Vercel, run `pg_dump $POSTGRES_URL > perscase-$(date +%F).sql` from time to time.
 
 ## Known limits

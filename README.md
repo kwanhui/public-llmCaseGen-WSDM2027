@@ -7,36 +7,109 @@ The instructor edits or regenerates any section and approves the case.
 After approval, one variant of the case can be generated per student team, each with its own link, and the instructor moves the cohort through a sequence of phases.
 Three disciplines are included: finance, marketing and social work.
 
-A hosted instance runs at https://llmcasegen.vercel.app.
-To try the instructor view there, sign in with username `admin` and password `demo1234`. This demonstration account is shared, so its seeded example cases and the six walkthrough cases of `demo/walkthrough/briefs.json` are read-only. The single shared account and its printed password are for demonstration purposes only. Anyone who deploys PersCase for their own use should replace them with individual accounts and stronger security, such as a password manager-generated secret, rate limiting on sign-in, and a spend cap on the model provider.
+This repository holds the code of the system described in the paper "PersCase: A Retrieval-Augmented LLM Authoring Tool for Personalised Professional Case Studies" by Kwan Hui Lim, Lyndon Lim, Vincent Ng, Marcus Lee and Ding Ding, submitted to the WSDM 2027 Demonstrations Track.
+The links given in the paper are:
 
-## Quick start
+- hosted instance: https://llmcasegen.vercel.app
+- public demo page, no sign-in: https://llmcasegen.vercel.app/demo
+- video (2:59): https://youtu.be/imaTWm3BzPE
+- code: https://github.com/kwanhui/public-llmCaseGen-WSDM2027
 
-Requirements:
+The hosted instance is built from the `main` branch of this repository; `/api/health` reports the commit it runs.
+To try the instructor view there, sign in with username `admin` and password `demo1234`, as given in the paper.
+This demonstration account is shared, so its seeded example cases and the six walkthrough cases of `demo/walkthrough/briefs.json` are read-only.
+The single shared account and its printed password are for demonstration purposes only.
+A copy of your own must not reuse `demo1234`: choose your own password when you create `ADMIN_PASSWORD_HASH` (step 3 below), and consider further measures such as a password manager-generated secret, rate limiting on sign-in, and a spend cap on the model provider.
 
-- Node 22 (`.nvmrc`; tested on 22.23.1; `package.json` accepts 20 or later) and pnpm 9.12.0.
-- An OpenAI API key. It embeds each brief and, by default, generates the text. Without it the Retrieval step reports that the brief could not be embedded, and generation fails.
-- A Postgres database that the `@vercel/postgres` driver can reach. That driver connects through Neon's serverless protocol, so the connection string must be a pooled Neon one (the host contains `-pooler`). A free Neon database works and needs no Vercel account. A plain local Postgres on `localhost` does not work unless Neon's WebSocket proxy is placed in front of it.
+## Run your own copy
+
+These steps take a fresh clone to a running instance, first on your own machine and then on a Vercel project of your own.
+The hosted instance was set up the same way: a Vercel project in region `sin1` with a Neon Postgres database, built from `main`.
+
+### 1. Prerequisites
+
+- Node 22 (`.nvmrc`; tested on 22.23.1; `package.json` accepts 20 or later).
+- pnpm 9.12.0, the version pinned in `package.json`. `corepack enable` installs it on first use.
+- An OpenAI API key. It embeds each brief and, by default, generates the text. Without it the Retrieval step reports that the brief could not be embedded, and generation fails. Anthropic can be used for generation instead (see "Environment variables"), but embeddings still need the OpenAI key.
+- A Postgres database that the `@vercel/postgres` driver can reach. That driver connects through Neon's serverless protocol, so the connection string must be a pooled Neon one (the host contains `-pooler`). A free Neon database (https://neon.tech) works and needs no Vercel account; on Vercel, the Neon integration in the Storage tab creates one. A plain local Postgres on `localhost` does not work unless Neon's WebSocket proxy is placed in front of it.
+- For deployment, a Vercel account; the Vercel CLI (`pnpm add -g vercel`) is optional.
 
 ```bash
+git clone https://github.com/kwanhui/public-llmCaseGen-WSDM2027.git perscase
+cd perscase
 pnpm install
-cp .env.example .env.local
-# In .env.local, set OPENAI_API_KEY, POSTGRES_URL, AUTH_SECRET and PSEUDONYM_SALT.
-openssl rand -hex 32                      # run twice, for AUTH_SECRET and PSEUDONYM_SALT
-pnpm change-admin-password --local        # asks for a password, prints the ADMIN_PASSWORD_HASH line to paste
-pnpm db:migrate                           # creates the tables
-pnpm dev
 ```
 
-Open http://localhost:3000.
-The landing page shows the workflow and links to the live demo (`/demo`), to a student's view of the seeded finance case (`/case/seedretailbank01`) and to the instructor sign-in, where the username is `admin` (or `ADMIN_EMAIL`) and the password is the one just chosen.
+### 2. Database
+
+Create a Neon project and copy its pooled connection string (Neon console, Connect, with connection pooling on).
+It has the form `postgresql://USER:PASSWORD@ep-NAME-pooler.REGION.aws.neon.tech/DBNAME?sslmode=require`.
+No extension is needed; the schema is plain Postgres.
+
+### 3. Environment variables
+
+```bash
+cp .env.example .env.local
+openssl rand -hex 32                      # run twice, for AUTH_SECRET and PSEUDONYM_SALT
+pnpm change-admin-password --local        # asks for a password, prints the ADMIN_PASSWORD_HASH line to paste
+```
+
+In `.env.local`, set the five required variables: `POSTGRES_URL` (the string from step 2), `OPENAI_API_KEY`, `AUTH_SECRET`, `ADMIN_PASSWORD_HASH` and `PSEUDONYM_SALT`.
+The rest have working defaults and are listed under "Environment variables" below.
+There is one instructor account and no user table to fill: the username is `admin` (or `ADMIN_EMAIL`), and the password is the one given to `change-admin-password`.
+`.env.local` is ignored by git; never commit it.
+
+### 4. Tables and demo data
+
+```bash
+pnpm db:migrate                               # creates the nine tables from lib/db/migrations
+pnpm seed-demo --yes-shared-database          # optional: the example cases the hosted instance shows
+```
+
+`pnpm seed-demo` loads the three released example cases (finance, marketing, social work) with their team variants, one finance draft, synthetic student activity for the analytics page, and the cached contrastive baselines, all from files under `demo/`.
+It makes no model call.
+The flag is needed because a Neon host is not `localhost`; the script prints the host before it writes, and "Seeding the demo data" below says what it deletes.
+The public page `/demo` writes nothing to the database, and most of it needs no seeding: its nine preset briefs are in `components/demo/presets.ts` and its fallback draft in `demo/sample-outputs/walk-finance-liquidity.json`.
+Its student scene, however, reads the seeded finance case from the database, so run `pnpm seed-demo` for the copy to show the same `/demo` as the hosted instance.
+
+### 5. Run locally
+
+```bash
+pnpm dev                                  # http://localhost:3000
+```
+
+The landing page links to `/demo`, to a student's view of the seeded finance case (`/case/seedretailbank01`) and to the instructor sign-in.
 Students need no account; they open the team link.
+For a production build on your own machine or server, run `pnpm build` and then `AUTH_TRUST_HOST=true pnpm start`, or set `AUTH_URL` to the public origin instead; outside `pnpm dev` and Vercel, Auth.js refuses a host it has not been told to trust.
+
+Checks: `pnpm typecheck`, `pnpm lint` and `pnpm build`.
+There is no unit test suite; `pnpm smoke-check` (see "Checking a deployment") drives a running instance through the public pages, the sign-in and the contrastive view.
+
+### 6. Deploy to a Vercel project of your own
+
+1. Push your clone to a GitHub repository of your own (a fork works).
+2. In the Vercel dashboard, choose Add New, Project, and import that repository. Vercel detects Next.js and uses pnpm from the `packageManager` field; keep the default build settings. `vercel.json` sets the region (`sin1`, which you may change) and a 60-second limit on the routes that call a model.
+3. In the project's Storage tab, create a Neon Postgres database and connect it to the project. This sets `POSTGRES_URL`. If you created the database in Neon directly, add `POSTGRES_URL` by hand with the pooled string from step 2.
+4. In Settings, Environment Variables, add `OPENAI_API_KEY`, `AUTH_SECRET`, `PSEUDONYM_SALT` and `ADMIN_PASSWORD_HASH` for Production. On Vercel the hash is entered without the backslashes that `.env.local` needs: it starts `$2b$12$`. Leave `AUTH_URL` unset. Add any optional variable you want to change, such as `PUBLIC_DEMO=0` to switch the public demo off.
+5. Run the migrations against that database from your machine. With the CLI: `vercel link`, then `vercel env pull .env.local` (which brings `POSTGRES_URL`), then `pnpm db:migrate` and, if wanted, `pnpm seed-demo --yes-shared-database`. Without the CLI, put the production `POSTGRES_URL` in `.env.local` and run the same two commands.
+6. Deploy: Deployments, Redeploy, or push to `main`. Every later push to the production branch deploys to production. A deploy does not run migrations, so run `pnpm db:migrate` again after a change to `lib/db/schema.ts`.
+7. Open `https://<your-project>.vercel.app/api/health`, which should report `"ok":true`, and run `pnpm smoke-check` against the new address (see "Checking a deployment").
+
+With the CLI, steps 2 to 4 can also be done from the clone: `vercel link`, `vercel env add NAME production` for each variable, and `vercel --prod`.
+`pnpm change-admin-password --vercel-production` writes a new hash to the linked project and redeploys it; `demo/deployment.md` has the other operator notes (health, rollback, backups).
+
+### What a copy of your own does not have
+
+The hosted instance also holds the six walkthrough cases of `demo/walkthrough/briefs.json`, which were created through the interface on that instance.
+Only their briefs and the measures read from them (`demo/walkthrough/case-study.csv`) are committed, so a new database has the seeded example cases but not these six.
+Everything else that the hosted build uses (code, `vercel.json`, migrations, corpus and its vectors, prompts, demo presets and rate limits) is in this repository.
+
+### Repository maintenance
 
 The migrations and the corpus vectors are committed, so `pnpm db:generate` is needed only after a change to `lib/db/schema.ts`, and `pnpm embed-corpus` only after a change to the corpus.
 Without a flag, `pnpm change-admin-password` prints its usage and stops.
 With `--local` it prints the bcrypt hash and changes nothing else; the printed line has a backslash before each `$`, because Next.js would otherwise expand the hash as if it named variables, so paste the line as printed.
-With `--vercel-production` it rewrites `ADMIN_PASSWORD_HASH` in the linked Vercel project and redeploys that project to production.
-Other checks: `pnpm typecheck`, `pnpm lint`, `pnpm build`.
+With `--vercel-production` it rewrites `ADMIN_PASSWORD_HASH` in the linked Vercel project and redeploys that project to production; run it from a clean checkout of the deployed commit, because the redeploy uploads the working tree.
 
 ## What this repository reproduces
 
@@ -95,17 +168,18 @@ Both scripts read `BASE_URL`, `SIGNIN_USER` and `SIGNIN_PASS`.
 
 ## Environment variables
 
-`AUTH_SECRET` and `AUTH_URL` are read by Auth.js; the rest are read by the code in this repository.
+`AUTH_SECRET`, `AUTH_URL` and `AUTH_TRUST_HOST` are read by Auth.js; the rest are read by the code in this repository.
 
 | Variable | Required | Default | Purpose and how to set it |
 | --- | --- | --- | --- |
-| `POSTGRES_URL` | yes | none | Pooled Neon or Vercel Postgres connection string. Read by the app, by `drizzle-kit` and by the scripts that touch the database. |
+| `POSTGRES_URL` | yes | none | Pooled Neon connection string (the host contains `-pooler`); the Neon integration on Vercel sets it. Read by the app, by `drizzle-kit` and by the scripts that touch the database. |
 | `OPENAI_API_KEY` | yes | none | Embeds each brief (always OpenAI) and generates text when `LLM_PROVIDER=openai`. |
 | `AUTH_SECRET` | yes | none | Signs the instructor session. `openssl rand -hex 32`. |
-| `ADMIN_PASSWORD_HASH` | yes | empty | bcrypt hash of the instructor password, with each `$` escaped. `pnpm change-admin-password --local` prints the line. While it is empty every sign-in is refused and the sign-in page says so. |
+| `ADMIN_PASSWORD_HASH` | yes | empty | bcrypt hash of the instructor password. In `.env.local` each `$` is escaped, and `pnpm change-admin-password --local` prints the line; on Vercel the hash is entered as is. While it is empty every sign-in is refused and the sign-in page says so. |
 | `PSEUDONYM_SALT` | yes for view counts by device | none | Salt of the one-way hash of a student device. `openssl rand -hex 32`. If it is unset or left at the placeholder, views are logged without a device hash. |
 | `ADMIN_EMAIL` | no | `admin` | The username typed at sign-in. |
-| `AUTH_URL` | no | inferred | Public origin of a deployment. Leave it unset for `pnpm dev` and on Vercel. |
+| `AUTH_URL` | no | inferred | Public origin of a deployment. Leave it unset for `pnpm dev` and on Vercel. Elsewhere, set it or `AUTH_TRUST_HOST`. |
+| `AUTH_TRUST_HOST` | for `pnpm start` outside Vercel, unless `AUTH_URL` is set | unset | `true` lets Auth.js accept the request's host. Not needed for `pnpm dev` or on Vercel. |
 | `LLM_PROVIDER` | no | `openai` | `openai` or `anthropic`, for generation only. |
 | `ANTHROPIC_API_KEY` | only with `LLM_PROVIDER=anthropic` | none | Generation key for Anthropic. `OPENAI_API_KEY` is still needed for embeddings. |
 | `LLM_GENERATION_MODEL` | no | `gpt-4o-mini`, or `claude-haiku-4-5-20251001` for Anthropic | Generation model id. |
@@ -125,8 +199,8 @@ All of its rows have ids that begin with `seed-`, and the interface treats those
 
 It rewrites the seeded rows of whatever database `POSTGRES_URL` points at: it first deletes every `seed-` row, including student responses and events attached to them, and then inserts them again.
 It prints the host and what it will delete before it does anything, and it refuses a host other than `localhost` unless `--yes-shared-database` is passed.
-A Neon database of your own is not a local host, so the flag is needed there too; check the printed host before confirming.
-Never point it at a database that a live instance uses.
+A Neon database of your own is not a local host, so the flag is needed there too; check the printed host before running it with the flag.
+On a database already in use, anything attached to the `seed-` rows, such as student responses on a seeded team link, is deleted with them; rows created through the interface are left alone.
 
 `--no-comparisons` leaves the contrastive cache empty; `--regenerate-comparisons` generates new baselines instead, six model calls, and rewrites the committed files, which changes the committed readings.
 `pnpm seed-demo --clean` removes the seeded rows.
@@ -153,25 +227,19 @@ A discipline is defined by data files; no application code changes.
 Add a `DisciplinePack` in `lib/disciplines/` (system prompt, style notes, vocabulary, difficulty instructions, exemplars, a default phase sequence, and the `quantitative` flag that adds the reminder to check figures) and a corpus of notes in `lib/retrieval/corpus/`.
 Register both in `lib/disciplines/index.ts` and `lib/retrieval/corpus/index.ts`, add the id to the `DisciplineId` union in `lib/disciplines/types.ts`, and run `pnpm embed-corpus`.
 
-## Deploying to Vercel and checking a deployment
-
-This path needs a Vercel account and the Vercel CLI.
-
-```bash
-vercel link
-vercel env add OPENAI_API_KEY production      # repeat for the required variables above
-vercel env pull .env.local                    # brings POSTGRES_URL to the laptop
-pnpm db:migrate
-vercel --prod
-```
-
-Add a Postgres store to the project in the Vercel dashboard before the first deploy.
-A deploy does not run migrations; run `pnpm db:migrate` against the production `POSTGRES_URL` after a schema change.
-`demo/deployment.md` has the operator notes: password rotation, health, rollback and backups.
+## Checking a deployment
 
 `GET /api/health` is public and returns `{ ok, db, provider, keyPresent, version }`, with HTTP 200 when the database is reachable and a generation key is configured, and 503 otherwise.
 It includes no secrets.
-`scripts/smoke-check.md` is a manual checklist to work through after a deploy, and `pnpm smoke-check` automates part of it.
+`scripts/smoke-check.md` is a manual checklist to work through after a deploy, and `pnpm smoke-check` automates part of it:
+
+```bash
+pnpm exec playwright install chromium     # once
+BASE_URL=https://<your-host> SIGNIN_USER=admin SIGNIN_PASS='<your password>' pnpm smoke-check
+```
+
+It stops at the first failure, and it expects the seeded example finance case (`CASE_ID`, default `seed-case-finance`) for the contrastive view.
+`demo/deployment.md` has the operator notes: password rotation, health, rollback and backups.
 
 ## Live demo (`/demo`)
 
