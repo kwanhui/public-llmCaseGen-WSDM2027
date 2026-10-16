@@ -1,0 +1,407 @@
+{
+  "note": "Walkthrough case \"Finance: liquidity\" of demo/walkthrough/briefs.json, exported from the hosted instance's database: the case row, its team variants, its event log and, where one was run, its cached contrastive comparison. Each team link (inviteToken) is replaced by a fixed placeholder; nothing else is changed. Loaded by scripts/seed-demo.ts.",
+  "case": {
+    "id": "e228508d-6ed0-4c45-bf74-fbab54445a54",
+    "instructorId": "admin",
+    "discipline": "finance",
+    "learningObjective": "Explain why a profitable neighbourhood retail chain keeps running short of cash, by reading its working-capital position and proposing changes to its collection, stock and supplier terms.",
+    "difficulty": "novice",
+    "mustCoverConcepts": [
+      "working capital",
+      "cash conversion cycle",
+      "current ratio",
+      "trade credit"
+    ],
+    "targetLearnerProfile": {
+      "role": "Store operations lead moving into a finance role",
+      "industry": "Retail, small multi-outlet chain",
+      "priorKnowledge": "Reads a profit and loss statement; no formal finance training"
+    },
+    "contentJson": {
+      "rubric": "Numerical accuracy (30%): calculations related to ratios and cycles are correct and follow logically. Depth of reasoning (30%): provides insights into the implications of financial metrics and growth on cash flow. Treatment of assumptions (20%): identifies key assumptions influencing working capital decisions. Recommendation quality (20%): proposes actionable strategies with clear pros and cons outlined.",
+      "glossary": [
+        {
+          "term": "Current Ratio",
+          "definition": "A liquidity ratio that measures a company's ability to pay short-term obligations, calculated as current assets divided by current liabilities."
+        },
+        {
+          "term": "Cash Conversion Cycle",
+          "definition": "A metric that indicates the time taken to convert investments in inventory and receivables into cash flows from sales, calculated by adding days inventory outstanding to days sales outstanding and subtracting days payable outstanding."
+        },
+        {
+          "term": "Working Capital",
+          "definition": "The difference between current assets and current liabilities, representing the liquidity available to a business for its day-to-day operations."
+        },
+        {
+          "term": "Trade Credit",
+          "definition": "An arrangement in which a company buys goods or services from a supplier and pays for them later, effectively using the supplier's credit to manage cash flow."
+        }
+      ],
+      "scenario": "Urban Trends is a neighbourhood retail chain in Singapore with five stores selling home decor and lifestyle products in HDB town centres. The business is owned by its founder, Mrs Tan, and you have just moved from running two of the stores into the newly created role of finance lead. Last year the chain made S$3 million in sales with a net profit margin of 10%, and sales are growing at 20% a year. Yet Mrs Tan tells you that the bank account is often close to empty before the month-end supplier payments, and twice this year she has delayed paying staff bonuses to cover stock orders.\n\nThe latest balance sheet shows current assets of S$800,000: S$300,000 of accounts receivable, S$400,000 of inventory and S$100,000 of cash. The receivables come from corporate customers (offices, showflats and a hotel group) who buy in bulk on trade credit and are given 45 days to pay. Current liabilities are S$500,000, of which S$300,000 is trade payables to suppliers and the rest is short-term obligations such as GST and rent deposits due. The current ratio is therefore 1.6 (800,000 / 500,000).\n\nStock sits in the stores and the warehouse for about 60 days before it is sold. Suppliers give the chain 30 days of trade credit, and Mrs Tan has always paid on time to protect the relationship. Cash is therefore tied up in inventory and receivables for much longer than it is available from suppliers, and every new store and every 20% of growth ties up more.\n\nMrs Tan has asked you to explain, in plain terms, why a profitable business keeps running short of cash, and to propose specific changes to the credit terms offered to corporate customers, the stock the stores carry, and the terms negotiated with suppliers. She wants to know what each change would free up, and what it might cost in lost sales or supplier goodwill.",
+      "modelAnswers": [
+        "The current ratio of 1.6 shows that Urban Trends has S$800,000 in current assets compared to S$500,000 in current liabilities. This means the company can cover its short-term debts, as a ratio above 1 indicates good liquidity. However, having excess inventory or cash may suggest that resources are not being optimally utilized. Despite the acceptable ratio, the frequent cash shortages indicate underlying cash flow issues that highlight a need for better working capital management.",
+        "To calculate the cash conversion cycle (CCC), we use the formula: CCC = Days Inventory Outstanding + Days Sales Outstanding - Days Payable Outstanding. For Urban Trends, the calculation is: CCC = 60 days (inventory) + 45 days (receivables) - 30 days (payables) = 75 days. This means it takes Urban Trends 75 days to convert its inventory and receivables back into cash, which indicates inefficiencies in managing working capital, as a shorter cycle is generally preferred for better liquidity.",
+        "A 20% rise takes sales from S$3 million to S$3.6 million. Net operating working capital is receivables plus inventory less trade payables: 300,000 + 400,000 - 300,000 = S$400,000, which is about 13% of sales. If collection, stock and payment periods stay as they are, the extra S$600,000 of sales ties up about 13% of it, roughly S$80,000 more, before any of the new sales turn into cash. Another way to see the same thing: at S$3.6 million a year the chain sells about S$9,900 a day, and a 75-day cash conversion cycle means about S$740,000 is tied up at any time, up from about S$620,000 today. Profit is recorded when goods are sold, but cash arrives only when the customer pays and after the supplier and the stock have been paid for, so a growing, profitable chain can run short of cash every month.",
+        "Three levers follow from the cycle. First, shorten the collection period for corporate customers from 45 to 30 days: receivables would fall from about S$300,000 to S$200,000, freeing about S$100,000, at the risk that some corporate buyers move to a competitor who still offers 45 days. Second, cut the stock holding period from 60 to 45 days by trimming slow lines and ordering more often: inventory would fall from about S$400,000 to S$300,000, freeing about S$100,000, at the risk of stockouts on fast-selling items. Third, negotiate supplier trade credit from 30 to 45 days: trade payables would rise from about S$300,000 to S$450,000, freeing about S$150,000, at the cost of some supplier goodwill or a lost early-payment discount. Together these would cut the cash conversion cycle from 75 to 30 days and free about S$350,000, more than enough to end the month-end squeeze. The recommendation is to start with stock and supplier terms, which do not depend on customers, and to tighten customer credit gradually."
+      ],
+      "schemaVersion": 1,
+      "discussionQuestions": [
+        "What is the significance of the current ratio for Urban Trends, and how does it relate to the company's liquidity position?",
+        "Calculate Urban Trends' cash conversion cycle based on the information provided. What does this metric indicate about the company's efficiency in managing working capital?",
+        "Given that Urban Trends has a 20% growth rate, how might this impact working capital requirements? Discuss the potential cash flow implications.",
+        "What specific changes could you propose to the credit terms for corporate customers, the stock the stores carry, and the supplier trade credit terms? Estimate what each would free up and evaluate its trade-offs."
+      ]
+    },
+    "phasesJson": [
+      {
+        "id": "fin-frame",
+        "label": "Frame the question",
+        "order": 0,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "1. Frame the question",
+        "studentPrompt": "Read the scenario carefully. In your own words, write down the **central financial decision** the protagonist faces, who the stakeholders are, and what success would look like. Then list any clarifying questions you'd want to ask before doing any maths.",
+        "disciplineHint": "Name the decision and the time horizon before you calculate anything.",
+        "suggestedMinutes": 10
+      },
+      {
+        "id": "fin-data",
+        "label": "Gather & inspect financials",
+        "order": 1,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "2. Gather & inspect the financials",
+        "studentPrompt": "What numerical inputs do you have? What's missing or ambiguous? List the **financial statements, ratios, or external benchmarks** you'd need to evaluate this. Note any inconsistencies in the data the case provides.",
+        "disciplineHint": "If data are missing, say what you would ask for and why.",
+        "suggestedMinutes": 10
+      },
+      {
+        "id": "fin-model",
+        "label": "Quantitative modelling",
+        "order": 2,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "3. Quantitative modelling",
+        "studentPrompt": "Work the numbers. Use the data in the case to compute the key quantities (e.g. valuation, ratio, projection). Show your steps and state every assumption you make. If you have to choose a method (e.g. DCF vs. comps), say why.",
+        "disciplineHint": "Write your assumptions in a labelled list before calculating. You'll need to defend each one in phase 4.",
+        "suggestedMinutes": 20
+      },
+      {
+        "id": "fin-sensitivity",
+        "label": "Sensitivity & risks",
+        "order": 3,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "4. Sensitivity & risks",
+        "studentPrompt": "Stress-test your answer. Which **one assumption**, if it shifted by a plausible amount, would flip your recommendation? What downside scenario worries you most, and what would you watch for to detect it early?",
+        "disciplineHint": "Try a plausible shift in each input. If nothing moves your answer, widen the question.",
+        "suggestedMinutes": 15
+      },
+      {
+        "id": "fin-recommend",
+        "label": "Recommendation memo",
+        "order": 4,
+        "activities": [
+          "notes",
+          "answer_attempt"
+        ],
+        "studentTitle": "5. Recommendation memo",
+        "studentPrompt": "Write a one-paragraph recommendation in the protagonist's voice, suitable for an investment committee or executive memo. State the action, the headline number(s) supporting it, the key risk, and one explicit caveat or trigger that would change your view.",
+        "disciplineHint": "State your recommendation, then the one condition under which you would reverse it.",
+        "suggestedMinutes": 15
+      }
+    ],
+    "currentPhaseId": null,
+    "status": "approved",
+    "authoringStartedAt": "2026-09-23T07:28:04.951Z",
+    "authoringApprovedAt": "2026-09-23T07:29:44.925Z",
+    "authoringSecondsLogged": 99,
+    "regenerationCount": 1,
+    "createdAt": "2026-09-23T07:28:04.951Z",
+    "updatedAt": "2026-09-23T07:31:14.466Z"
+  },
+  "variants": [
+    {
+      "id": "efa7b6da-41d4-4cac-aba8-ace3d9612f2e",
+      "learnerProfileJson": {
+        "role": "Operations lead",
+        "industry": "Convenience retail, five outlets",
+        "teamSize": 4,
+        "displayName": "Team A: minimart chain",
+        "priorKnowledge": "Reads a profit and loss statement; no formal finance training"
+      },
+      "contentJson": {
+        "rubric": "Numerical accuracy (30%): calculations related to ratios and cycles are correct and follow logically. Depth of reasoning (30%): provides insights into the implications of financial metrics and growth on cash flow. Treatment of assumptions (20%): identifies key assumptions influencing working capital decisions. Recommendation quality (20%): proposes actionable strategies with clear pros and cons outlined.",
+        "glossary": [
+          {
+            "term": "Current Ratio",
+            "definition": "A liquidity ratio that measures a company's ability to pay short-term obligations, calculated as current assets divided by current liabilities."
+          },
+          {
+            "term": "Cash Conversion Cycle",
+            "definition": "A metric that indicates the time taken to convert investments in inventory and receivables into cash flows from sales, calculated by adding days inventory outstanding to days sales outstanding and subtracting days payable outstanding."
+          },
+          {
+            "term": "Working Capital",
+            "definition": "The difference between current assets and current liabilities, representing the liquidity available to a business for its day-to-day operations."
+          },
+          {
+            "term": "Trade Credit",
+            "definition": "An arrangement in which a company buys goods or services from a supplier and pays for them later, effectively using the supplier's credit to manage cash flow."
+          }
+        ],
+        "scenario": "Urban Trends is a neighbourhood retail chain in Singapore with five stores selling home decor and lifestyle products in HDB town centres. The business is owned by its founder, Mrs Tan, and you have just moved from running two of the stores into the newly created role of operations lead. Last year the chain made S$3 million in sales with a net profit margin of 10%, and sales are growing at 20% a year. Yet Mrs Tan tells you that the bank account is often close to empty before the month-end supplier payments, and twice this year she has delayed paying staff bonuses to cover stock orders.\n\nThe latest balance sheet shows current assets of S$800,000: S$300,000 of accounts receivable, S$400,000 of inventory and S$100,000 of cash. The receivables come from corporate customers (offices, showflats and a hotel group) who buy in bulk on trade credit and are given 45 days to pay. Current liabilities are S$500,000, of which S$300,000 is trade payables to suppliers and the rest is short-term obligations such as GST and rent deposits due. The current ratio is therefore 1.6 (800,000 / 500,000).\n\nStock sits in the stores and the warehouse for about 60 days before it is sold. Suppliers give the chain 30 days of trade credit, and Mrs Tan has always paid on time to protect the relationship. Cash is therefore tied up in inventory and receivables for much longer than it is available from suppliers, and every new store and every 20% of growth ties up more.\n\nMrs Tan has asked you to explain, in plain terms, why a profitable business keeps running short of cash, and to propose specific changes to the credit terms offered to corporate customers, the stock the stores carry, and the terms negotiated with suppliers. She wants to know what each change would free up, and what it might cost in lost sales or supplier goodwill.",
+        "modelAnswers": [
+          "The current ratio of 1.6 shows that Urban Trends has S$800,000 in current assets compared to S$500,000 in current liabilities. This means the company can cover its short-term debts, as a ratio above 1 indicates good liquidity. However, having excess inventory or cash may suggest that resources are not being optimally utilized. Despite the acceptable ratio, the frequent cash shortages indicate underlying cash flow issues that highlight a need for better working capital management.",
+          "To calculate the cash conversion cycle (CCC), we use the formula: CCC = Days Inventory Outstanding + Days Sales Outstanding - Days Payable Outstanding. For Urban Trends, the calculation is: CCC = 60 days (inventory) + 45 days (receivables) - 30 days (payables) = 75 days. This means it takes Urban Trends 75 days to convert its inventory and receivables back into cash, which indicates inefficiencies in managing working capital, as a shorter cycle is generally preferred for better liquidity.",
+          "A 20% rise takes sales from S$3 million to S$3.6 million. Net operating working capital is receivables plus inventory less trade payables: 300,000 + 400,000 - 300,000 = S$400,000, which is about 13% of sales. If collection, stock and payment periods stay as they are, the extra S$600,000 of sales ties up about 13% of it, roughly S$80,000 more, before any of the new sales turn into cash. Another way to see the same thing: at S$3.6 million a year the chain sells about S$9,900 a day, and a 75-day cash conversion cycle means about S$740,000 is tied up at any time, up from about S$620,000 today. Profit is recorded when goods are sold, but cash arrives only when the customer pays and after the supplier and the stock have been paid for, so a growing, profitable chain can run short of cash every month.",
+          "Three levers follow from the cycle. First, shorten the collection period for corporate customers from 45 to 30 days: receivables would fall from about S$300,000 to S$200,000, freeing about S$100,000, at the risk that some corporate buyers move to a competitor who still offers 45 days. Second, cut the stock holding period from 60 to 45 days by trimming slow lines and ordering more often: inventory would fall from about S$400,000 to S$300,000, freeing about S$100,000, at the risk of stockouts on fast-selling items. Third, negotiate supplier trade credit from 30 to 45 days: trade payables would rise from about S$300,000 to S$450,000, freeing about S$150,000, at the cost of some supplier goodwill or a lost early-payment discount. Together these would cut the cash conversion cycle from 75 to 30 days and free about S$350,000, more than enough to end the month-end squeeze. The recommendation is to start with stock and supplier terms, which do not depend on customers, and to tighten customer credit gradually."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "What is the significance of the current ratio for Urban Trends, and how does it relate to the company's liquidity position?",
+          "Calculate Urban Trends' cash conversion cycle based on the information provided. What does this metric indicate about the company's efficiency in managing working capital?",
+          "Given that Urban Trends has a 20% growth rate, how might this impact working capital requirements? Discuss the potential cash flow implications.",
+          "What specific changes could you propose to the credit terms for corporate customers, the stock the stores carry, and the supplier trade credit terms? Estimate what each would free up and evaluate its trade-offs."
+        ]
+      },
+      "inviteToken": "walk-finance-liquidity-a",
+      "createdAt": "2026-09-23T07:29:58.863Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    },
+    {
+      "id": "d614dc4c-bdf1-4ebb-a49d-d47d7626d6a7",
+      "learnerProfileJson": {
+        "role": "Practice manager",
+        "industry": "Private healthcare clinics",
+        "teamSize": 4,
+        "displayName": "Team B: dental clinic group",
+        "priorKnowledge": "Reads a profit and loss statement; no formal finance training"
+      },
+      "contentJson": {
+        "rubric": "Numerical accuracy (30%): calculations related to ratios and cycles are correct and follow logically. Depth of reasoning (30%): provides insights into the implications of financial metrics and growth on cash flow. Treatment of assumptions (20%): identifies key assumptions influencing working capital decisions. Recommendation quality (20%): proposes actionable strategies with clear pros and cons outlined.",
+        "glossary": [
+          {
+            "term": "Current Ratio",
+            "definition": "A liquidity ratio that measures a company's ability to pay short-term obligations, calculated as current assets divided by current liabilities."
+          },
+          {
+            "term": "Cash Conversion Cycle",
+            "definition": "A metric that indicates the time taken to convert investments in inventory and receivables into cash flows from sales, calculated by adding days inventory outstanding to days sales outstanding and subtracting days payable outstanding."
+          },
+          {
+            "term": "Working Capital",
+            "definition": "The difference between current assets and current liabilities, representing the liquidity available to a business for its day-to-day operations."
+          },
+          {
+            "term": "Trade Credit",
+            "definition": "An arrangement in which a company buys goods or services from a supplier and pays for them later, effectively using the supplier's credit to manage cash flow."
+          }
+        ],
+        "scenario": "Urban Trends is a neighbourhood retail chain in Singapore with five stores selling home decor and lifestyle products in HDB town centres. The business is owned by its founder, Mrs Tan, and you are a practice manager at Urban Trends, working to the finance lead. Last year the chain made S$3 million in sales with a net profit margin of 10%, and sales are growing at 20% a year. Yet Mrs Tan tells you that the bank account is often close to empty before the month-end supplier payments, and twice this year she has delayed paying staff bonuses to cover stock orders.\n\nThe latest balance sheet shows current assets of S$800,000: S$300,000 of accounts receivable, S$400,000 of inventory and S$100,000 of cash. The receivables come from corporate customers (offices, showflats and a hotel group) who buy in bulk on trade credit and are given 45 days to pay. Current liabilities are S$500,000, of which S$300,000 is trade payables to suppliers and the rest is short-term obligations such as GST and rent deposits due. The current ratio is therefore 1.6 (800,000 / 500,000).\n\nStock sits in the stores and the warehouse for about 60 days before it is sold. Suppliers give the chain 30 days of trade credit, and Mrs Tan has always paid on time to protect the relationship. Cash is therefore tied up in inventory and receivables for much longer than it is available from suppliers, and every new store and every 20% of growth ties up more.\n\nMrs Tan has asked you to explain, in plain terms, why a profitable business keeps running short of cash, and to propose specific changes to the credit terms offered to corporate customers, the stock the stores carry, and the terms negotiated with suppliers. She wants to know what each change would free up, and what it might cost in lost sales or supplier goodwill.",
+        "modelAnswers": [
+          "The current ratio of 1.6 shows that Urban Trends has S$800,000 in current assets compared to S$500,000 in current liabilities. This means the company can cover its short-term debts, as a ratio above 1 indicates good liquidity. However, having excess inventory or cash may suggest that resources are not being optimally utilized. Despite the acceptable ratio, the frequent cash shortages indicate underlying cash flow issues that highlight a need for better working capital management.",
+          "To calculate the cash conversion cycle (CCC), we use the formula: CCC = Days Inventory Outstanding + Days Sales Outstanding - Days Payable Outstanding. For Urban Trends, the calculation is: CCC = 60 days (inventory) + 45 days (receivables) - 30 days (payables) = 75 days. This means it takes Urban Trends 75 days to convert its inventory and receivables back into cash, which indicates inefficiencies in managing working capital, as a shorter cycle is generally preferred for better liquidity.",
+          "A 20% rise takes sales from S$3 million to S$3.6 million. Net operating working capital is receivables plus inventory less trade payables: 300,000 + 400,000 - 300,000 = S$400,000, which is about 13% of sales. If collection, stock and payment periods stay as they are, the extra S$600,000 of sales ties up about 13% of it, roughly S$80,000 more, before any of the new sales turn into cash. Another way to see the same thing: at S$3.6 million a year the chain sells about S$9,900 a day, and a 75-day cash conversion cycle means about S$740,000 is tied up at any time, up from about S$620,000 today. Profit is recorded when goods are sold, but cash arrives only when the customer pays and after the supplier and the stock have been paid for, so a growing, profitable chain can run short of cash every month.",
+          "Three levers follow from the cycle. First, shorten the collection period for corporate customers from 45 to 30 days: receivables would fall from about S$300,000 to S$200,000, freeing about S$100,000, at the risk that some corporate buyers move to a competitor who still offers 45 days. Second, cut the stock holding period from 60 to 45 days by trimming slow lines and ordering more often: inventory would fall from about S$400,000 to S$300,000, freeing about S$100,000, at the risk of stockouts on fast-selling items. Third, negotiate supplier trade credit from 30 to 45 days: trade payables would rise from about S$300,000 to S$450,000, freeing about S$150,000, at the cost of some supplier goodwill or a lost early-payment discount. Together these would cut the cash conversion cycle from 75 to 30 days and free about S$350,000, more than enough to end the month-end squeeze. The recommendation is to start with stock and supplier terms, which do not depend on customers, and to tighten customer credit gradually."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "What is the significance of the current ratio for Urban Trends, and how does it relate to the company's liquidity position?",
+          "Calculate Urban Trends' cash conversion cycle based on the information provided. What does this metric indicate about the company's efficiency in managing working capital?",
+          "Given that Urban Trends has a 20% growth rate, how might this impact working capital requirements? Discuss the potential cash flow implications.",
+          "What specific changes could you propose to the credit terms for corporate customers, the stock the stores carry, and the supplier trade credit terms? Estimate what each would free up and evaluate its trade-offs."
+        ]
+      },
+      "inviteToken": "walk-finance-liquidity-b",
+      "createdAt": "2026-09-23T07:29:59.468Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    }
+  ],
+  "events": [
+    {
+      "timestampIso": "2026-09-23T15:28:04.953Z",
+      "variantId": null,
+      "eventType": "created",
+      "metadata": {
+        "difficulty": "novice",
+        "discipline": "finance"
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:28:05.738Z",
+      "variantId": null,
+      "eventType": "generation_started",
+      "metadata": null
+    },
+    {
+      "timestampIso": "2026-09-23T15:28:23.800Z",
+      "variantId": null,
+      "eventType": "generation_completed",
+      "metadata": {
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:fin-working-capital (0.555)",
+          "corpus:fin-pedagogy-framing (0.474)",
+          "corpus:fin-three-statements (0.437)",
+          "corpus:fin-ratios (0.426)",
+          "corpus:fin-fcf (0.398)"
+        ],
+        "scenarioLen": 2076,
+        "groundingUsed": 2,
+        "questionCount": 4,
+        "groundingTotal": 5,
+        "conceptsCovered": [
+          "working capital",
+          "cash conversion cycle",
+          "current ratio"
+        ],
+        "conceptsMissing": [
+          "trade credit"
+        ],
+        "retrievalScores": [
+          {
+            "id": "fin-working-capital",
+            "weak": false,
+            "score": 0.555
+          },
+          {
+            "id": "fin-pedagogy-framing",
+            "weak": false,
+            "score": 0.474
+          },
+          {
+            "id": "fin-three-statements",
+            "weak": false,
+            "score": 0.437
+          },
+          {
+            "id": "fin-ratios",
+            "weak": false,
+            "score": 0.426
+          },
+          {
+            "id": "fin-fcf",
+            "weak": false,
+            "score": 0.398
+          }
+        ],
+        "groundingCountable": 3
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:29:02.295Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "scenario": -255
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "scenario"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:29:10.564Z",
+      "variantId": null,
+      "eventType": "section_regenerated",
+      "metadata": {
+        "section": "modelAnswers",
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:fin-working-capital (0.555)",
+          "corpus:fin-pedagogy-framing (0.474)",
+          "corpus:fin-three-statements (0.437)",
+          "corpus:fin-ratios (0.426)",
+          "corpus:fin-fcf (0.398)"
+        ],
+        "editorNote": "The learner is new to finance, so show the arithmetic in plain steps and use S$. Use the balance sheet in the scenario: net operating working capital is receivables plus inventory less trade payables, S00,000. In the growth answer, show how much extra working capital a 20% rise in sales would tie up if the ratios stay the same, and explain why profit and cash differ. In the strategies answer, quantify each lever with the days in the scenario (for example, cutting the collection period from 45 to 30 days, or negotiating supplier trade credit from 30 to 45 days) and name the trade-off for each. Refer to supplier trade credit by that name.",
+        "missingConceptsPassed": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:29:44.928Z",
+      "variantId": null,
+      "eventType": "approved",
+      "metadata": {
+        "capped": false,
+        "authoringSeconds": 99
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:29:59.471Z",
+      "variantId": "efa7b6da-41d4-4cac-aba8-ace3d9612f2e",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: minimart chain",
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:29:59.474Z",
+      "variantId": "d614dc4c-bdf1-4ebb-a49d-d47d7626d6a7",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: dental clinic group",
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:31:14.471Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "modelAnswers": 793,
+          "discussionQuestions": 57
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "discussionQuestions",
+          "modelAnswers"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:31:33.628Z",
+      "variantId": "efa7b6da-41d4-4cac-aba8-ace3d9612f2e",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: minimart chain",
+        "editorNote": "The master case was corrected after approval: working capital is S00,000 and the finance lead, not Martha, is the decision maker. Redraft from the current master.",
+        "regenerated": true,
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:31:53.818Z",
+      "variantId": "d614dc4c-bdf1-4ebb-a49d-d47d7626d6a7",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: dental clinic group",
+        "editorNote": "The master case was corrected after approval: working capital is S00,000 and the finance lead, not Martha, is the decision maker. Redraft from the current master.",
+        "regenerated": true,
+        "conceptsMissing": []
+      }
+    }
+  ],
+  "comparison": null
+}

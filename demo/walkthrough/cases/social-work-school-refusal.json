@@ -1,0 +1,426 @@
+{
+  "note": "Walkthrough case \"Social work: school refusal\" of demo/walkthrough/briefs.json, exported from the hosted instance's database: the case row, its team variants, its event log and, where one was run, its cached contrastive comparison. Each team link (inviteToken) is replaced by a fixed placeholder; nothing else is changed. Loaded by scripts/seed-demo.ts.",
+  "case": {
+    "id": "d78e756e-f5b2-4997-98b6-ccef07a8ec71",
+    "instructorId": "admin",
+    "discipline": "social_work",
+    "learningObjective": "Work with a fourteen-year-old who has stopped attending school since her parents separated, by mapping the systems around her, building on what she and her family already do well, engaging a parent who distrusts services, and coordinating the school, the family service centre and the parents on one plan.",
+    "difficulty": "advanced",
+    "mustCoverConcepts": [
+      "ecological systems",
+      "strengths-based practice",
+      "engagement",
+      "case coordination"
+    ],
+    "targetLearnerProfile": {
+      "role": "Social worker with two years of experience taking on youth cases",
+      "industry": "Family service centre, youth and family casework",
+      "priorKnowledge": "Adult casework and group work; limited experience with adolescents and schools"
+    },
+    "contentJson": {
+      "rubric": "Case understanding (25%): demonstrates a thorough understanding of Amira’s situation, family dynamics, and the broader ecological systems at play. Ethical reasoning (25%): identifies and navigates the competing ethical principles of autonomy, family support, and cultural sensitivity. Intervention quality (25%): proposes a practical and realistic support plan that includes specific steps and timelines. Cultural/relational sensitivity (25%): effectively considers cultural factors and builds trust in the relationship with both Amira and Layla.",
+      "glossary": [
+        {
+          "term": "Ecological systems",
+          "definition": "A framework that understands individuals within the context of their environments, including family, community, and societal influences."
+        },
+        {
+          "term": "Strengths-based practice",
+          "definition": "An approach that focuses on the inherent strengths of individuals and families, empowering them to leverage these strengths in overcoming challenges."
+        },
+        {
+          "term": "Engagement",
+          "definition": "The process of building a trusting relationship with clients to facilitate their involvement in services and decision-making."
+        },
+        {
+          "term": "Case coordination",
+          "definition": "Organizing and managing the services and supports a client needs across multiple agencies to ensure a coherent and effective response."
+        }
+      ],
+      "scenario": "Nur Aisyah, 14, is in Secondary 2 at a neighbourhood school in Woodlands. She has not attended school for five months. Her parents separated at the start of the year; her father has moved to his parents' flat and sees the children irregularly, and her mother, Mdm Salmah, works shifts at a logistics hub and relies on Aisyah to look after her two brothers, aged 8 and 10, after school. The school's attendance follow-up brought the family to the family service centre, and the school counsellor reports that Aisyah was a strong student with a close group of friends until last year.\n\nMdm Salmah did not attend the first two appointments. When you reach her by phone she says that the school has already made up its mind about her family, that a previous agency worker talked to her as if she were a bad mother, and that she does not want more people involved. Aisyah, in her one conversation with you so far, said that she cannot go back because she is behind, that the teachers will ask questions, and that her mother needs her at home; she also said, without prompting, that she misses her friends and used to want to be a nurse.\n\nYou are the social worker at the family service centre, taking on youth cases for the first time, and you have been asked by the school to coordinate a plan for her return. The people around Aisyah include her mother, her father and his parents, her brothers, her friends and a form teacher she trusted, the school counsellor, and a neighbourhood youth programme that runs after-school homework help. The school will hold a case discussion in two weeks and wants to know what the family service centre proposes, who will do what, and how progress will be tracked.",
+      "modelAnswers": [
+        "To assess Aisyah's needs, I would start by mapping her ecological systems, understanding how her individual feelings, family dynamics, peer relationships, and community resources contribute to her school refusal. A private and welcoming space for conversation, where Aisyah feels safe to express her thoughts about school and her home responsibilities, is paramount. Doing so ensures that her voice is central to the assessment process, allowing me to identify emotional and situational factors affecting her schooling.",
+        "Engagement comes before any plan, and with Mdm Salmah it has to be rebuilt after a bad experience. Meet where she chooses, at home or at a void deck coffee shop near the logistics hub, at a time between shifts, and go alone rather than with school staff. Ask first about what has happened to the family since the separation and what she is managing each day, not about attendance; let her describe the previous worker and say plainly that you heard it. Say what you can do (help with the boys' afternoons, be the one person who speaks to the school for her, keep her informed before anyone else) and what you cannot promise (that the school will drop its follow-up, or that Aisyah will be back within a week). Agree one small, visible step at the first meeting, such as a call to the youth programme about the brothers, and do it before the next contact. Engagement is tested by whether she attends the next appointment, so make it easy: her choice of place and time, a reminder the day before, and no surprises about who will be there.",
+        "Strengths-based practice starts from what Aisyah and her family already do well rather than from the absence at school. The scenario names several strengths: Aisyah was a strong student until last year, she has a close group of friends and a form teacher she trusted, she wants to be a nurse, and she has been caring reliably for her brothers for months; Mdm Salmah is holding two jobs and a household together and came to the phone despite her experience with the previous worker. Each becomes a step. Her academic record and nursing goal frame the return as catching up towards something she wants, so the plan begins with the subjects she needs for that path. Her friends and the form teacher are the first contacts back at school, before any meeting with senior staff. Her competence with her brothers is acknowledged and then relieved: after-school homework help at the youth programme for the boys frees her afternoons and removes the reason she gives for staying home. Mdm Salmah's determination is named as the family's main resource, and she is asked what she would need, not told what she has done wrong.",
+        "Case coordination means one plan, one coordinator and clear roles. You coordinate. The school case discussion includes Mdm Salmah (invited by you, with the option of joining by phone if her shift does not allow), the form teacher, the school counsellor, a year head with authority over attendance and assessment arrangements, the youth programme coordinator, and you; Aisyah is consulted before and after rather than seated across from six adults, unless she asks to attend. The graduated return plan runs over six weeks: week one, two half-days a week in the subjects she is strongest in, meeting the form teacher on arrival; weeks two and three, three days; weeks four to six, full days, with catch-up assignments in place of missed tests rather than on top of them. Roles: the form teacher is her daily contact at school; the counsellor sees her weekly; the youth programme takes the brothers three afternoons a week; the father is asked, through you, to cover one afternoon; Mdm Salmah confirms the routine at home and tells you, not the school, when something goes wrong. Progress is tracked with three measures shared with the family: days attended against the plan, Aisyah's own weekly rating of how school felt, and whether the brothers' arrangement held. The plan is reviewed at four weeks with everyone who attended the case discussion, and any change to it goes through you so that the family hears one message."
+      ],
+      "schemaVersion": 1,
+      "discussionQuestions": [
+        "How can you assess Aisyah's needs while ensuring she feels safe and heard in the process?",
+        "What strategies would you employ to engage Mdm Salmah, considering her distrust of services, and how might this affect your approach?",
+        "In what ways can you incorporate a strengths-based framework to support Aisyah and Mdm Salmah in this situation?",
+        "What would case coordination look like here: who takes part in the school's case discussion, what a graduated return-to-school plan would contain, who does what, and how progress would be tracked?"
+      ]
+    },
+    "phasesJson": [
+      {
+        "id": "sw-understanding",
+        "label": "Case understanding",
+        "order": 0,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "1. Case understanding",
+        "studentPrompt": "Read the case and write a brief **psychosocial summary** of the client/family in your own words. Distinguish presenting concerns from underlying needs. List the clarifying questions you'd want answered before proceeding.",
+        "disciplineHint": "Write about the client as a person, and put strengths and protective factors in the summary alongside the concerns."
+      },
+      {
+        "id": "sw-mapping",
+        "label": "Ecological & stakeholder mapping",
+        "order": 1,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "2. Ecological & stakeholder mapping",
+        "studentPrompt": "Map the **person-in-environment**: who are the stakeholders (family, agency, community, legal/cultural systems), what are their relationships, and where are the alliances or tensions? Note any cultural, religious, or linguistic factors that shape the field.",
+        "disciplineHint": "Sketch a quick ecomap if it helps. Watch for stakeholders whose voice is missing from the case as written."
+      },
+      {
+        "id": "sw-assessment",
+        "label": "Risk & needs assessment",
+        "order": 2,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "3. Risk & needs assessment",
+        "studentPrompt": "Conduct a structured assessment: what are the **risk factors**, the **protective factors**, the **immediate safety concerns** (if any), and the **needs** (practical, emotional, relational, systemic)? What practice frameworks apply here?",
+        "disciplineHint": "List risks and needs in two separate lists. A case can be high-need and low-risk, or the other way round."
+      },
+      {
+        "id": "sw-intervention",
+        "label": "Intervention planning",
+        "order": 3,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "4. Intervention planning",
+        "studentPrompt": "Propose a **graduated intervention plan**. What would you do first, in what setting, with whose involvement? What are you explicitly *not* doing yet, and why? How does the plan honour the client's self-determination while addressing legitimate concerns?",
+        "disciplineHint": "List the steps of the intervention in order, starting with the first conversation."
+      },
+      {
+        "id": "sw-reflection",
+        "label": "Ethical reflection",
+        "order": 4,
+        "activities": [
+          "notes",
+          "answer_attempt"
+        ],
+        "studentTitle": "5. Ethical reflection",
+        "studentPrompt": "Reflect on the **ethical dimensions** of your plan. Which professional values were in tension (e.g. autonomy vs. protection, confidentiality vs. duty to protect)? Which value did you ultimately privilege and why? What would you bring to supervision about this case?",
+        "disciplineHint": "Name the value you gave up and say why, then say what you would take to supervision."
+      }
+    ],
+    "currentPhaseId": null,
+    "status": "approved",
+    "authoringStartedAt": "2026-09-23T07:36:14.896Z",
+    "authoringApprovedAt": "2026-09-23T07:38:15.581Z",
+    "authoringSecondsLogged": 120,
+    "regenerationCount": 1,
+    "createdAt": "2026-09-23T07:36:14.896Z",
+    "updatedAt": "2026-09-23T07:39:21.998Z"
+  },
+  "variants": [
+    {
+      "id": "b7022488-4aa3-49dd-8ffb-64d98a4a639a",
+      "learnerProfileJson": {
+        "role": "Youth and family social worker",
+        "industry": "Family service centre",
+        "teamSize": 4,
+        "displayName": "Team A: family service centre",
+        "priorKnowledge": "Adult casework and group work; limited experience with adolescents and schools"
+      },
+      "contentJson": {
+        "rubric": "Case understanding (25%): demonstrates a thorough understanding of Aisyah’s situation, family dynamics, and the broader ecological systems at play. Ethical reasoning (25%): identifies and navigates the competing ethical principles of autonomy, family support, and cultural sensitivity. Intervention quality (25%): proposes a practical and realistic support plan that includes specific steps and timelines. Cultural/relational sensitivity (25%): effectively considers cultural factors and builds trust in the relationship with both Aisyah and Mdm Salmah.",
+        "glossary": [
+          {
+            "term": "Ecological systems",
+            "definition": "A framework that understands individuals within the context of their environments, including family, community, and societal influences."
+          },
+          {
+            "term": "Strengths-based practice",
+            "definition": "An approach that focuses on the inherent strengths of individuals and families, empowering them to leverage these strengths in overcoming challenges."
+          },
+          {
+            "term": "Engagement",
+            "definition": "The process of building a trusting relationship with clients to facilitate their involvement in services and decision-making."
+          },
+          {
+            "term": "Case coordination",
+            "definition": "Organizing and managing the services and supports a client needs across multiple agencies to ensure a coherent and effective response."
+          }
+        ],
+        "scenario": "Nur Aisyah, 14, is in Secondary 2 at a neighbourhood school in Woodlands. She has not attended school for five months. Her parents separated at the start of the year; her father has moved to his parents' flat and sees the children irregularly, and her mother, Mdm Salmah, works shifts at a logistics hub and relies on Aisyah to look after her two brothers, aged 8 and 10, after school. The school's attendance follow-up brought the family to the family service centre, and the school counsellor reports that Aisyah was a strong student with a close group of friends until last year.\n\nMdm Salmah did not attend the first two appointments. When you reach her by phone she says that the school has already made up its mind about her family, that a previous agency worker talked to her as if she were a bad mother, and that she does not want more people involved. Aisyah, in her one conversation with you so far, said that she cannot go back because she is behind, that the teachers will ask questions, and that her mother needs her at home; she also said, without prompting, that she misses her friends and used to want to be a nurse.\n\nYou are a youth and family social worker at the family service centre, working to coordinate a plan for Aisyah's return to school. The people around Aisyah include her mother, her father and his parents, her brothers, her friends and a form teacher she trusted, the school counsellor, and a neighbourhood youth programme that runs after-school homework help. The school will hold a case discussion in two weeks and wants to know what the family service centre proposes, who will do what, and how progress will be tracked.",
+        "modelAnswers": [
+          "To assess Aisyah's needs, I would start by mapping her ecological systems, understanding how her individual feelings, family dynamics, peer relationships, and community resources contribute to her school refusal. A private and welcoming space for conversation, where Aisyah feels safe to express her thoughts about school and her home responsibilities, is paramount. Doing so ensures that her voice is central to the assessment process, allowing me to identify emotional and situational factors affecting her schooling.",
+          "Engagement comes before any plan, and with Mdm Salmah it has to be rebuilt after a bad experience. Meet where she chooses, at home or at a void deck coffee shop near the logistics hub, at a time between shifts, and go alone rather than with school staff. Ask first about what has happened to the family since the separation and what she is managing each day, not about attendance; let her describe the previous worker and say plainly that you heard it. Say what you can do (help with the boys' afternoons, be the one person who speaks to the school for her, keep her informed before anyone else) and what you cannot promise (that the school will drop its follow-up, or that Aisyah will be back within a week). Agree one small, visible step at the first meeting, such as a call to the youth programme about the brothers, and do it before the next contact. Engagement is tested by whether she attends the next appointment, so make it easy: her choice of place and time, a reminder the day before, and no surprises about who will be there.",
+          "Strengths-based practice starts from what Aisyah and her family already do well rather than from the absence at school. The scenario names several strengths: Aisyah was a strong student until last year, she has a close group of friends and a form teacher she trusted, she wants to be a nurse, and she has been caring reliably for her brothers for months; Mdm Salmah is holding two jobs and a household together and came to the phone despite her experience with the previous worker. Each becomes a step. Her academic record and nursing goal frame the return as catching up towards something she wants, so the plan begins with the subjects she needs for that path. Her friends and the form teacher are the first contacts back at school, before any meeting with senior staff. Her competence with her brothers is acknowledged and then relieved: after-school homework help at the youth programme for the boys frees her afternoons and removes the reason she gives for staying home. Mdm Salmah's determination is named as the family's main resource, and she is asked what she would need, not told what she has done wrong.",
+          "Case coordination means one plan, one coordinator and clear roles. You coordinate. The school case discussion includes Mdm Salmah (invited by you, with the option of joining by phone if her shift does not allow), the form teacher, the school counsellor, a year head with authority over attendance and assessment arrangements, the youth programme coordinator, and you; Aisyah is consulted before and after rather than seated across from six adults, unless she asks to attend. The graduated return plan runs over six weeks: week one, two half-days a week in the subjects she is strongest in, meeting the form teacher on arrival; weeks two and three, three days; weeks four to six, full days, with catch-up assignments in place of missed tests rather than on top of them. Roles: the form teacher is her daily contact at school; the counsellor sees her weekly; the youth programme takes the brothers three afternoons a week; the father is asked, through you, to cover one afternoon; Mdm Salmah confirms the routine at home and tells you, not the school, when something goes wrong. Progress is tracked with three measures shared with the family: days attended against the plan, Aisyah's own weekly rating of how school felt, and whether the brothers' arrangement held. The plan is reviewed at four weeks with everyone who attended the case discussion, and any change to it goes through you so that the family hears one message."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "How can you assess Aisyah's needs while ensuring she feels safe and heard in the process?",
+          "What strategies would you employ to engage Mdm Salmah, considering her distrust of services, and how might this affect your approach?",
+          "In what ways can you incorporate a strengths-based framework to support Aisyah and Mdm Salmah in this situation?",
+          "What would case coordination look like here: who takes part in the school's case discussion, what a graduated return-to-school plan would contain, who does what, and how progress would be tracked?"
+        ]
+      },
+      "inviteToken": "walk-social-work-school-refusal-a",
+      "createdAt": "2026-09-23T07:38:35.498Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    },
+    {
+      "id": "774d3452-f8e4-4641-acf7-dc1969bcddbd",
+      "learnerProfileJson": {
+        "role": "School social worker",
+        "industry": "Secondary school, student welfare",
+        "teamSize": 4,
+        "displayName": "Team B: school social work",
+        "priorKnowledge": "Adult casework and group work; limited experience with adolescents and schools"
+      },
+      "contentJson": {
+        "rubric": "Case understanding (25%): demonstrates a thorough understanding of Aisyah’s situation, family dynamics, and the broader ecological systems at play. Ethical reasoning (25%): identifies and navigates the competing ethical principles of autonomy, family support, and cultural sensitivity. Intervention quality (25%): proposes a practical and realistic support plan that includes specific steps and timelines. Cultural/relational sensitivity (25%): effectively considers cultural factors and builds trust in the relationship with both Aisyah and Mdm Salmah.",
+        "glossary": [
+          {
+            "term": "Ecological systems",
+            "definition": "A framework that understands individuals within the context of their environments, including family, community, and societal influences."
+          },
+          {
+            "term": "Strengths-based practice",
+            "definition": "An approach that focuses on the inherent strengths of individuals and families, empowering them to leverage these strengths in overcoming challenges."
+          },
+          {
+            "term": "Engagement",
+            "definition": "The process of building a trusting relationship with clients to facilitate their involvement in services and decision-making."
+          },
+          {
+            "term": "Case coordination",
+            "definition": "Organizing and managing the services and supports a client needs across multiple agencies to ensure a coherent and effective response."
+          }
+        ],
+        "scenario": "Nur Aisyah, 14, is in Secondary 2 at a neighbourhood school in Woodlands. She has not attended school for five months. Her parents separated at the start of the year; her father has moved to his parents' flat and sees the children irregularly, and her mother, Mdm Salmah, works shifts at a logistics hub and relies on Aisyah to look after her two brothers, aged 8 and 10, after school. The school's attendance follow-up brought the family to the family service centre, and the school counsellor reports that Aisyah was a strong student with a close group of friends until last year.\n\nMdm Salmah did not attend the first two appointments. When you reach her by phone she says that the school has already made up its mind about her family, that a previous agency worker talked to her as if she were a bad mother, and that she does not want more people involved. Aisyah, in her one conversation with you so far, said that she cannot go back because she is behind, that the teachers will ask questions, and that her mother needs her at home; she also said, without prompting, that she misses her friends and used to want to be a nurse.\n\nYou are the school social worker at the family service centre, taking on youth cases for the first time, and you have been asked by the school to coordinate a plan for her return. The people around Aisyah include her mother, her father and his parents, her brothers, her friends and a form teacher she trusted, the school counsellor, and a neighbourhood youth programme that runs after-school homework help. The school will hold a case discussion in two weeks and wants to know what the family service centre proposes, who will do what, and how progress will be tracked.",
+        "modelAnswers": [
+          "To assess Aisyah's needs, I would start by mapping her ecological systems, understanding how her individual feelings, family dynamics, peer relationships, and community resources contribute to her school refusal. A private and welcoming space for conversation, where Aisyah feels safe to express her thoughts about school and her home responsibilities, is paramount. Doing so ensures that her voice is central to the assessment process, allowing me to identify emotional and situational factors affecting her schooling.",
+          "Engagement comes before any plan, and with Mdm Salmah it has to be rebuilt after a bad experience. Meet where she chooses, at home or at a void deck coffee shop near the logistics hub, at a time between shifts, and go alone rather than with school staff. Ask first about what has happened to the family since the separation and what she is managing each day, not about attendance; let her describe the previous worker and say plainly that you heard it. Say what you can do (help with the boys' afternoons, be the one person who speaks to the school for her, keep her informed before anyone else) and what you cannot promise (that the school will drop its follow-up, or that Aisyah will be back within a week). Agree one small, visible step at the first meeting, such as a call to the youth programme about the brothers, and do it before the next contact. Engagement is tested by whether she attends the next appointment, so make it easy: her choice of place and time, a reminder the day before, and no surprises about who will be there.",
+          "Strengths-based practice starts from what Aisyah and her family already do well rather than from the absence at school. The scenario names several strengths: Aisyah was a strong student until last year, she has a close group of friends and a form teacher she trusted, she wants to be a nurse, and she has been caring reliably for her brothers for months; Mdm Salmah is holding two jobs and a household together and came to the phone despite her experience with the previous worker. Each becomes a step. Her academic record and nursing goal frame the return as catching up towards something she wants, so the plan begins with the subjects she needs for that path. Her friends and the form teacher are the first contacts back at school, before any meeting with senior staff. Her competence with her brothers is acknowledged and then relieved: after-school homework help at the youth programme for the boys frees her afternoons and removes the reason she gives for staying home. Mdm Salmah's determination is named as the family's main resource, and she is asked what she would need, not told what she has done wrong.",
+          "Case coordination means one plan, one coordinator and clear roles. You coordinate. The school case discussion includes Mdm Salmah (invited by you, with the option of joining by phone if her shift does not allow), the form teacher, the school counsellor, a year head with authority over attendance and assessment arrangements, the youth programme coordinator, and you; Aisyah is consulted before and after rather than seated across from six adults, unless she asks to attend. The graduated return plan runs over six weeks: week one, two half-days a week in the subjects she is strongest in, meeting the form teacher on arrival; weeks two and three, three days; weeks four to six, full days, with catch-up assignments in place of missed tests rather than on top of them. Roles: the form teacher is her daily contact at school; the counsellor sees her weekly; the youth programme takes the brothers three afternoons a week; the father is asked, through you, to cover one afternoon; Mdm Salmah confirms the routine at home and tells you, not the school, when something goes wrong. Progress is tracked with three measures shared with the family: days attended against the plan, Aisyah's own weekly rating of how school felt, and whether the brothers' arrangement held. The plan is reviewed at four weeks with everyone who attended the case discussion, and any change to it goes through you so that the family hears one message."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "How can you assess Aisyah's needs while ensuring she feels safe and heard in the process?",
+          "What strategies would you employ to engage Mdm Salmah, considering her distrust of services, and how might this affect your approach?",
+          "In what ways can you incorporate a strengths-based framework to support Aisyah and Mdm Salmah in this situation?",
+          "What would case coordination look like here: who takes part in the school's case discussion, what a graduated return-to-school plan would contain, who does what, and how progress would be tracked?"
+        ]
+      },
+      "inviteToken": "walk-social-work-school-refusal-b",
+      "createdAt": "2026-09-23T07:38:35.817Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    }
+  ],
+  "events": [
+    {
+      "timestampIso": "2026-09-23T15:36:14.898Z",
+      "variantId": null,
+      "eventType": "created",
+      "metadata": {
+        "difficulty": "advanced",
+        "discipline": "social_work"
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:36:15.657Z",
+      "variantId": null,
+      "eventType": "generation_started",
+      "metadata": null
+    },
+    {
+      "timestampIso": "2026-09-23T15:36:27.858Z",
+      "variantId": null,
+      "eventType": "generation_completed",
+      "metadata": {
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:sw-pedagogy-framing (0.547)",
+          "corpus:sw-case-management (0.455)",
+          "corpus:sw-child-protection (0.418)",
+          "corpus:sw-family-systems (0.413)",
+          "corpus:sw-community-practice (0.405)"
+        ],
+        "scenarioLen": 1768,
+        "groundingUsed": 0,
+        "questionCount": 4,
+        "groundingTotal": 5,
+        "conceptsCovered": [
+          "engagement"
+        ],
+        "conceptsMissing": [
+          "ecological systems",
+          "strengths-based practice",
+          "case coordination"
+        ],
+        "retrievalScores": [
+          {
+            "id": "sw-pedagogy-framing",
+            "weak": false,
+            "score": 0.547
+          },
+          {
+            "id": "sw-case-management",
+            "weak": false,
+            "score": 0.455
+          },
+          {
+            "id": "sw-child-protection",
+            "weak": false,
+            "score": 0.418
+          },
+          {
+            "id": "sw-family-systems",
+            "weak": false,
+            "score": 0.413
+          },
+          {
+            "id": "sw-community-practice",
+            "weak": false,
+            "score": 0.405
+          }
+        ],
+        "groundingCountable": 4
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:37:34.138Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "scenario": -72
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "scenario"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:37:42.730Z",
+      "variantId": null,
+      "eventType": "section_regenerated",
+      "metadata": {
+        "section": "modelAnswers",
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:sw-pedagogy-framing (0.547)",
+          "corpus:sw-case-management (0.455)",
+          "corpus:sw-child-protection (0.418)",
+          "corpus:sw-family-systems (0.413)",
+          "corpus:sw-community-practice (0.405)"
+        ],
+        "editorNote": "Use the names and details of the scenario (Aisyah, Mdm Salmah, the father, the brothers, the form teacher, the school counsellor, the youth programme). Use the exact terms ecological systems, strengths-based practice, engagement and case coordination. In the assessment answer map Aisyah's ecological systems at the individual, family, school, peer and community levels and say what each contributes to the school refusal. In the engagement answer say concretely how to engage a mother who distrusts services: where to meet, what to ask first, what to promise and not promise. In the strengths answer apply strengths-based practice by naming the strengths already in the scenario and turning each into a step. In the coordination answer describe case coordination: who is at the school case discussion, a graduated return-to-school plan, who does what, how progress is tracked, and a review date. Do not state any legal duty or cite any law.",
+        "missingConceptsPassed": [
+          "ecological systems",
+          "strengths-based practice",
+          "case coordination"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:38:14.851Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "modelAnswers": 1405,
+          "discussionQuestions": 78
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "discussionQuestions",
+          "modelAnswers"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:38:15.586Z",
+      "variantId": null,
+      "eventType": "approved",
+      "metadata": {
+        "capped": false,
+        "authoringSeconds": 120
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:38:35.822Z",
+      "variantId": "b7022488-4aa3-49dd-8ffb-64d98a4a639a",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: family service centre",
+        "conceptsMissing": [
+          "engagement"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:38:35.825Z",
+      "variantId": "774d3452-f8e4-4641-acf7-dc1969bcddbd",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: school social work",
+        "conceptsMissing": [
+          "engagement"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:39:22.002Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "modelAnswers": 541
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "modelAnswers"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:39:39.774Z",
+      "variantId": "b7022488-4aa3-49dd-8ffb-64d98a4a639a",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: family service centre",
+        "editorNote": "Keep the engagement answer's content: the variant must still describe engagement with the mother explicitly.",
+        "regenerated": true,
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:39:58.134Z",
+      "variantId": "774d3452-f8e4-4641-acf7-dc1969bcddbd",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: school social work",
+        "editorNote": "Keep the engagement answer's content: the variant must still describe engagement with the mother explicitly.",
+        "regenerated": true,
+        "conceptsMissing": []
+      }
+    }
+  ],
+  "comparison": null
+}

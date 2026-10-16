@@ -1,0 +1,395 @@
+{
+  "note": "Walkthrough case \"Marketing: churn\" of demo/walkthrough/briefs.json, exported from the hosted instance's database: the case row, its team variants, its event log and, where one was run, its cached contrastive comparison. Each team link (inviteToken) is replaced by a fixed placeholder; nothing else is changed. Loaded by scripts/seed-demo.ts.",
+  "case": {
+    "id": "173ab236-71eb-411a-b77a-bf6d42d50084",
+    "instructorId": "admin",
+    "discipline": "marketing",
+    "learningObjective": "Recommend how a meal-kit subscription service should respond to rising cancellations after its first price increase, by estimating what a retained customer is worth and comparing retention offers against a change in pricing.",
+    "difficulty": "advanced",
+    "mustCoverConcepts": [
+      "customer lifetime value",
+      "churn rate",
+      "retention strategy",
+      "pricing strategy"
+    ],
+    "targetLearnerProfile": {
+      "role": "Head of customer marketing",
+      "industry": "Direct-to-consumer food subscription",
+      "priorKnowledge": "Manages CRM campaigns and reads dashboards; comfortable with spreadsheets"
+    },
+    "contentJson": {
+      "rubric": "Analysis quality (30%): Excellent responses clearly identify relevant data sources and articulate how they inform strategic choices. Customer insight (25%): Excellent insights reflect a deep understanding of customer motivations and preferences beyond basic demographics. Strategic coherence (25%): Excellent strategies align with brand positioning and clearly weigh trade-offs. Executional realism (20%): Excellent plans are actionable, considering operational capabilities and market dynamics.",
+      "glossary": [
+        {
+          "term": "Customer Lifetime Value (LTV)",
+          "definition": "LTV is the total revenue a business can reasonably expect from a single customer account throughout the business relationship, factoring in retention rates and profit margins."
+        },
+        {
+          "term": "Churn Rate",
+          "definition": "Churn rate is the percentage of subscribers who discontinue their subscription over a specific time period, indicating customer retention effectiveness."
+        },
+        {
+          "term": "Retention Strategy",
+          "definition": "A retention strategy encompasses various actions and offers designed to keep existing customers from canceling their subscriptions and to enhance their overall satisfaction."
+        },
+        {
+          "term": "Pricing Strategy",
+          "definition": "Pricing strategy refers to the method of setting prices for products or services to maximize profitability while considering market demand, competition, and customer perceptions."
+        },
+        {
+          "term": "Tiered Pricing Model",
+          "definition": "A tiered pricing model offers different levels of product or service features at varying price points, allowing customers to choose based on their needs and budget."
+        }
+      ],
+      "scenario": "MealMagic is a Singapore meal-kit subscription service that delivers three dinners for two each week to dual-income households aged 30 to 45. It grew quickly at S$59 a week, a price that left a contribution margin of only about S$7 a week, or S$30 a month, per subscriber. Monthly churn ran at 6%, so the average subscriber stayed about 17 months and was worth about S$500 in lifetime contribution.\n\nThree months ago MealMagic raised the price to S$69 a week. The extra S$10 goes almost entirely to margin, which is now about S$73 a month per subscriber. Cancellations rose at once: monthly churn is 14% and has stayed there for two months. Exit surveys say the new price does not match the value subscribers perceive, and two competitors, CookEasy and GourmetBox, are targeting MealMagic's subscribers with introductory promotions and loyalty discounts.\n\nSarah, the head of customer marketing, must recommend a response before the year-end peak season. The options on the table are: a retention offer of S$10 a week off for twelve weeks, sent to subscribers whose behaviour signals cancellation risk (skipped deliveries, fewer recipe ratings, visits to the cancellation page); a return to S$59 for all subscribers; or a tiered pricing model with a two-meal plan at S$49, the current three-meal plan at S$69 and a premium plan at S$85. Finance has asked her to show what each option does to customer lifetime value and to monthly contribution, not just to the churn rate.\n\nThe CRM holds twelve months of order, skip, rating and cancellation data for about 20,000 subscribers, and the analytics team can build a churn-risk score within two weeks. Sarah needs to decide which option to recommend, what would have to be true for it to pay back, and how the team will know within a quarter whether it is working.",
+      "modelAnswers": [
+        "To compute customer lifetime value (LTV) before the price rise, use S$30 / 0.06 = S$500. After the rise, it is S$73 / 0.14 = S$521.43. The LTV increased slightly, indicating that while current churn is higher, the new price generates more margin per retained subscriber. This suggests that retention must be prioritized to realize the potential of the new pricing.",
+        "The offer costs S$10 a week for twelve weeks, S$120 per subscriber who takes it, and during those weeks the margin falls back from about S$73 to about S$30 a month. It pays back only through subscribers who would otherwise have cancelled: a subscriber who would have stayed anyway is pure cost, which is why the offer goes to risk-scored subscribers rather than to everyone. Break-even can be stated in months or in churn. In months: after the offer ends the subscriber must stay about 120 / 73 = 1.6 months longer than they otherwise would. In churn: at 14% monthly churn the expected lifetime is 1 / 0.14 = 7.1 months and lifetime value is S$521; if the offer brings the targeted group's churn down to X, the extra contribution is roughly 73 x (1/X - 7.1) - 120, which is positive when 1/X exceeds 8.8 months, that is when X falls below about 11.4%. Risk-scored subscribers churn faster than the 14% average, so for them the same logic gives a proportionally larger cut, and the redemption data will show quickly whether the offer reaches that bar.",
+        "Returning to S$59 for everyone gives back the old economics: about S$30 a month at 6% churn, a lifetime value of S$500, and monthly contribution of about 20,000 x 30 = S$600,000 on the current base. Staying at S$69 gives S$73 a month and S$521 of lifetime value, and about S$1.46 million of monthly contribution today, but at 14% churn the base shrinks by a seventh every month unless acquisition replaces it, so the rollback wins only if churn would otherwise stay at 14%. The tiered model keeps S$69 for subscribers who accept it, gives price-sensitive households a two-meal plan at S$49 (about S$48 a month of margin if the margin per meal is unchanged) instead of cancelling, and adds a premium plan at S$85 (about S$140 a month). Whether it beats the rollback depends on three assumptions to state and then test: the share of current subscribers who trade down rather than stay at S$69, the churn rate of each tier, and whether the two-meal plan is cheap enough to fulfil at the same margin per meal. If fewer than about half of the price-sensitive subscribers trade down and churn returns to near 6%, the tiered model gives higher contribution than the rollback while keeping the higher price in the market.",
+        "CRM data can identify customers showing risk signs, such as skipped deliveries or low engagement. By combining these signals with churn-risk scores, MealMagic can effectively target those most likely to cancel and tailor specific retention offers to increase their likelihood of remaining subscribed, thus enhancing retention outcomes.",
+        "Track, for the whole base and for the targeted group separately: monthly churn, with a target of returning below 9% within the quarter; lifetime value from margin divided by churn, with a target above S$600; monthly contribution per subscriber and in total, so that a churn improvement bought with discounts is visible; offer redemption and 90-day retention after the offer ends, with a target that at least 70% of redeemers are still subscribed; and the share of cancellations citing price in exit surveys. A control group of risk-scored subscribers who do not receive the offer is needed to attribute any change to the offer rather than to the season."
+      ],
+      "schemaVersion": 1,
+      "discussionQuestions": [
+        "How can you compute the customer lifetime value before and after the price rise, and what do these figures suggest about MealMagic's pricing strategy?",
+        "What is the cost per subscriber for the twelve-week retention offer, and what reduction in churn is needed for this strategy to be financially viable?",
+        "How does returning to S$59 compare with implementing a tiered pricing model in terms of contribution margins and expected churn, and what assumptions underlie your analysis?",
+        "How can CRM data and a churn-risk score be utilized to refine MealMagic's retention strategy and effectively target at-risk customers?",
+        "What key performance indicators should Sarah track over the next quarter to evaluate the success of the selected retention strategy against pricing changes?"
+      ]
+    },
+    "phasesJson": [
+      {
+        "id": "mkt-situation",
+        "label": "Situation & market scoping",
+        "order": 0,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "1. Situation & market scoping",
+        "studentPrompt": "Write a one-paragraph diagnosis: what is **actually happening** in the market for this brand? Distinguish symptoms (e.g. share decline) from underlying causes (e.g. customer-need shift, competitor entry, channel change). List your clarifying questions.",
+        "disciplineHint": "Write the symptom first, then the candidate cause, then what you would check to tell them apart."
+      },
+      {
+        "id": "mkt-customer",
+        "label": "Customer / segment discovery",
+        "order": 1,
+        "activities": [
+          "clarifying_questions",
+          "notes"
+        ],
+        "studentTitle": "2. Customer / segment discovery",
+        "studentPrompt": "Who is the target customer, and what is their **job-to-be-done**? Define the relevant segment(s) using more than demographics. What customer evidence in the case supports your segment definition, and what evidence is missing?",
+        "disciplineHint": "Define the segment so that a different message would work better for it, and say what that message is."
+      },
+      {
+        "id": "mkt-strategy",
+        "label": "Strategy formulation",
+        "order": 2,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "3. Strategy formulation",
+        "studentPrompt": "Articulate a **positioning statement** in the form: *For [segment], [brand] is the [category frame] that [unique benefit] because [reason to believe]*. List 2–3 strategic options the brand could pursue, and the trade-off each one accepts.",
+        "disciplineHint": "Read your positioning against a competitor. If it would fit them too, add the claim only this brand can make."
+      },
+      {
+        "id": "mkt-tactical",
+        "label": "Channel & tactical plan",
+        "order": 3,
+        "activities": [
+          "notes"
+        ],
+        "studentTitle": "4. Channel & tactical plan",
+        "studentPrompt": "Translate your strategy into specifics: which **channels**, what **creative direction**, what **price/promotion** moves, and what **budget allocation** would you propose? What's explicitly *not* in scope and why?",
+        "disciplineHint": "Name what you are cutting from scope, and say what would have to change for you to fund it."
+      },
+      {
+        "id": "mkt-metrics",
+        "label": "Metrics & KPIs",
+        "order": 4,
+        "activities": [
+          "notes",
+          "answer_attempt"
+        ],
+        "studentTitle": "5. Metrics & KPIs",
+        "studentPrompt": "How will you know your plan is working, and how will you know it isn't? Define **2–3 leading indicators** (early signals) and **1–2 lagging KPIs** (outcomes). What would cause you to abandon the plan, and at what threshold?",
+        "disciplineHint": "Write the threshold that would make you stop the plan, and write it before launch."
+      }
+    ],
+    "currentPhaseId": null,
+    "status": "approved",
+    "authoringStartedAt": "2026-09-23T07:33:10.092Z",
+    "authoringApprovedAt": "2026-09-23T07:35:44.237Z",
+    "authoringSecondsLogged": 154,
+    "regenerationCount": 1,
+    "createdAt": "2026-09-23T07:33:10.092Z",
+    "updatedAt": "2026-09-23T07:35:44.237Z"
+  },
+  "variants": [
+    {
+      "id": "f363e45b-1c62-4ae6-8cf7-e4635ca720b4",
+      "learnerProfileJson": {
+        "role": "Head of customer marketing",
+        "industry": "Meal-kit subscription",
+        "teamSize": 4,
+        "displayName": "Team A: meal-kit service",
+        "priorKnowledge": "Manages CRM campaigns and reads dashboards; comfortable with spreadsheets"
+      },
+      "contentJson": {
+        "rubric": "Analysis quality (30%): Excellent responses clearly identify relevant data sources and articulate how they inform strategic choices. Customer insight (25%): Excellent insights reflect a deep understanding of customer motivations and preferences beyond basic demographics. Strategic coherence (25%): Excellent strategies align with brand positioning and clearly weigh trade-offs. Executional realism (20%): Excellent plans are actionable, considering operational capabilities and market dynamics.",
+        "glossary": [
+          {
+            "term": "Customer Lifetime Value (LTV)",
+            "definition": "LTV is the total revenue a business can reasonably expect from a single customer account throughout the business relationship, factoring in retention rates and profit margins."
+          },
+          {
+            "term": "Churn Rate",
+            "definition": "Churn rate is the percentage of subscribers who discontinue their subscription over a specific time period, indicating customer retention effectiveness."
+          },
+          {
+            "term": "Retention Strategy",
+            "definition": "A retention strategy encompasses various actions and offers designed to keep existing customers from canceling their subscriptions and to enhance their overall satisfaction."
+          },
+          {
+            "term": "Pricing Strategy",
+            "definition": "Pricing strategy refers to the method of setting prices for products or services to maximize profitability while considering market demand, competition, and customer perceptions."
+          },
+          {
+            "term": "Tiered Pricing Model",
+            "definition": "A tiered pricing model offers different levels of product or service features at varying price points, allowing customers to choose based on their needs and budget."
+          }
+        ],
+        "scenario": "MealMagic is a Singapore meal-kit subscription service that delivers three dinners for two each week to dual-income households aged 30 to 45. It grew quickly at S$59 a week, a price that left a contribution margin of only about S$7 a week, or S$30 a month, per subscriber. Monthly churn ran at 6%, so the average subscriber stayed about 17 months and was worth about S$500 in lifetime contribution.\n\nThree months ago MealMagic raised the price to S$69 a week. The extra S$10 goes almost entirely to margin, which is now about S$73 a month per subscriber. Cancellations rose at once: monthly churn is 14% and has stayed there for two months. Exit surveys say the new price does not match the value subscribers perceive, and two competitors, CookEasy and GourmetBox, are targeting MealMagic's subscribers with introductory promotions and loyalty discounts.\n\nYou are the head of customer marketing at MealMagic, working to the chief marketing officer, Sarah, who must recommend a response before the year-end peak season. The options on the table are: a retention offer of S$10 a week off for twelve weeks, sent to subscribers whose behaviour signals cancellation risk (skipped deliveries, fewer recipe ratings, visits to the cancellation page); a return to S$59 for all subscribers; or a tiered pricing model with a two-meal plan at S$49, the current three-meal plan at S$69 and a premium plan at S$85. Finance has asked her to show what each option does to customer lifetime value and to monthly contribution, not just to the churn rate.\n\nThe CRM holds twelve months of order, skip, rating and cancellation data for about 20,000 subscribers, and the analytics team can build a churn-risk score within two weeks. Sarah needs to decide which option to recommend, what would have to be true for it to pay back, and how the team will know within a quarter whether it is working.",
+        "modelAnswers": [
+          "To compute customer lifetime value (LTV) before the price rise, use S$30 / 0.06 = S$500. After the rise, it is S$73 / 0.14 = S$521.43. The LTV increased slightly, indicating that while current churn is higher, the new price generates more margin per retained subscriber. This suggests that retention must be prioritized to realize the potential of the new pricing.",
+          "The offer costs S$10 a week for twelve weeks, S$120 per subscriber who takes it, and during those weeks the margin falls back from about S$73 to about S$30 a month. It pays back only through subscribers who would otherwise have cancelled: a subscriber who would have stayed anyway is pure cost, which is why the offer goes to risk-scored subscribers rather than to everyone. Break-even can be stated in months or in churn. In months: after the offer ends the subscriber must stay about 120 / 73 = 1.6 months longer than they otherwise would. In churn: at 14% monthly churn the expected lifetime is 1 / 0.14 = 7.1 months and lifetime value is S$521; if the offer brings the targeted group's churn down to X, the extra contribution is roughly 73 x (1/X - 7.1) - 120, which is positive when 1/X exceeds 8.8 months, that is when X falls below about 11.4%. Risk-scored subscribers churn faster than the 14% average, so for them the same logic gives a proportionally larger cut, and the redemption data will show quickly whether the offer reaches that bar.",
+          "Returning to S$59 for everyone gives back the old economics: about S$30 a month at 6% churn, a lifetime value of S$500, and monthly contribution of about 20,000 x 30 = S$600,000 on the current base. Staying at S$69 gives S$73 a month and S$521 of lifetime value, and about S$1.46 million of monthly contribution today, but at 14% churn the base shrinks by a seventh every month unless acquisition replaces it, so the rollback wins only if churn would otherwise stay at 14%. The tiered model keeps S$69 for subscribers who accept it, gives price-sensitive households a two-meal plan at S$49 (about S$48 a month of margin if the margin per meal is unchanged) instead of cancelling, and adds a premium plan at S$85 (about S$140 a month). Whether it beats the rollback depends on three assumptions to state and then test: the share of current subscribers who trade down rather than stay at S$69, the churn rate of each tier, and whether the two-meal plan is cheap enough to fulfil at the same margin per meal. If fewer than about half of the price-sensitive subscribers trade down and churn returns to near 6%, the tiered model gives higher contribution than the rollback while keeping the higher price in the market.",
+          "CRM data can identify customers showing risk signs, such as skipped deliveries or low engagement. By combining these signals with churn-risk scores, MealMagic can effectively target those most likely to cancel and tailor specific retention offers to increase their likelihood of remaining subscribed, thus enhancing retention outcomes.",
+          "Track, for the whole base and for the targeted group separately: monthly churn, with a target of returning below 9% within the quarter; lifetime value from margin divided by churn, with a target above S$600; monthly contribution per subscriber and in total, so that a churn improvement bought with discounts is visible; offer redemption and 90-day retention after the offer ends, with a target that at least 70% of redeemers are still subscribed; and the share of cancellations citing price in exit surveys. A control group of risk-scored subscribers who do not receive the offer is needed to attribute any change to the offer rather than to the season."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "How can you compute the customer lifetime value before and after the price rise, and what do these figures suggest about MealMagic's pricing strategy?",
+          "What is the cost per subscriber for the twelve-week retention offer, and what reduction in churn is needed for this strategy to be financially viable?",
+          "How does returning to S$59 compare with implementing a tiered pricing model in terms of contribution margins and expected churn, and what assumptions underlie your analysis?",
+          "How can CRM data and a churn-risk score be utilized to refine MealMagic's retention strategy and effectively target at-risk customers?",
+          "What key performance indicators should Sarah track over the next quarter to evaluate the success of the selected retention strategy against pricing changes?"
+        ]
+      },
+      "inviteToken": "walk-marketing-churn-a",
+      "createdAt": "2026-09-23T07:36:02.141Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    },
+    {
+      "id": "330acbd3-2fc9-4247-8499-7c7cc99c66ae",
+      "learnerProfileJson": {
+        "role": "Membership manager",
+        "industry": "Boutique fitness studio with a class-pass app",
+        "teamSize": 4,
+        "displayName": "Team B: fitness studio app",
+        "priorKnowledge": "Manages CRM campaigns and reads dashboards; comfortable with spreadsheets"
+      },
+      "contentJson": {
+        "rubric": "Analysis quality (30%): Excellent responses clearly identify relevant data sources and articulate how they inform strategic choices. Customer insight (25%): Excellent insights reflect a deep understanding of customer motivations and preferences beyond basic demographics. Strategic coherence (25%): Excellent strategies align with brand positioning and clearly weigh trade-offs. Executional realism (20%): Excellent plans are actionable, considering operational capabilities and market dynamics.",
+        "glossary": [
+          {
+            "term": "Customer Lifetime Value (LTV)",
+            "definition": "LTV is the total revenue a business can reasonably expect from a single customer account throughout the business relationship, factoring in retention rates and profit margins."
+          },
+          {
+            "term": "Churn Rate",
+            "definition": "Churn rate is the percentage of subscribers who discontinue their subscription over a specific time period, indicating customer retention effectiveness."
+          },
+          {
+            "term": "Retention Strategy",
+            "definition": "A retention strategy encompasses various actions and offers designed to keep existing customers from canceling their subscriptions and to enhance their overall satisfaction."
+          },
+          {
+            "term": "Pricing Strategy",
+            "definition": "Pricing strategy refers to the method of setting prices for products or services to maximize profitability while considering market demand, competition, and customer perceptions."
+          },
+          {
+            "term": "Tiered Pricing Model",
+            "definition": "A tiered pricing model offers different levels of product or service features at varying price points, allowing customers to choose based on their needs and budget."
+          }
+        ],
+        "scenario": "FitPass is a boutique fitness studio in Singapore that offers a class-pass app for members to book and attend fitness classes across various locations. The studio has experienced rapid growth with a monthly membership fee of S$59, which has provided a contribution margin of about S$7 a month per member. The monthly churn rate is 6%, meaning the average member stays for about 17 months and is worth approximately S$500 in lifetime contribution.\n\nThree months ago, FitPass raised the price to S$69 a month. This S$10 increase has significantly boosted the contribution margin to about S$73 a month per member. However, cancellations surged immediately, with the monthly churn rate increasing to 14% and remaining at that level for the past two months. Exit surveys indicate that the new price does not align with the value members perceive, and two competitors, FlexiFit and TotalWellness, are now targeting FitPass's members with introductory promotions and loyalty discounts.\n\nAs the membership manager, you must recommend a response before the year-end peak season. The options on the table include: a retention offer of S$10 a month off for twelve weeks, targeted at members whose behavior signals cancellation risk (such as skipped classes, fewer class ratings, or visits to the cancellation page); a rollback to S$59 for all members; or a tiered pricing model with a two-class plan at S$49, the current three-class plan at S$69, and a premium plan at S$85. The finance director has asked you to evaluate the impact of each option on customer lifetime value and monthly contribution, not just on churn rate.\n\nThe CRM system holds twelve months of data on class attendance, skipped classes, ratings, and cancellations for about 20,000 members, and the analytics team can develop a churn-risk score within two weeks. You need to determine which option to recommend, what conditions must be met for it to be effective, and how the team will assess its success within a quarter.",
+        "modelAnswers": [
+          "To compute customer lifetime value (LTV) before the price rise, use S$7 / 0.06 = S$116.67. After the rise, it is S$73 / 0.14 = S$521.43. The LTV increased significantly, indicating that while current churn is higher, the new price generates more margin per retained member. This suggests that retention must be prioritized to realize the potential of the new pricing.",
+          "The offer costs S$10 a month for twelve months, totaling S$120 per member who takes it. During those months, the margin falls back from about S$73 to about S$30 a month. It pays back only through members who would otherwise have cancelled: a member who would have stayed anyway is pure cost, which is why the offer targets risk-scored members rather than all members. Break-even can be stated in months or in churn. In months: after the offer ends, the member must stay about 120 / 73 = 1.64 months longer than they otherwise would. In churn: at 14% monthly churn, the expected lifetime is 1 / 0.14 = 7.14 months and lifetime value is S$521; if the offer brings the targeted group's churn down to X, the extra contribution is roughly 73 x (1/X - 7.14) - 120, which is positive when 1/X exceeds 8.8 months, that is when X falls below about 11.4%. Risk-scored members churn faster than the 14% average, so for them the same logic gives a proportionally larger cut, and the redemption data will show quickly whether the offer reaches that bar.",
+          "Returning to S$59 for everyone gives back the old economics: about S$7 a month at 6% churn, a lifetime value of S$500, and monthly contribution of about 20,000 x 7 = S$140,000 on the current base. Staying at S$69 gives S$73 a month and S$521 of lifetime value, and about S$1.46 million of monthly contribution today, but at 14% churn the base shrinks by a seventh every month unless acquisition replaces it, so the rollback wins only if churn would otherwise stay at 14%. The tiered model keeps S$69 for members who accept it, gives price-sensitive households a two-class plan at S$49 (about S$48 a month of margin if the margin per class is unchanged) instead of cancelling, and adds a premium plan at S$85 (about S$140 a month). Whether it beats the rollback depends on three assumptions to state and then test: the share of current members who trade down rather than stay at S$69, the churn rate of each tier, and whether the two-class plan is cheap enough to fulfil at the same margin per class. If fewer than about half of the price-sensitive members trade down and churn returns to near 6%, the tiered model gives higher contribution than the rollback while keeping the higher price in the market.",
+          "CRM data can identify members showing risk signs, such as skipped classes or low engagement. By combining these signals with churn-risk scores, FitPass can effectively target those most likely to cancel and tailor specific retention offers to increase their likelihood of remaining subscribed, thus enhancing retention outcomes.",
+          "Track, for the whole base and for the targeted group separately: monthly churn, with a target of returning below 9% within the quarter; lifetime value from margin divided by churn, with a target above S$600; monthly contribution per member and in total, so that a churn improvement bought with discounts is visible; offer redemption and 90-day retention after the offer ends, with a target that at least 70% of redeemers are still subscribed; and the share of cancellations citing price in exit surveys. A control group of risk-scored members who do not receive the offer is needed to attribute any change to the offer rather than to the season."
+        ],
+        "schemaVersion": 1,
+        "discussionQuestions": [
+          "How can you compute the customer lifetime value before and after the price rise, and what do these figures suggest about FitPass's pricing strategy?",
+          "What is the cost per member for the twelve-week retention offer, and what reduction in churn is needed for this strategy to be financially viable?",
+          "How does returning to S$59 compare with implementing a tiered pricing model in terms of contribution margins and expected churn, and what assumptions underlie your analysis?",
+          "How can CRM data and a churn-risk score be utilized to refine FitPass's retention strategy and effectively target at-risk members?",
+          "What key performance indicators should you track over the next quarter to evaluate the success of the selected retention strategy against pricing changes?"
+        ]
+      },
+      "inviteToken": "walk-marketing-churn-b",
+      "createdAt": "2026-09-23T07:36:02.647Z",
+      "expiresAt": null,
+      "firstViewedAt": null,
+      "lastViewedAt": null,
+      "viewCount": 0
+    }
+  ],
+  "events": [
+    {
+      "timestampIso": "2026-09-23T15:33:10.094Z",
+      "variantId": null,
+      "eventType": "created",
+      "metadata": {
+        "difficulty": "advanced",
+        "discipline": "marketing"
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:33:10.884Z",
+      "variantId": null,
+      "eventType": "generation_started",
+      "metadata": null
+    },
+    {
+      "timestampIso": "2026-09-23T15:33:24.368Z",
+      "variantId": null,
+      "eventType": "generation_completed",
+      "metadata": {
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:mkt-churn-retention (0.566)",
+          "corpus:mkt-clv (0.474)",
+          "corpus:mkt-cac-ltv (0.444)",
+          "corpus:mkt-pedagogy-framing (0.434)",
+          "corpus:mkt-funnel (0.419)"
+        ],
+        "scenarioLen": 2655,
+        "groundingUsed": 1,
+        "questionCount": 5,
+        "groundingTotal": 5,
+        "conceptsCovered": [
+          "customer lifetime value",
+          "churn rate",
+          "retention strategy",
+          "pricing strategy"
+        ],
+        "conceptsMissing": [],
+        "retrievalScores": [
+          {
+            "id": "mkt-churn-retention",
+            "weak": false,
+            "score": 0.566
+          },
+          {
+            "id": "mkt-clv",
+            "weak": false,
+            "score": 0.474
+          },
+          {
+            "id": "mkt-cac-ltv",
+            "weak": false,
+            "score": 0.444
+          },
+          {
+            "id": "mkt-pedagogy-framing",
+            "weak": false,
+            "score": 0.434
+          },
+          {
+            "id": "mkt-funnel",
+            "weak": false,
+            "score": 0.419
+          }
+        ],
+        "groundingCountable": 4
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:34:08.719Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "scenario": -847
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "scenario"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:34:14.808Z",
+      "variantId": null,
+      "eventType": "section_regenerated",
+      "metadata": {
+        "section": "discussionQuestions",
+        "retrieval": [
+          "embedding:text-embedding-3-small",
+          "corpus:mkt-churn-retention (0.566)",
+          "corpus:mkt-clv (0.474)",
+          "corpus:mkt-cac-ltv (0.444)",
+          "corpus:mkt-pedagogy-framing (0.434)",
+          "corpus:mkt-funnel (0.419)"
+        ],
+        "editorNote": "This is an advanced case, so the questions must require calculation and a decision. Write five questions and matching model answers using only the numbers in the scenario and S$ throughout: (1) compute customer lifetime value before and after the price rise from monthly contribution margin divided by monthly churn rate (S0 / 0.06 and S3 / 0.14) and interpret the comparison; (2) evaluate the twelve-week retention offer: its cost per subscriber and the reduction in churn among targeted subscribers needed for it to pay back; (3) compare a return to S9 with the tiered pricing model in terms of contribution and churn, stating the assumptions; (4) how to use the CRM data and a churn-risk score to target the retention strategy at the right segment; (5) which metrics and targets would show within a quarter whether the chosen option is working. Show arithmetic in the answers.",
+        "missingConceptsPassed": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:35:43.444Z",
+      "variantId": null,
+      "eventType": "edit_saved",
+      "metadata": {
+        "charDelta": {
+          "modelAnswers": 1720
+        },
+        "specChanged": false,
+        "phasesChanged": false,
+        "contentChanged": true,
+        "sectionsChanged": [
+          "modelAnswers"
+        ]
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:35:44.241Z",
+      "variantId": null,
+      "eventType": "approved",
+      "metadata": {
+        "capped": false,
+        "authoringSeconds": 154
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:36:02.651Z",
+      "variantId": "f363e45b-1c62-4ae6-8cf7-e4635ca720b4",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team A: meal-kit service",
+        "conceptsMissing": []
+      }
+    },
+    {
+      "timestampIso": "2026-09-23T15:36:02.655Z",
+      "variantId": "330acbd3-2fc9-4247-8499-7c7cc99c66ae",
+      "eventType": "variant_spawned",
+      "metadata": {
+        "team": "Team B: fitness studio app",
+        "conceptsMissing": []
+      }
+    }
+  ],
+  "comparison": null
+}
