@@ -9,6 +9,7 @@ import { formatDateTime } from "@/lib/format-date";
 import type { ConceptCoverageReport } from "@/lib/generation/generate-case";
 import { compareScenario, stripLeadingScenarioHeading } from "@/lib/text/diff-sentences";
 import { CARD } from "@/components/admin/styles";
+import { failureMessage, postForReply } from "@/components/model-reply";
 import { cn } from "@/lib/utils";
 
 interface VariantPreview {
@@ -360,14 +361,18 @@ function VariantRowView({
     setAssessing(true);
     setAssessError(null);
     try {
-      const res = await fetch(`/api/admin/cases/${caseId}/assess`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ variantId: v.id }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? data.error ?? `HTTP ${res.status}`);
-      setAssessment(data.assessment as Assessment);
+      const reply = await postForReply<{ assessment?: Assessment }>(
+        `/api/admin/cases/${caseId}/assess`,
+        { variantId: v.id },
+      );
+      if (!reply.ok || !reply.data.assessment) {
+        throw new Error(
+          reply.ok
+            ? "The assessment could not be read. Try again."
+            : failureMessage(reply, "No assessment was made."),
+        );
+      }
+      setAssessment(reply.data.assessment);
     } catch (e) {
       setAssessError(e instanceof Error ? e.message : "Assessment failed");
     } finally {
@@ -382,19 +387,18 @@ function VariantRowView({
     setRegenerating(true);
     setRegenMessage(null);
     try {
-      const res = await fetch(`/api/admin/cases/${caseId}/variants`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          regenerateVariantId: v.id,
-          editorNote: note === "" ? undefined : note,
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data.message ?? data.error ?? `HTTP ${res.status}`);
+      const reply = await postForReply<{ results?: unknown[] }>(
+        `/api/admin/cases/${caseId}/variants`,
+        { regenerateVariantId: v.id, editorNote: note === "" ? undefined : note },
+      );
+      if (!reply.ok) {
+        // A redraft that ended without a reply may still have been saved.
+        router.refresh();
+        throw new Error(
+          failureMessage(reply, "This team's variant is unchanged unless the page now shows a new draft."),
+        );
       }
-      const result = (data.results ?? [])[0] as
+      const result = (reply.data.results ?? [])[0] as
         | {
             status: string;
             message?: string;

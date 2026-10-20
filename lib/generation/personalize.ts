@@ -22,6 +22,8 @@ export interface PersonalizeInput {
   editorNote?: string;
   // Output cap for the model call; set by the public demo route only.
   maxTokens?: number;
+  // Stops the model call when the route's time limit for it passes.
+  abortSignal?: AbortSignal;
 }
 
 export async function personaliseCaseContent({
@@ -30,6 +32,7 @@ export async function personaliseCaseContent({
   override,
   editorNote,
   maxTokens,
+  abortSignal,
 }: PersonalizeInput): Promise<CaseContent> {
   const pack = getDisciplinePack(caseInput.discipline);
   const profile = caseInput.targetLearnerProfile;
@@ -155,6 +158,7 @@ export async function personaliseCaseContent({
     // approved case, so fidelity to the original matters more than variety.
     temperature: 0.5,
     maxTokens,
+    abortSignal,
   });
 
   return { schemaVersion: 1, ...normalizeOutput(object) };

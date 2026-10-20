@@ -58,6 +58,7 @@ import { Progress } from "./progress";
 import { ReadingsStrip } from "./readings";
 import { RetrievalStep, STAGE_MS } from "./retrieval-step";
 import { StepBanner } from "./step-banner";
+import { noAnswerMessage } from "@/components/model-reply";
 import {
   CONCEPT_MAX,
   DISCIPLINE_LABELS,
@@ -570,7 +571,9 @@ async function postJson<T>(url: string, body: unknown): Promise<ApiOutcome<T>> {
   return {
     ok: false,
     status,
-    message: serverMessage ?? (res.ok ? "The response could not be read." : `The request failed (HTTP ${status}).`),
+    message:
+      serverMessage ??
+      (res.ok ? "The response could not be read." : noAnswerMessage(status, "Nothing from this step was kept.")),
   };
 }
 

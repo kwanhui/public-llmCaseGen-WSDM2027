@@ -82,7 +82,7 @@ export async function regenerateSection({
   options = {},
 }: RegenerateSectionInput): Promise<RegenerateSectionResult> {
   const pack = getDisciplinePack(input.discipline);
-  const retrieval = await provider.retrieve(input);
+  const retrieval = await provider.retrieve(input, { abortSignal: options.abortSignal });
 
   const sectionInstructions = SECTION_INSTRUCTIONS[section];
   const noteBlock = editorNote
@@ -162,6 +162,7 @@ export async function regenerateSection({
     prompt: userPrompt,
     temperature: 0.8,
     maxTokens: options.maxTokens,
+    abortSignal: options.abortSignal,
   });
 
   // Filter to only the requested section so we never accidentally overwrite

@@ -14,6 +14,7 @@ import type {
   DifficultySignal,
 } from "@/lib/generation/generate-case";
 import { CARD, NOTE_FLAG, PILL_FLAG } from "@/components/admin/styles";
+import { failureMessage, postForReply } from "@/components/model-reply";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -279,22 +280,20 @@ export function StepEditor({
         await persist(content);
       }
       const trimmed = note.trim();
-      const res = await fetch(`/api/admin/cases/${caseId}/regenerate-section`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          section,
-          editorNote: trimmed === "" ? undefined : trimmed,
-        }),
-      });
-      if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
+      // The route replies with a message when it cannot regenerate the
+      // section; with no reply at all, the message says so in words.
+      const reply = await postForReply<{ contentJson: CaseContent }>(
+        `/api/admin/cases/${caseId}/regenerate-section`,
+        { section, editorNote: trimmed === "" ? undefined : trimmed },
+      );
+      if (!reply.ok || !reply.data.contentJson) {
         throw new Error(
-          j.message ??
-            `The server returned ${res.status}. This section is unchanged.`,
+          reply.ok
+            ? "The reply could not be read. This section is unchanged on screen; reload to see the saved text."
+            : failureMessage(reply, "This section is unchanged."),
         );
       }
-      const { contentJson } = (await res.json()) as { contentJson: CaseContent };
+      const { contentJson } = reply.data;
       setContent(contentJson);
       dirty.current = false;
       setHistory((h) => ({

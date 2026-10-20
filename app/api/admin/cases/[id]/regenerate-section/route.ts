@@ -11,6 +11,12 @@ import {
   CASE_SECTIONS,
   type CaseContent,
 } from "@/lib/generation/schema";
+import {
+  attemptSeconds,
+  describeAttempts,
+  runGenerationAttempts,
+  type Validation,
+} from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import type { CaseInput } from "@/lib/disciplines/types";
@@ -81,61 +87,65 @@ export async function POST(
   // The schema does not tie the two arrays together, so a regeneration of the
   // questions or the answers is also checked for one answer per question. A
   // draft that lost that pairing would reach the team links and the student
-  // page, and nothing later checks the count before approval. The retry says the count outright; if it comes back wrong
-  // again, nothing is written and the section keeps its old text.
+  // page, and nothing later checks the count before approval. The retry says
+  // the count outright; if it comes back wrong again, nothing is written and
+  // the section keeps its old text.
+  //
+  // The attempts run under the time limits of the Generate case route
+  // (lib/generation/generate-attempts.ts), so a stalled model call ends in a
+  // reply rather than in the platform's HTTP 504.
   const section = parsed.data.section as Parameters<typeof regenerateSection>[0]["section"];
   const pairedSection = section === "discussionQuestions" || section === "modelAnswers";
-  let merged: CaseContent | null = null;
-  let provenance: string[] = [];
-  let lastFailure: { reason: string; detail: string[] } | null = null;
   let countMismatch = false;
 
-  for (let attempt = 1; attempt <= 2 && merged === null; attempt++) {
-    try {
-      const result = await regenerateSection({
+  const run = await runGenerationAttempts(
+    (abortSignal) =>
+      regenerateSection({
         input,
         currentContent: currentParsed.data,
         section,
         editorNote: parsed.data.editorNote,
         missingConcepts,
         answerCountRetry: countMismatch,
-      });
+        options: { abortSignal },
+      }),
+    (result): Validation<{ merged: CaseContent; provenance: string[] }> => {
       const candidate = CaseContentSchema.safeParse({
         ...currentParsed.data,
         ...result.patch,
       });
       if (!candidate.success) {
-        lastFailure = {
-          reason: "schema_validation",
-          detail: candidate.error.issues.map(
-            (i) => `${i.path.join(".")}: ${i.message}`,
-          ),
+        return {
+          ok: false,
+          failure: {
+            reason: "schema_validation",
+            detail: candidate.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
+          },
         };
-      } else if (
+      }
+      if (
         pairedSection &&
         candidate.data.discussionQuestions.length !== candidate.data.modelAnswers.length
       ) {
         countMismatch = true;
-        lastFailure = {
-          reason: "answer_count_mismatch",
-          detail: [
-            `${candidate.data.discussionQuestions.length} discussion questions, ` +
-              `${candidate.data.modelAnswers.length} model answers`,
-          ],
+        return {
+          ok: false,
+          failure: {
+            reason: "answer_count_mismatch",
+            detail: [
+              `${candidate.data.discussionQuestions.length} discussion questions, ` +
+                `${candidate.data.modelAnswers.length} model answers`,
+            ],
+          },
         };
-      } else {
-        merged = candidate.data;
-        provenance = result.provenance;
       }
-    } catch (err) {
-      lastFailure = {
-        reason: "model_error",
-        detail: [err instanceof Error ? err.message : "Unknown error"],
-      };
-    }
-  }
+      return { ok: true, value: { merged: candidate.data, provenance: result.provenance } };
+    },
+  );
+  console.info(`[regenerate-section] case ${id} ${section}: ${describeAttempts(run.attempts)}`);
 
-  if (!merged) {
+  if (!run.value) {
+    const lastFailure = run.lastFailure;
     await logCaseEvent({
       caseId: id,
       eventType: "generation_failed",
@@ -144,20 +154,28 @@ export async function POST(
         section: parsed.data.section,
         reason: lastFailure?.reason ?? "unknown",
         detail: lastFailure?.detail ?? [],
-        attempts: 2,
+        attempts: run.attempts.length,
+        attemptSeconds: attemptSeconds(run.attempts),
       },
     });
+    const tried =
+      run.attempts.length > 1
+        ? "on the first attempt or on the automatic retry"
+        : "and there was no time left for the automatic retry";
     return NextResponse.json(
       {
         error: "generation_failed",
         message:
           lastFailure?.reason === "answer_count_mismatch"
-            ? `The model returned ${lastFailure.detail[0]}, on the first attempt and on the automatic retry. Every question needs its own answer, so nothing was saved and this section is unchanged.`
-            : "The model did not return a usable section, on the first attempt or on the automatic retry. Nothing was saved and this section is unchanged.",
+            ? `The model returned ${lastFailure.detail[0]}, ${run.attempts.length > 1 ? "on the first attempt and on the automatic retry" : "and there was no time left for the automatic retry"}. Every question needs its own answer, so nothing was saved and this section is unchanged.`
+            : run.timedOut
+              ? `The model did not answer in time, ${tried}. Nothing was saved and this section is unchanged. Try again in a moment.`
+              : `The model did not return a usable section, ${tried}. Nothing was saved and this section is unchanged.`,
       },
       { status: 502 },
     );
   }
+  const { merged, provenance } = run.value;
 
   await db
     .update(cases)

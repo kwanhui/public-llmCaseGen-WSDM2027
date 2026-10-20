@@ -7,6 +7,14 @@ import { cases, caseVariants } from "@/lib/db/schema";
 import { CaseContentSchema } from "@/lib/generation/schema";
 import { checkConceptCoverage } from "@/lib/generation/generate-case";
 import { personaliseCaseContent } from "@/lib/generation/personalize";
+import {
+  GENERATE_BUDGET_MS,
+  GENERATE_MIN_RETRY_MS,
+  attemptSeconds,
+  describeAttempts,
+  runGenerationAttempts,
+  type AttemptRecord,
+} from "@/lib/generation/generate-attempts";
 import { newInviteToken } from "@/lib/case/invite";
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
@@ -81,24 +89,54 @@ function teamLabel(
 
 // One automatic retry per team. A structured-output failure is usually
 // transient, and one malformed reply should not fail the whole run.
+//
+// The attempts run under the time limits of the Generate case route
+// (lib/generation/generate-attempts.ts). All teams of one request share its
+// budget, which ends well inside the route's maxDuration (vercel.json), so a
+// stalled call ends in a per-team result rather than in the platform's HTTP
+// 504. `budgetMs` is what is left of that budget when the team's batch starts.
+type PersonaliseOutcome =
+  | { content: Awaited<ReturnType<typeof personaliseCaseContent>>; attempts: AttemptRecord[] }
+  | { error: string; timedOut: boolean; attempts: AttemptRecord[] };
+
 async function personaliseWithRetry(
   args: Parameters<typeof personaliseCaseContent>[0],
-): Promise<{ content: Awaited<ReturnType<typeof personaliseCaseContent>> } | { error: string }> {
-  let lastError = "Unknown error";
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    try {
-      return { content: await personaliseCaseContent(args) };
-    } catch (err) {
-      lastError = err instanceof Error ? err.message : "Unknown error";
-    }
+  budgetMs: number,
+): Promise<PersonaliseOutcome> {
+  const run = await runGenerationAttempts(
+    (abortSignal) => personaliseCaseContent({ ...args, abortSignal }),
+    (content) => ({ ok: true, value: content }),
+    { budgetMs },
+  );
+  if (run.value) return { content: run.value, attempts: run.attempts };
+  return {
+    error: run.lastFailure?.detail[0] ?? "Unknown error",
+    timedOut: run.timedOut,
+    attempts: run.attempts,
+  };
+}
+
+// The per-team message when no usable variant came back. `unchanged` says
+// what was left as it was: nothing saved for a new team, or the old variant
+// for a redraft.
+function failedMessage(outcome: { timedOut: boolean; attempts: AttemptRecord[] }, unchanged: string): string {
+  if (outcome.attempts.length === 0) {
+    return `There was not enough time left in this run to draft this team's variant. ${unchanged} Use "Retry failed teams" to draft it.`;
   }
-  return { error: lastError };
+  const tried =
+    outcome.attempts.length > 1
+      ? "on the first attempt or on the automatic retry"
+      : "and there was no time left for the automatic retry";
+  return outcome.timedOut
+    ? `The model did not answer in time, ${tried}. ${unchanged}`
+    : `The model did not return a usable variant, ${tried}. ${unchanged}`;
 }
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const deadline = Date.now() + GENERATE_BUDGET_MS;
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
   const instructorId = (session.user as { id: string }).id;
@@ -168,18 +206,29 @@ export async function POST(
     };
     const name = teamLabel(override, 0);
     const editorNote = parsed.data.editorNote?.trim() || undefined;
-    const outcome = await personaliseWithRetry({
-      base: baseContent,
-      caseInput,
-      override,
-      editorNote,
-    });
+    const outcome = await personaliseWithRetry(
+      {
+        base: baseContent,
+        caseInput,
+        override,
+        editorNote,
+      },
+      deadline - Date.now(),
+    );
+    console.info(`[variants] case ${id} redraft ${existing.id}: ${describeAttempts(outcome.attempts)}`);
     if ("error" in outcome) {
       await logCaseEvent({
         caseId: id,
         variantId: existing.id,
         eventType: "generation_failed",
-        metadata: { stage: "variant_regeneration", team: name, detail: outcome.error },
+        metadata: {
+          stage: "variant_regeneration",
+          team: name,
+          detail: outcome.error,
+          reason: outcome.timedOut ? "timeout" : "model_error",
+          attempts: outcome.attempts.length,
+          attemptSeconds: attemptSeconds(outcome.attempts),
+        },
       });
       return NextResponse.json(
         {
@@ -188,8 +237,7 @@ export async function POST(
               index: 0,
               teamName: name,
               status: "failed",
-              message:
-                "The model did not return a usable variant, on the first attempt or on the automatic retry. This team's variant is unchanged.",
+              message: failedMessage(outcome, "This team's variant is unchanged."),
             } satisfies TeamResult,
           ],
         },
@@ -242,8 +290,11 @@ export async function POST(
 
   // Generate in small parallel batches to stay under the function timeout. Each
   // team returns a result either way, so the caller can report per team rather
-  // than collapsing the run into one message.
+  // than collapsing the run into one message. A batch that would start with
+  // less time left than one normal attempt needs is not started; its teams are
+  // reported as failed, with nothing saved, for "Retry failed teams".
   const results: TeamResult[] = [];
+  const failures = new Map<number, { reason: string; attempts: AttemptRecord[] }>();
 
   for (let i = 0; i < items.length; i += MAX_PARALLEL) {
     const batch = items.slice(i, i + MAX_PARALLEL);
@@ -251,18 +302,35 @@ export async function POST(
       batch.map(async (override, k): Promise<TeamResult> => {
         const index = i + k;
         const name = teamLabel(override, index);
-        const outcome = await personaliseWithRetry({
-          base: baseContent,
-          caseInput,
-          override,
-        });
-        if ("error" in outcome) {
+        const left = deadline - Date.now();
+        if (left < GENERATE_MIN_RETRY_MS) {
+          failures.set(index, { reason: "no_time_left", attempts: [] });
           return {
             index,
             teamName: name,
             status: "failed",
-            message:
-              "The model did not return a usable variant, on the first attempt or on the automatic retry. Nothing was saved for this team.",
+            message: failedMessage({ timedOut: true, attempts: [] }, "Nothing was saved for this team."),
+          };
+        }
+        const outcome = await personaliseWithRetry(
+          {
+            base: baseContent,
+            caseInput,
+            override,
+          },
+          left,
+        );
+        console.info(`[variants] case ${id} team ${index + 1}: ${describeAttempts(outcome.attempts)}`);
+        if ("error" in outcome) {
+          failures.set(index, {
+            reason: outcome.timedOut ? "timeout" : "model_error",
+            attempts: outcome.attempts,
+          });
+          return {
+            index,
+            teamName: name,
+            status: "failed",
+            message: failedMessage(outcome, "Nothing was saved for this team."),
           };
         }
         try {
@@ -318,10 +386,17 @@ export async function POST(
         metadata: { team: r.teamName, conceptsMissing: r.conceptsMissing },
       });
     } else {
+      const failure = failures.get(r.index);
       await logCaseEvent({
         caseId: id,
         eventType: "generation_failed",
-        metadata: { stage: "variant_generation", team: r.teamName },
+        metadata: {
+          stage: "variant_generation",
+          team: r.teamName,
+          reason: failure?.reason ?? "save_failed",
+          attempts: failure?.attempts.length ?? 0,
+          attemptSeconds: attemptSeconds(failure?.attempts ?? []),
+        },
       });
     }
   }

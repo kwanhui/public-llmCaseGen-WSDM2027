@@ -16,10 +16,13 @@ import {
 import { DemoPersonaliseRequestSchema, type DemoPersonaliseResponse } from "@/lib/demo/contracts";
 import { plainPersonalise, plainPersonaliseText } from "@/lib/demo/plain-arms";
 import { withSchemaRetry } from "@/lib/demo/schema-retry";
+import { callModelWithinLimits, retryAfterTimeoutOnly } from "@/lib/generation/generate-attempts";
 
 // Public, unauthenticated. One team variant of a visitor's case, either through
 // PersCase's personalisation prompt or through a single plain prompt, so the
 // page can set the two side by side. Nothing is written to the database.
+// Every model call runs under the time limits of the instructor's Generate
+// case route (lib/generation/generate-attempts.ts).
 
 export async function POST(req: Request) {
   const blocked = await guardDemoRequest(req, DEMO_COST.personalise);
@@ -37,7 +40,11 @@ export async function POST(req: Request) {
     // whole text, as the draft's own readings are taken.
     if ("text" in base) {
       const { result: text, elapsedMs } = await withTiming(() =>
-        plainPersonaliseText(base.text, team, maxTokens),
+        callModelWithinLimits(
+          "demo personalise/plain",
+          (abortSignal) => plainPersonaliseText(base.text, team, maxTokens, abortSignal),
+          { retryError: retryAfterTimeoutOnly },
+        ),
       );
       return NextResponse.json({
         arm: "plain",
@@ -50,10 +57,10 @@ export async function POST(req: Request) {
       } satisfies DemoPersonaliseResponse);
     }
     const { result: content, elapsedMs } = await withTiming(() =>
-      withSchemaRetry(`personalise/${arm}`, () =>
+      withSchemaRetry(`personalise/${arm}`, (abortSignal) =>
         arm === "perscase"
-          ? personaliseCaseContent({ base, caseInput: brief, override: team, maxTokens })
-          : plainPersonalise(base, team, maxTokens),
+          ? personaliseCaseContent({ base, caseInput: brief, override: team, maxTokens, abortSignal })
+          : plainPersonalise(base, team, maxTokens, abortSignal),
       ),
     );
     return NextResponse.json({

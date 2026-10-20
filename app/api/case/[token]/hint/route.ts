@@ -5,6 +5,11 @@ import { db } from "@/lib/db/client";
 import { caseVariants, cases } from "@/lib/db/schema";
 import { CaseContentSchema } from "@/lib/generation/schema";
 import { generateHint, MAX_HINTS_PER_PHASE } from "@/lib/generation/hint";
+import {
+  ModelTimeLimitError,
+  callModelWithinLimits,
+  retryAfterTimeoutOnly,
+} from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
 
@@ -75,15 +80,32 @@ export async function POST(
       }
     : undefined;
 
+  // Under the time limits of the Generate case route
+  // (lib/generation/generate-attempts.ts): a stalled call is stopped and tried
+  // once more if time allows, so the student gets a reply rather than the
+  // platform's HTTP 504. The message is written for the student.
   let hint;
   try {
-    hint = await generateHint(content.data, parsed.data.answer ?? "", {
-      phase,
-      previousHints,
-    });
+    hint = await callModelWithinLimits(
+      "case/hint",
+      (abortSignal) =>
+        generateHint(content.data, parsed.data.answer ?? "", {
+          phase,
+          previousHints,
+          abortSignal,
+        }),
+      { retryError: retryAfterTimeoutOnly },
+    );
   } catch (err) {
+    console.warn(`[case/hint] ${err instanceof Error ? err.message : "Unknown error"}`);
     return NextResponse.json(
-      { error: "hint_failed", message: err instanceof Error ? err.message : "Unknown error" },
+      {
+        error: "hint_failed",
+        message:
+          err instanceof ModelTimeLimitError
+            ? "The hint took too long to write. Please try again in a moment."
+            : "Could not get a hint. Please try again in a moment.",
+      },
       { status: 502 },
     );
   }

@@ -50,7 +50,7 @@ export function noReplyMessage(status: number | null): string {
     status === null
       ? "The connection to the server was lost"
       : status === 504
-        ? "The server did not answer in time (HTTP 504)"
-        : `The server did not answer (HTTP ${status})`;
+        ? "The server did not answer in time"
+        : "The server did not answer";
   return `${what}, on the first request and on the automatic retry. Nothing was saved and the case is unchanged. Wait a minute and press the button again.`;
 }

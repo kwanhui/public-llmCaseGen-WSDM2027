@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
 import { CARD, LABEL, NOTE_FLAG } from "@/components/admin/styles";
+import { failureMessage, postForReply } from "@/components/model-reply";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -120,16 +121,22 @@ export function SpawnVariantsForm({ caseId, discipline, hasVariants = false }: P
     overrides?: Override[];
     teamSize: number;
   }): Promise<TeamResult[] | null> {
-    const res = await fetch(`/api/admin/cases/${caseId}/variants`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      throw new Error(data.message ?? data.error ?? `HTTP ${res.status}`);
+    const reply = await postForReply<{ results?: TeamResult[] }>(
+      `/api/admin/cases/${caseId}/variants`,
+      body,
+    );
+    if (!reply.ok) {
+      // With no reply from the route, some teams may have been saved before
+      // the request ended; the page is refreshed so the list shows them.
+      router.refresh();
+      throw new Error(
+        failureMessage(
+          reply,
+          "Teams whose variant was saved before then are listed below; any other team has nothing saved.",
+        ),
+      );
     }
-    return (data.results ?? null) as TeamResult[] | null;
+    return reply.data.results ?? null;
   }
 
   async function submit(e: React.FormEvent) {
@@ -160,13 +167,7 @@ export function SpawnVariantsForm({ caseId, discipline, hasVariants = false }: P
       );
       router.refresh();
     } catch (e) {
-      setErr(
-        e instanceof TypeError
-          ? "The request did not reach the server. No team variants were generated."
-          : e instanceof Error
-            ? e.message
-            : "The run failed. No team variants were generated.",
-      );
+      setErr(e instanceof Error ? e.message : "The run failed. No team variants were generated.");
     } finally {
       setBusy(false);
     }

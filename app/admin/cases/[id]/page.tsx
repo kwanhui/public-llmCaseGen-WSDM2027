@@ -100,7 +100,9 @@ export default async function CaseDetailPage({
   const locked = isApproved || seeded;
 
   // Live retrieval preview for step 2 (one embedding call). A failed call
-  // comes back as a status, not an exception, so the page still renders.
+  // comes back as a status, not an exception, so the page still renders. The
+  // call is given 20 s (it usually takes well under one), so that a stalled
+  // embedding service shows the failed status rather than holding the page.
   const caseInput: CaseInput = {
     discipline: row.discipline as DisciplineId,
     learningObjective: row.learningObjective,
@@ -110,7 +112,7 @@ export default async function CaseDetailPage({
   };
   const retrieval =
     step === "2"
-      ? await retrievePreview(caseInput)
+      ? await retrievePreview(caseInput, undefined, { abortSignal: AbortSignal.timeout(20_000) })
       : {
           chunks: [],
           embedded: false,
