@@ -7,6 +7,13 @@ import { CaseMarkdown } from "@/components/case-viewer/case-render";
 import type { CaseContent } from "@/lib/generation/schema";
 import { EXAMPLE_CASE_TITLE } from "@/components/admin/status-pill";
 import { CARD, NOTE_FLAG } from "@/components/admin/styles";
+import {
+  RETRYING_NOTICE,
+  noReplyMessage,
+  readGenerateReply,
+  shouldRetryByItself,
+  type GenerateReply,
+} from "./generate-reply";
 
 interface Props {
   caseId: string;
@@ -30,6 +37,7 @@ export function StepGeneration({
   );
   const [content, setContent] = useState<CaseContent | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
 
   // Tick an elapsed-seconds counter while generating so the wait reads as live
@@ -41,23 +49,36 @@ export function StepGeneration({
     return () => clearInterval(handle);
   }, [phase]);
 
+  async function requestDraft(): Promise<GenerateReply> {
+    try {
+      const res = await fetch(`/api/admin/cases/${caseId}/generate`, { method: "POST" });
+      const body: unknown = await res.json().catch(() => undefined);
+      return readGenerateReply(res.status, body);
+    } catch {
+      return { kind: "no-reply", status: null };
+    }
+  }
+
+  // One request, and a second one by itself only when the first got no answer
+  // from the route at all (see generate-reply.ts).
   async function generate() {
     setElapsed(0);
     setPhase("running");
     setError(null);
-    try {
-      const res = await fetch(`/api/admin/cases/${caseId}/generate`, { method: "POST" });
-      if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
-        throw new Error(j.message ?? j.error ?? `HTTP ${res.status}`);
-      }
-      const { contentJson } = (await res.json()) as { contentJson: CaseContent };
-      setContent(contentJson);
-      setPhase("done");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Generation failed.");
-      setPhase("idle");
+    setNotice(null);
+    let reply = await requestDraft();
+    if (shouldRetryByItself(reply, 1)) {
+      setNotice(RETRYING_NOTICE);
+      reply = await requestDraft();
     }
+    setNotice(null);
+    if (reply.kind === "ok") {
+      setContent(reply.contentJson);
+      setPhase("done");
+      return;
+    }
+    setError(reply.kind === "error" ? reply.message : noReplyMessage(reply.status));
+    setPhase("idle");
   }
 
   return (
@@ -95,6 +116,7 @@ export function StepGeneration({
             />
             Generating the draft. {elapsed}s elapsed (usually 10 to 40s)
           </div>
+          {notice ? <p className="mt-3 text-sm">{notice}</p> : null}
           <p className="mt-3 text-sm text-muted-foreground">
             Authoring time is counted from when the brief was saved until you approve the
             case.

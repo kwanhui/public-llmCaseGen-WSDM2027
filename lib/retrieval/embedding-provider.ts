@@ -5,7 +5,7 @@ import type { CaseInput } from "@/lib/disciplines/types";
 import { corpusForDiscipline, isCaseDesignNote, type CorpusChunk } from "./corpus";
 import embeddingStore from "./corpus/embeddings.json";
 import { buildPackGrounding } from "./prompt-pack-provider";
-import type { RetrievalProvider, RetrievalResult } from "./provider";
+import type { RetrievalProvider, RetrievalResult, RetrieveOptions } from "./provider";
 
 type EmbeddingStore = {
   model: string;
@@ -234,7 +234,7 @@ export async function retrievePreview(
 export class EmbeddingRetrievalProvider implements RetrievalProvider {
   constructor(private readonly k = Number(process.env.RETRIEVAL_TOP_K ?? 5)) {}
 
-  async retrieve(input: CaseInput): Promise<RetrievalResult> {
+  async retrieve(input: CaseInput, options: RetrieveOptions = {}): Promise<RetrievalResult> {
     const pack = getDisciplinePack(input.discipline);
     const packGrounding = buildPackGrounding(pack, input.difficulty);
 
@@ -249,6 +249,7 @@ export class EmbeddingRetrievalProvider implements RetrievalProvider {
     const { embedding } = await embed({
       model: getEmbeddingModel(),
       value: buildQueryText(input),
+      abortSignal: options.abortSignal,
     });
     const hits = topK(embedding, input.discipline, this.k);
     return retrievalResultFromHits(input, hits);

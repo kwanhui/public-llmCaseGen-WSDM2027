@@ -1,7 +1,8 @@
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, eq, inArray, lte } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { caseComparisons, caseEvents, cases } from "@/lib/db/schema";
 import { CaseContentSchema } from "@/lib/generation/schema";
+import { draftRetrievalFromEvents } from "@/lib/case/draft-provenance";
 import type { CaseInput } from "@/lib/disciplines/types";
 import {
   type EditSummary,
@@ -42,20 +43,42 @@ export function caseInputFromRow(row: typeof cases.$inferSelect): CaseInput {
   };
 }
 
-// Retrieval provenance from the case's most recent completed generation. This
-// is what the PersCase arm's grounding column is computed against, so the
-// figure reflects the passages that actually conditioned the approved draft.
-export async function loadTeamProvenance(caseId: string): Promise<string[] | null> {
-  const [event] = await db
-    .select({ metadata: caseEvents.metadata })
+// Retrieval provenance of the draft the case holds: from its most recent
+// completed generation or, for a copy made with Duplicate, the source's list
+// recorded when the copy was made (lib/case/draft-provenance.ts). This is what
+// the PersCase arm's grounding column and the Retrieval step's "Reflected in
+// the draft" column are computed against, so the figure reflects the passages
+// that actually conditioned the draft.
+//
+// `before` limits the lookup to events up to that time. It is used for a copy
+// made before the duplicate route recorded the list: the list is then read
+// from the source as it stood when the copy was made, following a chain of
+// copies a few levels at most.
+export async function loadTeamProvenance(
+  caseId: string,
+  before?: string,
+  depth = 0,
+): Promise<string[] | null> {
+  const conditions = [
+    eq(caseEvents.caseId, caseId),
+    inArray(caseEvents.eventType, ["generation_completed", "created"]),
+  ];
+  if (before) conditions.push(lte(caseEvents.timestampIso, before));
+  const events = await db
+    .select({
+      eventType: caseEvents.eventType,
+      timestampIso: caseEvents.timestampIso,
+      metadata: caseEvents.metadata,
+    })
     .from(caseEvents)
-    .where(
-      and(eq(caseEvents.caseId, caseId), eq(caseEvents.eventType, "generation_completed")),
-    )
-    .orderBy(desc(caseEvents.timestampIso))
-    .limit(1);
-  const meta = event?.metadata as { retrieval?: unknown } | null;
-  return Array.isArray(meta?.retrieval) ? (meta.retrieval as string[]) : null;
+    .where(and(...conditions))
+    .orderBy(asc(caseEvents.timestampIso));
+  const { retrieval, duplicatedFrom } = draftRetrievalFromEvents(events);
+  if (retrieval) return retrieval;
+  if (duplicatedFrom && depth < 5) {
+    return loadTeamProvenance(duplicatedFrom.caseId, duplicatedFrom.at, depth + 1);
+  }
+  return null;
 }
 
 export async function loadCachedComparison(

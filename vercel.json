@@ -3,7 +3,7 @@
   "regions": ["sin1"],
   "functions": {
     "app/api/admin/cases/[id]/generate/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/admin/cases/[id]/regenerate-section/route.ts": {
       "maxDuration": 60

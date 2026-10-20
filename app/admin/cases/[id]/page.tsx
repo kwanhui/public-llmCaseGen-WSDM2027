@@ -127,7 +127,8 @@ export default async function CaseDetailPage({
         };
 
   // Per-note grounding for the draft the case holds, read against the passages
-  // recorded with its last completed generation. Shown on the retrieval tab.
+  // recorded with its last completed generation, or for a copy made with
+  // Duplicate, with the source's generation. Shown on the retrieval tab.
   const draftProvenance =
     step === "2" && validContent ? await loadTeamProvenance(id) : null;
   const draftGrounding = draftProvenance
