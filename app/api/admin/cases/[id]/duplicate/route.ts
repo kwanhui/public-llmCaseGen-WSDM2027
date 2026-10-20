@@ -4,11 +4,16 @@ import { auth } from "@/lib/auth/config";
 import { db } from "@/lib/db/client";
 import { cases } from "@/lib/db/schema";
 import { logCaseEvent } from "@/lib/case/events";
+import { loadTeamProvenance } from "@/lib/generation/compare-store";
 
 // Clone a case into a fresh editable draft, so an instructor can reuse or
 // version a case rather than authoring each from scratch. The copy keeps the
 // input, the generated content, and the (possibly customised) phase sequence,
 // but resets status, telemetry, and any release/variant state.
+//
+// The copy also keeps the retrieval list that grounded the draft, recorded with
+// its "created" event, so its Retrieval step and contrastive view mark the
+// notes reflected in the draft just as the source's do.
 //
 // Duplicating is the way out of a seeded example case, which is read-only, so
 // this route has no seeded-case guard.
@@ -58,7 +63,12 @@ export async function POST(
     })
     .returning({ id: cases.id });
 
-  await logCaseEvent({ caseId: created.id, eventType: "created", metadata: { duplicatedFrom: id } });
+  const retrieval = row.contentJson ? await loadTeamProvenance(id) : null;
+  await logCaseEvent({
+    caseId: created.id,
+    eventType: "created",
+    metadata: retrieval ? { duplicatedFrom: id, retrieval } : { duplicatedFrom: id },
+  });
 
   return NextResponse.json({ id: created.id });
 }

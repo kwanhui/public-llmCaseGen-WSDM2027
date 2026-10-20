@@ -6,6 +6,13 @@ export interface RetrievalResult {
   provenance: string[];
 }
 
+// `abortSignal` lets a caller with a time limit stop a call that is taking too
+// long, such as the embedding of the brief. A provider that makes no call
+// ignores it.
+export interface RetrieveOptions {
+  abortSignal?: AbortSignal;
+}
+
 export interface RetrievalProvider {
-  retrieve(input: CaseInput): Promise<RetrievalResult>;
+  retrieve(input: CaseInput, options?: RetrieveOptions): Promise<RetrievalResult>;
 }

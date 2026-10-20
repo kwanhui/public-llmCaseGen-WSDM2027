@@ -101,8 +101,11 @@ export function normalizeOutput<T extends Partial<GenerationOutput>>(o: T): T {
 
 // Options for a single model call. `maxTokens` caps the output; the public demo
 // routes set it, and the instructor routes leave it to the provider default.
+// `abortSignal` stops the embedding and generation calls, so that a route with
+// a time limit can give up on a call that has stalled and still reply.
 export interface ModelCallOptions {
   maxTokens?: number;
+  abortSignal?: AbortSignal;
 }
 
 // `provider` defaults to the configured retrieval provider. The contrastive
@@ -114,7 +117,7 @@ export async function generateCase(
   options: ModelCallOptions = {},
 ): Promise<GenerateCaseResult> {
   const pack = getDisciplinePack(input.discipline);
-  const retrieval = await provider.retrieve(input);
+  const retrieval = await provider.retrieve(input, { abortSignal: options.abortSignal });
   const userPrompt = buildUserPrompt(input, retrieval.groundingText, retrieval.exemplars);
 
   const { object } = await generateObject({
@@ -124,6 +127,7 @@ export async function generateCase(
     prompt: userPrompt,
     temperature: 0.8,
     maxTokens: options.maxTokens,
+    abortSignal: options.abortSignal,
   });
 
   return { output: normalizeOutput(object), provenance: retrieval.provenance };

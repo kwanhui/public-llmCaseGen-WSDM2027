@@ -83,13 +83,13 @@ The landing page links to `/demo`, to a student's view of the seeded finance cas
 Students need no account; they open the team link.
 For a production build on your own machine or server, run `pnpm build` and then `AUTH_TRUST_HOST=true pnpm start`, or set `AUTH_URL` to the public origin instead; outside `pnpm dev` and Vercel, Auth.js refuses a host it has not been told to trust.
 
-Checks: `pnpm typecheck`, `pnpm lint` and `pnpm build`.
-There is no unit test suite; `pnpm smoke-check` (see "Checking a deployment") drives a running instance through the public pages, the sign-in and the contrastive view.
+Checks: `pnpm typecheck`, `pnpm lint`, `pnpm test` and `pnpm build`.
+`pnpm test` runs the unit tests in `tests/`, which need no database and no key; `pnpm smoke-check` (see "Checking a deployment") drives a running instance through the public pages, the sign-in and the contrastive view.
 
 ### 6. Deploy to a Vercel project of your own
 
 1. Push your clone to a GitHub repository of your own (a fork works).
-2. In the Vercel dashboard, choose Add New, Project, and import that repository. Vercel detects Next.js and uses pnpm from the `packageManager` field; keep the default build settings. `vercel.json` sets the region (`sin1`, which you may change) and a 60-second limit on the routes that call a model.
+2. In the Vercel dashboard, choose Add New, Project, and import that repository. Vercel detects Next.js and uses pnpm from the `packageManager` field; keep the default build settings. `vercel.json` sets the region (`sin1`, which you may change) and a 60-second limit on the routes that call a model, except the full draft, which has 120 seconds; on the Hobby plan a limit above 60 seconds needs fluid compute, which new projects have switched on by default.
 3. In the project's Storage tab, create a Neon Postgres database and connect it to the project. This sets `POSTGRES_URL`. If you created the database in Neon directly, add `POSTGRES_URL` by hand with the pooled string from step 2.
 4. In Settings, Environment Variables, add `OPENAI_API_KEY`, `AUTH_SECRET`, `PSEUDONYM_SALT` and `ADMIN_PASSWORD_HASH` for Production. On Vercel the hash is entered without the backslashes that `.env.local` needs: it starts `$2b$12$`. Leave `AUTH_URL` unset. Add any optional variable you want to change, such as `PUBLIC_DEMO=0` to switch the public demo off.
 5. Run the migrations against that database from your machine. With the CLI: `vercel link`, then `vercel env pull .env.local` (which brings `POSTGRES_URL`), then `pnpm db:migrate` and, if wanted, `pnpm seed-demo --yes-shared-database`. Without the CLI, put the production `POSTGRES_URL` in `.env.local` and run the same two commands.
@@ -116,13 +116,13 @@ With `--vercel-production` it rewrites `ADMIN_PASSWORD_HASH` in the linked Verce
 
 ## What this repository reproduces
 
-Retrieval is exactly reproducible from the committed vectors.
+Retrieval is reproducible up to the embedding of the brief: the note vectors are committed and the scoring is exact, but the brief is embedded afresh on every run (see "Determinism and model versions").
 Generation is not, and a re-run of a generating script overwrites the committed file with a different sample (see "Determinism and model versions").
 
 | Claim | Command | Output | Re-run matches? |
 | --- | --- | --- | --- |
 | Corpus of 97 notes (33 finance, 32 marketing, 32 social work), each 65 to 115 words | the `tsx -e` line under "Corpus statistics" | printed | yes |
-| Retrieval trace for a brief: note ids and cosine scores | the `tsx -e` line under "Retrieval trace", or the Retrieval step of any case | printed | yes, to three decimals (one embedding call) |
+| Retrieval trace for a brief: note ids and cosine scores | the `tsx -e` line under "Retrieval trace", or the Retrieval step of any case | printed | the same five notes for the three sample briefs; a score can differ by about 0.002 between runs (one embedding call) |
 | Retrieved notes reflected in the three committed sample drafts: 1 of 11 countable notes, of 15 retrieved. The file keeps the two earlier readings beside it, 3 of 15 when a distinctive tag counts even if the brief supplied it, and 11 of 15 when any tag counts | `pnpm grounding-report` | `demo/grounding-utilisation.json` | yes (no key or database needed) |
 | Contrastive readings of the three example cases, which back the readings in the paper | `pnpm seed-demo`, then `pnpm compare-report` | `demo/comparison-readings.json` | yes on a freshly seeded database; only the commit, dirty flag and date at the top of the file differ (no model calls) |
 | Draft with retrieval against draft without retrieval on the three sample briefs | `pnpm retrieval-ablation` | `demo/retrieval-ablation.json` | no (six generation calls, a few US cents) |
@@ -145,7 +145,8 @@ This prints `97 { finance: 33, marketing: 32, social_work: 32 } 65 115`.
 pnpm -s tsx --env-file=.env.local -e 'import { readFileSync } from "node:fs"; import { retrievePreview } from "./lib/retrieval/embedding-provider"; const input = JSON.parse(readFileSync("demo/sample-inputs/finance.json", "utf8")); retrievePreview(input).then((r) => { for (const c of r.chunks) console.log(c.chunk.id, c.score.toFixed(3)); });'
 ```
 
-For the finance sample brief this prints `fin-pedagogy-assumptions 0.498`, `fin-ddm 0.490`, `fin-esg 0.434`, `fin-terminal-value 0.430` and `fin-dcf 0.423`, which are the scores recorded in `demo/sample-outputs/finance.json`.
+For the finance sample brief this printed `fin-pedagogy-assumptions 0.498`, `fin-ddm 0.490`, `fin-esg 0.434`, `fin-terminal-value 0.430` and `fin-dcf 0.423` on 2026-10-20, which are the scores recorded in `demo/sample-outputs/finance.json`.
+A later run can print a score that differs in the third decimal (see "Determinism and model versions").
 It makes one embedding call and needs `OPENAI_API_KEY`.
 
 ### Contrastive readings
@@ -222,8 +223,13 @@ The vectors are scored in memory; pgvector can replace that for a larger corpus.
 
 ## Determinism and model versions
 
-Retrieval is deterministic: the vectors are committed and the scoring is a dot product.
-Generation is not.
+Retrieval is close to deterministic but not exactly so.
+The vectors of the 97 notes are committed and the cosine scoring is exact, but each run embeds the brief again, and the embedding service does not return bit-for-bit identical vectors for the same text.
+Two calls made a few seconds apart usually return the same vector; calls made at different times have given scores that differ by about 0.002 (0.543 against 0.544, and 0.471 against 0.469).
+A difference of that size can swap two notes whose scores are closer than that, such as `mkt-positioning-statement` (0.476) and `mkt-pedagogy-framing` (0.474) for the marketing sample brief, which changes their order in the trace and in the prompt.
+It does not change which notes are taken for the three sample briefs: in each, the last note taken scores at least 0.006 above the best eligible note left out (0.423 against 0.402 for finance, 0.417 against 0.410 for marketing, 0.428 against 0.420 for social work).
+A brief whose fifth and sixth notes are closer than that can take a different fifth note on another run.
+Generation is not deterministic.
 No call sets a seed, and the temperatures are 0.8 for the case draft (`lib/generation/generate-case.ts`), for section regeneration (`regenerate-section.ts`) and for the two contrastive baselines (`compare.ts`), 0.5 for team variants (`personalize.ts`), 0.4 for hints (`hint.ts`) and 0.3 for formative feedback (`assess-attempt.ts`).
 `gpt-4o-mini` is a floating alias, so the model behind it can change without notice; set `LLM_GENERATION_MODEL` to a dated snapshot to fix it.
 Every result file under `demo/` written by the current scripts carries the commit, whether the working tree was dirty, the date and, where a model was called, the model id.

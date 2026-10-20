@@ -9,6 +9,7 @@ import {
   EMBEDDING_DIMENSIONS,
 } from "@/lib/llm/client";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
+import { loadTeamProvenance } from "@/lib/generation/compare-store";
 
 // Per-case provenance record: the brief the case was generated from, the
 // approval that came before any student saw it, the authoring time, and the
@@ -45,6 +46,8 @@ const META_LABELS: Record<string, string> = {
   afterPhaseClosed: "saved just after the phase closed",
   activityType: "activity",
   authoringSeconds: "authoring time in seconds",
+  attempts: "attempts",
+  attemptSeconds: "seconds per attempt",
   band: "band",
   capped: "authoring time cut off at the two-hour limit",
   contentChanged: "case text changed",
@@ -186,13 +189,9 @@ export async function GET(
   } catch {
     // provider misconfigured: the record does not name the model
   }
-  const lastGeneration = [...events]
-    .reverse()
-    .find((e) => e.eventType === "generation_completed");
-  const retrievalEntries =
-    ((lastGeneration?.metadata as { retrieval?: unknown } | null)?.retrieval as
-      | string[]
-      | undefined) ?? [];
+  // A copy made with Duplicate has no generation of its own; its list is the
+  // source's, recorded when the copy was made (loadTeamProvenance).
+  const retrievalEntries = (await loadTeamProvenance(id)) ?? [];
   const retrieval = splitProvenance(retrievalEntries);
 
   const L: string[] = [];

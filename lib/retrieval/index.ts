@@ -2,7 +2,7 @@ import type { RetrievalProvider } from "./provider";
 import { promptPackRetrieval } from "./prompt-pack-provider";
 import { embeddingRetrieval } from "./embedding-provider";
 
-export type { RetrievalProvider, RetrievalResult } from "./provider";
+export type { RetrievalProvider, RetrievalResult, RetrieveOptions } from "./provider";
 export { promptPackRetrieval } from "./prompt-pack-provider";
 export { embeddingRetrieval, buildQueryText, topK } from "./embedding-provider";
 

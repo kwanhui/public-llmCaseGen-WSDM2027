@@ -6,6 +6,7 @@ import { cases } from "@/lib/db/schema";
 import { generateCase, checkConceptCoverage } from "@/lib/generation/generate-case";
 import { groundingUtilisation } from "@/lib/retrieval/grounding";
 import { CaseContentSchema, type CaseContent } from "@/lib/generation/schema";
+import { runGenerationAttempts, type AttemptFailure } from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import { RETRIEVAL_WEAK_SCORE } from "@/lib/retrieval/embedding-provider";
@@ -46,7 +47,7 @@ function listPhrase(items: string[]): string {
 
 // One sentence naming the reason, when the server knows it. An empty string
 // when it does not, so the caller can leave the sentence out.
-function failureReason(failure: { reason: string; detail: string[] } | null): string {
+function failureReason(failure: AttemptFailure | null): string {
   if (!failure) return "";
   if (failure.reason === "schema_validation") {
     const parts = Array.from(
@@ -57,7 +58,7 @@ function failureReason(failure: { reason: string; detail: string[] } | null): st
       : "The last draft did not pass the checks on its structure.";
   }
   const message = failure.detail[0] ?? "";
-  if (/timeout|timed out|aborted|ETIMEDOUT|ECONNRESET/i.test(message)) {
+  if (failure.reason === "timeout" || /timeout|timed out|aborted|ETIMEDOUT|ECONNRESET/i.test(message)) {
     return "The model did not answer in time.";
   }
   return message ? `The model provider reported: ${message}` : "";
@@ -106,40 +107,41 @@ export async function POST(
   // schema error. Each attempt is validated against the stricter editor and
   // student schema before it can be kept: the generation schema has no
   // per-field minimums, so a thin draft passes generation yet dead-ends at
-  // step 4.
-  let output: Awaited<ReturnType<typeof generateCase>>["output"] | null = null;
-  let contentJson: CaseContent | null = null;
-  let provenance: string[] = [];
-  let lastFailure: { reason: string; detail: string[] } | null = null;
-
-  for (let attempt = 1; attempt <= 2 && contentJson === null; attempt++) {
-    try {
-      const result = await generateCase(input);
-      const validated = CaseContentSchema.safeParse({
-        schemaVersion: 1,
-        ...result.output,
-      });
+  // step 4. Each attempt also has a time limit, and the two together stay
+  // inside the route's maxDuration (lib/generation/generate-attempts.ts), so a
+  // stalled model call ends in a reply rather than in the platform's HTTP 504.
+  type Kept = {
+    output: Awaited<ReturnType<typeof generateCase>>["output"];
+    contentJson: CaseContent;
+    provenance: string[];
+  };
+  const run = await runGenerationAttempts(
+    (abortSignal) => generateCase(input, undefined, { abortSignal }),
+    (result) => {
+      const validated = CaseContentSchema.safeParse({ schemaVersion: 1, ...result.output });
       if (validated.success) {
-        output = result.output;
-        contentJson = validated.data;
-        provenance = result.provenance;
-      } else {
-        lastFailure = {
-          reason: "schema_validation",
-          detail: validated.error.issues.map(
-            (i) => `${i.path.join(".")}: ${i.message}`,
-          ),
+        return {
+          ok: true as const,
+          value: { output: result.output, contentJson: validated.data, provenance: result.provenance } satisfies Kept,
         };
       }
-    } catch (err) {
-      lastFailure = {
-        reason: "model_error",
-        detail: [err instanceof Error ? err.message : "Unknown error"],
+      return {
+        ok: false as const,
+        failure: {
+          reason: "schema_validation" as const,
+          detail: validated.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
+        },
       };
-    }
-  }
+    },
+  );
+  console.info(
+    `[generate] case ${id}: ${run.attempts
+      .map((a) => `attempt ${a.attempt} ${a.outcome} in ${(a.ms / 1000).toFixed(1)} s`)
+      .join(", ")}`,
+  );
 
-  if (!contentJson || !output) {
+  if (!run.value) {
+    const lastFailure = run.lastFailure;
     await db
       .update(cases)
       .set({ status: "draft", updatedAt: new Date() })
@@ -150,14 +152,19 @@ export async function POST(
       metadata: {
         reason: lastFailure?.reason ?? "unknown",
         detail: lastFailure?.detail ?? [],
-        attempts: 2,
+        attempts: run.attempts.length,
+        attemptSeconds: run.attempts.map((a) => Math.round(a.ms / 100) / 10),
       },
     });
+    const tried =
+      run.attempts.length > 1
+        ? "The model did not return a usable draft, on the first attempt or on the automatic retry."
+        : "The model did not return a usable draft, and there was no time left for the automatic retry.";
     return NextResponse.json(
       {
         error: "generation_failed",
         message: [
-          "The model did not return a usable draft, on the first attempt or on the automatic retry.",
+          tried,
           failureReason(lastFailure),
           "Nothing was saved and the case is unchanged. Try again in a moment. If it keeps failing, shorten the learning objective or reduce the number of must-cover concepts.",
         ]
@@ -168,6 +175,7 @@ export async function POST(
     );
   }
 
+  const { output, contentJson, provenance } = run.value;
   const coverage = checkConceptCoverage(output, input.mustCoverConcepts);
   const grounding = groundingUtilisation(output, provenance, input);
   const retrievalScores = parseRetrievalScores(provenance);
