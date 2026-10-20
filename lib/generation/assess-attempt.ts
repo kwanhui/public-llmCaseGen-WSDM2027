@@ -155,6 +155,8 @@ export interface AssessOptions {
   audience?: AssessmentAudience;
   // Output cap for the model call; set by the public demo route only.
   maxTokens?: number;
+  // Stops the model call when the route's time limit for it passes.
+  abortSignal?: AbortSignal;
   // The case's discipline, which selects the feedback checks. When it is not
   // given it is inferred from the phase ids and the rubric.
   discipline?: DisciplineId;
@@ -396,7 +398,7 @@ export async function assessAttempt(
   studentAnswer: string,
   options: AssessOptions = {},
 ): Promise<Assessment> {
-  const { phase, phases, audience = "student", maxTokens } = options;
+  const { phase, phases, audience = "student", maxTokens, abortSignal } = options;
   const forInstructor = audience === "instructor";
   const rubricCriteria = parseRubricCriteria(content.rubric);
   const phaseIds = [phase?.id, ...(phases ?? []).map((p) => p.id)].filter(
@@ -514,6 +516,7 @@ export async function assessAttempt(
     prompt,
     temperature: 0.3,
     maxTokens,
+    abortSignal,
   });
 
   let result = object;

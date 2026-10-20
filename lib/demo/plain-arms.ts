@@ -14,6 +14,7 @@ export async function plainPersonalise(
   base: CaseContent,
   team: { industry: string; role: string },
   maxTokens: number,
+  abortSignal?: AbortSignal,
 ): Promise<CaseContent> {
   const prompt = [
     "Scenario:",
@@ -40,6 +41,7 @@ export async function plainPersonalise(
     system: PLAIN_PERSONALISE_SYSTEM,
     prompt,
     maxTokens,
+    abortSignal,
   });
   return { schemaVersion: 1, ...normalizeOutput(object) };
 }
@@ -50,6 +52,7 @@ export async function plainPersonaliseText(
   text: string,
   team: { industry: string; role: string },
   maxTokens: number,
+  abortSignal?: AbortSignal,
 ): Promise<string> {
   const { text: out } = await generateText({
     model: getGenerationModel(),
@@ -60,6 +63,7 @@ export async function plainPersonaliseText(
       `Adapt this case for a team of ${team.role} working in ${team.industry}. Keep it a complete teaching case.`,
     ].join("\n"),
     maxTokens,
+    abortSignal,
   });
   return out.trim();
 }
@@ -93,12 +97,14 @@ export async function plainStudentReply(
   phase: PlainStudentPhase | undefined,
   message: string,
   maxTokens: number,
+  abortSignal?: AbortSignal,
 ): Promise<string> {
   const { text } = await generateText({
     model: getGenerationModel(),
     system: PLAIN_STUDENT_SYSTEM,
     prompt: buildPlainStudentPrompt(content, phase, message),
     maxTokens,
+    abortSignal,
   });
   return text.trim();
 }

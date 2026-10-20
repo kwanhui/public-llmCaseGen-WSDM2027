@@ -179,9 +179,12 @@ export interface RetrievalPreview {
 // scores) so the instructor can see exactly what grounds the next generation.
 // Degrades to an empty, embedded:false result when the corpus has not been
 // embedded or the embedding call fails (e.g. missing key) rather than throwing.
+// `options.abortSignal` stops the embedding call; the preview then reports
+// "embedding-failed", as for any other failed call.
 export async function retrievePreview(
   input: CaseInput,
   k = Number(process.env.RETRIEVAL_TOP_K ?? 5),
+  options: RetrieveOptions = {},
 ): Promise<RetrievalPreview> {
   const queryText = buildQueryText(input);
   const base = {
@@ -201,6 +204,7 @@ export async function retrievePreview(
     const { embedding } = await embed({
       model: getEmbeddingModel(),
       value: queryText,
+      abortSignal: options.abortSignal,
     });
     const { hits, leftOut, firstRejected, firstOverBudget } = selectChunks(
       embedding,

@@ -6,94 +6,77 @@
 // guided run cannot go on without. The request guard has already charged the
 // rate limiter by the time this runs, so a retry is not charged again.
 //
-// With a deadline, no attempt starts after it, and an attempt still running
-// when it passes is no longer waited for: the route's own time limit
-// (maxDuration in vercel.json) would otherwise end the request with no reply,
-// and the PersCase arm could not fall back to its stored draft.
-import { NoObjectGeneratedError } from "ai";
+// The attempts run under the time limits of the instructor's Generate case
+// route (lib/generation/generate-attempts.ts): each attempt is stopped at its
+// own timeout, another starts only when enough of the request's budget is left
+// for it to finish, and the budget ends inside the route's maxDuration
+// (vercel.json). The route therefore always replies, and the PersCase arm can
+// fall back to its stored draft, rather than the platform ending the request
+// with no reply.
 import { NextResponse } from "next/server";
+import {
+  describeAttempts,
+  isSchemaFailure,
+  runGenerationAttempts,
+  type AttemptLimits,
+  type AttemptsResult,
+} from "@/lib/generation/generate-attempts";
 
 // Attempts for the PersCase draft and for a regenerated section.
 export const DEMO_DRAFT_ATTEMPTS = 3;
 
-// How long the retries of one request may take, well inside the route's 60 s.
-export const DEMO_RETRY_BUDGET_MS = 50_000;
-
 const RETRIES_IN_WORDS = ["", "the automatic retry", "the two automatic retries"];
 
 // The message names the attempts that were made. `timedOut` adds that the
-// time for the step ran out before the attempts were used up.
-export function schemaFailureMessage(attempts: number, timedOut = false): string {
+// time for the step ran out before the attempts were used up. `noAnswer` says
+// that the last attempt got no answer at all before its time limit.
+export function schemaFailureMessage(attempts: number, timedOut = false, noAnswer = false): string {
   const retries = attempts - 1;
   const when =
     retries <= 0
       ? "on the first attempt"
       : `on the first attempt or on ${RETRIES_IN_WORDS[retries] ?? `the ${retries} automatic retries`}`;
+  if (noAnswer) return `The model did not answer in time, ${when}. Try again.`;
   const time = timedOut ? ", and the time for this step ran out" : "";
   return `The model did not return a draft that fits the case schema, ${when}${time}. Try again.`;
 }
 
 export class DemoSchemaError extends Error {
   readonly attempts: number;
-  constructor(attempts = 2, timedOut = false) {
-    super(schemaFailureMessage(attempts, timedOut));
+  constructor(attempts = 2, timedOut = false, noAnswer = false) {
+    super(schemaFailureMessage(attempts, timedOut, noAnswer));
     this.name = "DemoSchemaError";
     this.attempts = attempts;
   }
 }
 
-class DeadlinePassed extends Error {}
-
-// Resolves with the call's result, or rejects with DeadlinePassed when the
-// deadline comes first. The call itself cannot be cancelled; its later result
-// or error is dropped.
-export async function beforeDeadline<T>(pending: Promise<T>, deadline: number | undefined): Promise<T> {
-  if (deadline === undefined) return pending;
-  const left = deadline - Date.now();
-  if (left <= 0) {
-    pending.catch(() => {});
-    throw new DeadlinePassed();
+// What a demo route does once the attempts are over: the value, or the error
+// the page is shown. A schema failure or running out of time becomes a
+// DemoSchemaError (which the PersCase arm answers with its stored draft); any
+// other error is thrown as it came.
+export function demoAttemptsOutcome<V>(label: string, run: AttemptsResult<V>): V {
+  console.info(`[demo] ${label}: ${describeAttempts(run.attempts)}`);
+  if (run.value !== null) return run.value;
+  if (run.timedOut) {
+    throw new DemoSchemaError(run.attempts.length, true, run.lastFailure?.reason === "timeout");
   }
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => reject(new DeadlinePassed()), left);
-  });
-  pending.catch(() => {});
-  try {
-    return await Promise.race([pending, timeout]);
-  } finally {
-    clearTimeout(timer);
-  }
+  if (run.lastError !== undefined && !isSchemaFailure(run.lastError)) throw run.lastError;
+  throw new DemoSchemaError(run.attempts.length);
 }
 
-export function isDeadlinePassed(err: unknown): boolean {
-  return err instanceof DeadlinePassed;
-}
-
+// Two attempts unless `opts.attempts` says otherwise, under the shared limits;
+// the PersCase arm passes as `opts.budgetMs` what is left after retrieval.
 export async function withSchemaRetry<T>(
   label: string,
-  fn: () => Promise<T>,
-  opts: { attempts?: number; deadline?: number } = {},
+  fn: (abortSignal: AbortSignal) => Promise<T>,
+  opts: Omit<AttemptLimits, "retryError"> = {},
 ): Promise<T> {
-  const attempts = Math.max(1, opts.attempts ?? 2);
-  for (let attempt = 1; ; attempt++) {
-    try {
-      return await beforeDeadline(fn(), opts.deadline);
-    } catch (err) {
-      if (err instanceof DeadlinePassed) {
-        console.warn(`[demo] ${label}: the time for this request ran out (attempt ${attempt} of ${attempts})`);
-        throw new DemoSchemaError(attempt, true);
-      }
-      if (!NoObjectGeneratedError.isInstance(err)) throw err;
-      console.warn(
-        `[demo] ${label}: output did not match the schema (attempt ${attempt} of ${attempts}; finish reason ${err.finishReason ?? "unknown"}, ${err.text?.length ?? 0} characters)`,
-      );
-      if (attempt >= attempts) throw new DemoSchemaError(attempts);
-      if (opts.deadline !== undefined && Date.now() >= opts.deadline) {
-        throw new DemoSchemaError(attempt, true);
-      }
-    }
-  }
+  const run = await runGenerationAttempts(
+    fn,
+    (value: T) => ({ ok: true, value: { value } }),
+    { ...opts, attempts: Math.max(1, opts.attempts ?? 2), retryError: isSchemaFailure },
+  );
+  return demoAttemptsOutcome(label, run).value;
 }
 
 export function schemaFailed(err: DemoSchemaError): NextResponse {

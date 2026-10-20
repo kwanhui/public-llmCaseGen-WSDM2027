@@ -6,22 +6,31 @@
       "maxDuration": 120
     },
     "app/api/admin/cases/[id]/regenerate-section/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/admin/cases/[id]/variants/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/admin/cases/[id]/compare/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/demo/generate/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/demo/personalise/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/demo/student/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
+    },
+    "app/api/admin/cases/[id]/assess/route.ts": {
+      "maxDuration": 120
+    },
+    "app/api/case/[token]/hint/route.ts": {
+      "maxDuration": 120
+    },
+    "app/api/case/[token]/feedback/route.ts": {
+      "maxDuration": 120
     }
   }
 }

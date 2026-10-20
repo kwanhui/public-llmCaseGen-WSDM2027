@@ -5,7 +5,6 @@ import {
   plainSignals,
   structuredSignals,
 } from "@/lib/generation/compare";
-import { NoObjectGeneratedError } from "ai";
 import { generateCase } from "@/lib/generation/generate-case";
 import { regenerateSection } from "@/lib/generation/regenerate-section";
 import { GenerationOutputSchema, type GenerationOutput } from "@/lib/generation/schema";
@@ -28,12 +27,18 @@ import {
 } from "@/lib/demo/retrieval-trace";
 import {
   DEMO_DRAFT_ATTEMPTS,
-  DEMO_RETRY_BUDGET_MS,
   DemoSchemaError,
-  beforeDeadline,
-  isDeadlinePassed,
+  demoAttemptsOutcome,
   withSchemaRetry,
 } from "@/lib/demo/schema-retry";
+import {
+  GENERATE_BUDGET_MS,
+  callModelWithinLimits,
+  isSchemaFailure,
+  retryAfterTimeoutOnly,
+  runGenerationAttempts,
+  type Validation,
+} from "@/lib/generation/generate-attempts";
 import { regenerateEditorNote } from "@/lib/demo/regenerate";
 import { STORED_FROM, storedDraftFor } from "@/lib/demo/stored-draft";
 
@@ -63,11 +68,14 @@ import { STORED_FROM, storedDraftFor } from "@/lib/demo/stored-draft";
 // note asking for them, grounded in the notes the draft was generated from.
 //
 // The perscase and regenerate arms make up to three attempts
-// (DEMO_DRAFT_ATTEMPTS) within DEMO_RETRY_BUDGET_MS, all under the one charge
-// the guard took for the request. When every attempt of the perscase arm
-// fails and the brief is the scripted preset's, the arm returns the stored
-// draft of an earlier run of that brief, marked `stored`, with its readings
-// taken against this request's notes (lib/demo/stored-draft.ts).
+// (DEMO_DRAFT_ATTEMPTS), all under the one charge the guard took for the
+// request. Every model and embedding call here runs under the time limits of
+// the instructor's Generate case route (lib/generation/generate-attempts.ts),
+// inside the route's maxDuration in vercel.json. When every attempt of the
+// perscase arm fails or runs out of time and the brief is the scripted
+// preset's, the arm returns the stored draft of an earlier run of that brief,
+// marked `stored`, with its readings taken against this request's notes
+// (lib/demo/stored-draft.ts).
 
 // The regenerate arm's attempts. A structured-output failure is retried, as
 // withSchemaRetry does; so is a merged draft that fails the output schema or
@@ -77,47 +85,42 @@ import { STORED_FROM, storedDraftFor } from "@/lib/demo/stored-draft";
 async function regenerateWithRetry(
   args: Omit<Parameters<typeof regenerateSection>[0], "answerCountRetry">,
   content: GenerationOutput,
-  deadline: number,
 ): Promise<GenerationOutput> {
   const paired = args.section === "discussionQuestions" || args.section === "modelAnswers";
-  const of = DEMO_DRAFT_ATTEMPTS;
   let countRetry = false;
-  for (let attempt = 1; attempt <= of; attempt++) {
-    if (attempt > 1 && Date.now() >= deadline) throw new DemoSchemaError(attempt - 1, true);
-    try {
-      const { patch } = await beforeDeadline(
-        regenerateSection({ ...args, answerCountRetry: countRetry }),
-        deadline,
-      );
+  const fail = (detail: string): Validation<GenerationOutput> => ({
+    ok: false,
+    failure: { reason: "schema_validation", detail: [detail] },
+  });
+  const run = await runGenerationAttempts(
+    (abortSignal) =>
+      regenerateSection({
+        ...args,
+        answerCountRetry: countRetry,
+        options: { ...args.options, abortSignal },
+      }),
+    ({ patch }) => {
       // The questions are regenerated with their answers; a reply with new
       // questions and no answers would leave the old answers under them.
       if (args.section === "discussionQuestions" && !(patch.discussionQuestions && patch.modelAnswers)) {
-        console.warn(`[demo] generate/regenerate: questions returned without their answers (attempt ${attempt} of ${of})`);
-        continue;
+        return fail("questions returned without their answers");
       }
       const merged = GenerationOutputSchema.safeParse({ ...content, ...patch });
-      if (!merged.success) {
-        console.warn(`[demo] generate/regenerate: merged draft failed the schema (attempt ${attempt} of ${of})`);
-        continue;
-      }
+      if (!merged.success) return fail("merged draft failed the schema");
       if (paired && merged.data.discussionQuestions.length !== merged.data.modelAnswers.length) {
-        console.warn(
-          `[demo] generate/regenerate: ${merged.data.discussionQuestions.length} questions, ${merged.data.modelAnswers.length} answers (attempt ${attempt} of ${of})`,
-        );
         countRetry = true;
-        continue;
+        return fail(
+          `${merged.data.discussionQuestions.length} questions, ${merged.data.modelAnswers.length} answers`,
+        );
       }
-      return merged.data;
-    } catch (err) {
-      if (isDeadlinePassed(err)) {
-        console.warn(`[demo] generate/regenerate: the time for this request ran out (attempt ${attempt} of ${of})`);
-        throw new DemoSchemaError(attempt, true);
-      }
-      if (!NoObjectGeneratedError.isInstance(err)) throw err;
-      console.warn(`[demo] generate/regenerate: output did not match the schema (attempt ${attempt} of ${of})`);
-    }
+      return { ok: true, value: merged.data };
+    },
+    { attempts: DEMO_DRAFT_ATTEMPTS, retryError: isSchemaFailure },
+  );
+  if (run.lastFailure?.reason === "schema_validation") {
+    console.warn(`[demo] generate/regenerate: last attempt not usable: ${run.lastFailure.detail[0]}`);
   }
-  throw new DemoSchemaError(of);
+  return demoAttemptsOutcome("generate/regenerate", run);
 }
 
 export async function POST(req: Request) {
@@ -163,7 +166,11 @@ export async function POST(req: Request) {
 
   try {
     if (body.arm === "retrieve") {
-      const { trace, provenance } = await retrieveForDemo(brief);
+      const { trace, provenance } = await callModelWithinLimits(
+        "demo generate/retrieve",
+        (abortSignal) => retrieveForDemo(brief, { abortSignal }),
+        { retryError: retryAfterTimeoutOnly },
+      );
       return NextResponse.json({
         arm: "retrieve",
         retrieval: trace,
@@ -173,7 +180,11 @@ export async function POST(req: Request) {
 
     if (body.arm === "plain") {
       const { result, elapsedMs } = await withTiming(() =>
-        generatePlainCase(brief, { maxTokens }),
+        callModelWithinLimits(
+          "demo generate/plain",
+          (abortSignal) => generatePlainCase(brief, { maxTokens, abortSignal }),
+          { retryError: retryAfterTimeoutOnly },
+        ),
       );
       return NextResponse.json({
         arm: "plain",
@@ -189,8 +200,8 @@ export async function POST(req: Request) {
 
     if (body.arm === "structured") {
       const { result, elapsedMs } = await withTiming(() =>
-        withSchemaRetry("generate/structured", () =>
-          generateStructuredNoRetrieval(brief, { maxTokens }),
+        withSchemaRetry("generate/structured", (abortSignal) =>
+          generateStructuredNoRetrieval(brief, { maxTokens, abortSignal }),
         ),
       );
       return NextResponse.json({
@@ -221,7 +232,6 @@ export async function POST(req: Request) {
             options: { maxTokens },
           },
           body.content,
-          Date.now() + DEMO_RETRY_BUDGET_MS,
         ),
       );
       return NextResponse.json({
@@ -241,14 +251,19 @@ export async function POST(req: Request) {
     const { provider, trace, provenance } =
       given !== undefined
         ? { ...providerFromProvenance(brief, given), provenance: given }
-        : await retrieveForDemo(brief);
+        : await callModelWithinLimits(
+            "demo generate/perscase retrieve",
+            (abortSignal) => retrieveForDemo(brief, { abortSignal }),
+            { attempts: 1 },
+          );
     let generated: Awaited<ReturnType<typeof generateCase>>;
     try {
-      // Only the model call is retried; the retrieval above runs once.
+      // Only the model call is retried; the retrieval above runs once, and the
+      // attempts have what is left of the budget after it.
       generated = await withSchemaRetry(
         "generate/perscase",
-        () => generateCase(brief, provider, { maxTokens }),
-        { attempts: DEMO_DRAFT_ATTEMPTS, deadline: started + DEMO_RETRY_BUDGET_MS },
+        (abortSignal) => generateCase(brief, provider, { maxTokens, abortSignal }),
+        { attempts: DEMO_DRAFT_ATTEMPTS, budgetMs: GENERATE_BUDGET_MS - (Date.now() - started) },
       );
     } catch (err) {
       const stored = err instanceof DemoSchemaError ? storedDraftFor(brief) : null;

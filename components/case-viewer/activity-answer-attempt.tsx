@@ -18,6 +18,7 @@ import { instructorWord } from "./instructor-wording";
 import { HINT_LADDER_NOTE, hintHeading } from "@/lib/generation/hint-levels";
 import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { postForReply } from "@/components/model-reply";
 
 // Hint and feedback cards sit on the card surface, a step inside the phase.
 const HELP_CARD = "rounded-lg border bg-card px-4 py-3 text-[13px] shadow-xs";
@@ -96,6 +97,8 @@ export function ActivityAnswerAttempt({
   const { hints, feedback } = help;
   const [notRated, setNotRated] = useState<string | null>(null);
   const [feedbackState, setFeedbackState] = useState<"idle" | "loading" | "error">("idle");
+  // The route's own message when a request fails, else the default line below.
+  const [feedbackError, setFeedbackError] = useState<string | null>(null);
   const [disputed, setDisputed] = useState(false);
   // Checks above the band, and "m criteria, k not addressed" from the criteria
   // the answer addressed against the rubric's count (older feedback carries
@@ -108,6 +111,7 @@ export function ActivityAnswerAttempt({
       }
     : null;
   const [hintState, setHintState] = useState<"idle" | "loading" | "error">("idle");
+  const [hintError, setHintError] = useState<string | null>(null);
   const box = useRef<HTMLTextAreaElement | null>(null);
 
   const save = useAutosave({
@@ -137,33 +141,37 @@ export function ActivityAnswerAttempt({
   async function getHint() {
     if (hints.length >= MAX_HINTS) return;
     setHintState("loading");
-    try {
-      const res = await fetch(`/api/case/${token}/hint`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answer: text, phaseId, previousHints: hints }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? data.error ?? `HTTP ${res.status}`);
-      const now = getPhaseHelp(token, phaseId);
-      setPhaseHelp(token, phaseId, { ...now, hints: [...now.hints, data.hint as string] });
-      setHintState("idle");
-    } catch {
+    setHintError(null);
+    const reply = await postForReply<{ hint?: string }>(`/api/case/${token}/hint`, {
+      answer: text,
+      phaseId,
+      previousHints: hints,
+    });
+    if (!reply.ok || typeof reply.data.hint !== "string") {
+      setHintError(reply.ok ? null : reply.message);
       setHintState("error");
+      return;
     }
+    const now = getPhaseHelp(token, phaseId);
+    setPhaseHelp(token, phaseId, { ...now, hints: [...now.hints, reply.data.hint] });
+    setHintState("idle");
   }
 
   async function getFeedback() {
     if (wordCount(text) < MIN_FEEDBACK_WORDS || feedback) return;
     setFeedbackState("loading");
+    setFeedbackError(null);
+    const reply = await postForReply<{
+      notRated?: { reason: string };
+      assessment?: SessionFeedback;
+    }>(`/api/case/${token}/feedback`, { answer: text, phaseId });
+    if (!reply.ok || !(reply.data.notRated || reply.data.assessment)) {
+      setFeedbackError(reply.ok ? null : reply.message);
+      setFeedbackState("error");
+      return;
+    }
+    const data = reply.data;
     try {
-      const res = await fetch(`/api/case/${token}/feedback`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answer: text, phaseId }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? data.error ?? `HTTP ${res.status}`);
       const now = getPhaseHelp(token, phaseId);
       // An answer that could not be rated does not use up the feedback.
       if (data.notRated) {
@@ -329,7 +337,7 @@ export function ActivityAnswerAttempt({
           </p>
         ) : null}
         {hintState === "error" ? (
-          <p className="text-[13px] text-flag">Could not get a hint. Please try again.</p>
+          <p className="text-[13px] text-flag">{hintError ?? "Could not get a hint. Please try again."}</p>
         ) : null}
         {hints.length > 0 ? (
           <div role="status" aria-live="polite" className={cn(HELP_CARD, "space-y-2")}>
@@ -346,7 +354,9 @@ export function ActivityAnswerAttempt({
           </div>
         ) : null}
         {feedbackState === "error" ? (
-          <p className="text-[13px] text-flag">Could not generate feedback. Please try again.</p>
+          <p className="text-[13px] text-flag">
+            {feedbackError ?? "Could not generate feedback. Please try again."}
+          </p>
         ) : null}
         {notRated ? (
           <div role="status" aria-live="polite" className={HELP_CARD}>

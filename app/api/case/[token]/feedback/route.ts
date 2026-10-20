@@ -5,7 +5,11 @@ import { db } from "@/lib/db/client";
 import { caseVariants, cases } from "@/lib/db/schema";
 import { CaseContentSchema } from "@/lib/generation/schema";
 import { assessAttempt } from "@/lib/generation/assess-attempt";
-import { retrySchemaFailureOnce } from "@/lib/generation/schema-retry";
+import {
+  ModelTimeLimitError,
+  callModelWithinLimits,
+  isSchemaFailure,
+} from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
 
@@ -89,18 +93,32 @@ export async function POST(
       }
     : undefined;
 
+  // A schema failure or a stalled call is retried once, under the time limits
+  // of the Generate case route (lib/generation/generate-attempts.ts); any other
+  // error, and a second failure, returns the 502 below with a message written
+  // for the student. Nothing is recorded, so the feedback is not used up.
   let assessment;
   try {
-    // A schema failure is retried once; the second one returns the 502 below.
-    assessment = await retrySchemaFailureOnce("case/feedback", () =>
-      assessAttempt(content.data, parsed.data.answer, {
-        phase,
-        audience: "student",
-      }),
+    assessment = await callModelWithinLimits(
+      "case/feedback",
+      (abortSignal) =>
+        assessAttempt(content.data, parsed.data.answer, {
+          phase,
+          audience: "student",
+          abortSignal,
+        }),
+      { retryError: isSchemaFailure },
     );
   } catch (err) {
+    console.warn(`[case/feedback] ${err instanceof Error ? err.message : "Unknown error"}`);
     return NextResponse.json(
-      { error: "feedback_failed", message: err instanceof Error ? err.message : "Unknown error" },
+      {
+        error: "feedback_failed",
+        message:
+          err instanceof ModelTimeLimitError
+            ? "The feedback took too long to write. This does not use up your feedback for this phase. Please try again in a moment."
+            : "Could not generate feedback. This does not use up your feedback for this phase. Please try again in a moment.",
+      },
       { status: 502 },
     );
   }

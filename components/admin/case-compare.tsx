@@ -13,6 +13,7 @@ import { formatDateTime } from "@/lib/format-date";
 import { cn } from "@/lib/utils";
 import { disciplineName } from "@/lib/text/display";
 import { CARD, NOTE_FLAG } from "@/components/admin/styles";
+import { failureMessage, postForReply } from "@/components/model-reply";
 import {
   ARM_ADDS,
   ARM_INPUTS,
@@ -78,14 +79,15 @@ export function CaseCompare({
     setRunning(true);
     setError(null);
     try {
-      const res = await fetch(`/api/admin/cases/${view.caseId}/compare`, {
-        method: "POST",
-      });
-      if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
-        throw new Error(j.message ?? j.error ?? `HTTP ${res.status}`);
+      const reply = await postForReply<ComparisonView>(`/api/admin/cases/${view.caseId}/compare`);
+      if (!reply.ok || !Array.isArray(reply.data.arms)) {
+        throw new Error(
+          reply.ok
+            ? "The baselines could not be read. Reload the page to see what was saved."
+            : failureMessage(reply, "The baselines shown before are unchanged."),
+        );
       }
-      setView((await res.json()) as ComparisonView);
+      setView(reply.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "The baselines could not be generated.");
     } finally {

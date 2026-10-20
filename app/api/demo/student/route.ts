@@ -27,6 +27,7 @@ import {
 } from "@/lib/demo/contracts";
 import { plainStudentReply } from "@/lib/demo/plain-arms";
 import { withSchemaRetry } from "@/lib/demo/schema-retry";
+import { callModelWithinLimits, retryAfterTimeoutOnly } from "@/lib/generation/generate-attempts";
 
 // Public, unauthenticated. The student tools (graduated hint, rubric feedback)
 // against either a seeded case or case content the page holds, set beside one
@@ -129,11 +130,17 @@ export async function POST(req: Request) {
   try {
     if (arm === "plain") {
       const { result: text, elapsedMs } = await withTiming(() =>
-        plainStudentReply(
-          content,
-          phaseRow ? { label: phaseRow.studentTitle, prompt: phaseRow.studentPrompt } : undefined,
-          message,
-          maxTokens,
+        callModelWithinLimits(
+          "demo student/plain",
+          (abortSignal) =>
+            plainStudentReply(
+              content,
+              phaseRow ? { label: phaseRow.studentTitle, prompt: phaseRow.studentPrompt } : undefined,
+              message,
+              maxTokens,
+              abortSignal,
+            ),
+          { retryError: retryAfterTimeoutOnly },
         ),
       );
       return NextResponse.json({
@@ -181,7 +188,12 @@ export async function POST(req: Request) {
           ? `The student is asking about discussion question ${asked.n}: ${asked.text}\n\n${message}`
           : message;
       const { result, elapsedMs } = await withTiming(() =>
-        generateHint(content, hintMessage, { phase, previousHints, maxTokens }),
+        callModelWithinLimits(
+          "demo student/hint",
+          (abortSignal) =>
+            generateHint(content, hintMessage, { phase, previousHints, maxTokens, abortSignal }),
+          { retryError: retryAfterTimeoutOnly },
+        ),
       );
       return NextResponse.json({
         arm: "perscase",
@@ -220,8 +232,8 @@ export async function POST(req: Request) {
         }
       : undefined;
     const { result: assessment, elapsedMs } = await withTiming(() =>
-      withSchemaRetry("student/feedback", () =>
-        assessAttempt(content, message, { phase, audience: "student", maxTokens }),
+      withSchemaRetry("student/feedback", (abortSignal) =>
+        assessAttempt(content, message, { phase, audience: "student", maxTokens, abortSignal }),
       ),
     );
     if (!assessment.rated) {

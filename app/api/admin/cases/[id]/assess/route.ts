@@ -6,6 +6,11 @@ import { db } from "@/lib/db/client";
 import { cases, caseVariants, studentResponses } from "@/lib/db/schema";
 import { CaseContentSchema } from "@/lib/generation/schema";
 import { assessAttempt } from "@/lib/generation/assess-attempt";
+import {
+  ModelTimeLimitError,
+  callModelWithinLimits,
+  retryAfterTimeoutOnly,
+} from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
@@ -82,15 +87,28 @@ export async function POST(
       hint: p.disciplineHint,
     }));
 
+  // Under the time limits of the Generate case route
+  // (lib/generation/generate-attempts.ts): a stalled call is stopped and tried
+  // once more if time allows. Nothing is written for an assessment that fails.
   let assessment;
   try {
-    assessment = await assessAttempt(content.data, studentAnswer, {
-      phases: answeredPhases,
-      audience: "instructor",
-    });
+    assessment = await callModelWithinLimits(
+      `assess ${id}`,
+      (abortSignal) =>
+        assessAttempt(content.data, studentAnswer, {
+          phases: answeredPhases,
+          audience: "instructor",
+          abortSignal,
+        }),
+      { retryError: retryAfterTimeoutOnly },
+    );
   } catch (err) {
+    const reason =
+      err instanceof ModelTimeLimitError
+        ? err.message
+        : `The model provider reported: ${err instanceof Error ? err.message : "an unknown error"}.`;
     return NextResponse.json(
-      { error: "assessment_failed", message: err instanceof Error ? err.message : "Unknown error" },
+      { error: "assessment_failed", message: `The assessment could not be made. ${reason} Try again in a moment.` },
       { status: 502 },
     );
   }

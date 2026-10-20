@@ -127,7 +127,12 @@ export const MAX_HINTS_PER_PHASE = 3;
 export async function generateHint(
   content: CaseContent,
   studentAnswer: string,
-  options: { phase?: HintPhase; previousHints?: string[]; maxTokens?: number } = {},
+  options: {
+    phase?: HintPhase;
+    previousHints?: string[];
+    maxTokens?: number;
+    abortSignal?: AbortSignal;
+  } = {},
 ): Promise<LevelledHint> {
   const previous = (options.previousHints ?? []).filter((h) => h.trim() !== "");
   const step = previous.length + 1;
@@ -201,6 +206,7 @@ export async function generateHint(
     prompt,
     temperature: 0.4,
     maxTokens: options.maxTokens,
+    abortSignal: options.abortSignal,
   });
   return { ...object, level: rung.level, levelName: rung.name };
 }

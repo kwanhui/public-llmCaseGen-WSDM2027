@@ -75,6 +75,7 @@ export async function generatePlainCase(
     prompt: buildPlainPrompt(input),
     temperature: 0.8,
     maxTokens: options.maxTokens,
+    abortSignal: options.abortSignal,
   });
   return { text: text.trim(), modelId: describeGenerationModel() };
 }

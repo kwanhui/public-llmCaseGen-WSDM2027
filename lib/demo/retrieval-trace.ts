@@ -12,7 +12,7 @@ import {
 } from "@/lib/retrieval/embedding-provider";
 import { corpusChunkById, isCaseDesignNote } from "@/lib/retrieval/corpus";
 import { conceptsWithoutNote } from "@/lib/retrieval/concept-notes";
-import type { RetrievalProvider } from "@/lib/retrieval/provider";
+import type { RetrievalProvider, RetrieveOptions } from "@/lib/retrieval/provider";
 import type { CaseInput } from "@/lib/disciplines/types";
 import type { RetrievalTrace } from "./contracts";
 
@@ -54,8 +54,12 @@ function emptyTrace(brief: CaseInput, budget: number) {
 // The retrieval step on its own: one embedding call, no model call. Returns
 // the notes as generation would receive them (`hits`, `provider`), the trace
 // the page shows, and the provenance that names the notes, which the page
-// sends back with the perscase arm (providerFromProvenance).
-export async function retrieveForDemo(brief: CaseInput): Promise<{
+// sends back with the perscase arm (providerFromProvenance). `options.abortSignal`
+// stops the embedding call at the route's time limit.
+export async function retrieveForDemo(
+  brief: CaseInput,
+  options: RetrieveOptions = {},
+): Promise<{
   provider: RetrievalProvider;
   trace: RetrievalTrace;
   provenance: string[];
@@ -69,14 +73,16 @@ export async function retrieveForDemo(brief: CaseInput): Promise<{
     return { provider: promptPackRetrieval, trace: { ...empty, status: "retrieval-off" }, provenance };
   }
 
-  const preview = await retrievePreview(brief, budget);
+  const preview = await retrievePreview(brief, budget, options);
   if (preview.status === "embedding-failed") {
+    // An aborted call is the route's time limit, not a retrieval failure.
+    options.abortSignal?.throwIfAborted();
     throw new DemoRetrievalError(preview.error ?? "The embedding call failed.");
   }
   if (preview.status === "corpus-not-embedded") {
     // The embedding provider falls back to the discipline pack on its own and
     // makes no embedding call when the corpus is not embedded.
-    const provenance = (await configured.retrieve(brief)).provenance;
+    const provenance = (await configured.retrieve(brief, options)).provenance;
     return { provider: configured, trace: { ...empty, status: "corpus-not-embedded" }, provenance };
   }
 

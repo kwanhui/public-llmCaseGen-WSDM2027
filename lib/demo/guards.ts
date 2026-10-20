@@ -12,6 +12,7 @@
 import { NextResponse } from "next/server";
 import { enforceRateLimit, resetRateLimit } from "@/lib/ratelimit";
 import { DemoSchemaError, schemaFailed } from "@/lib/demo/schema-retry";
+import { ModelTimeLimitError } from "@/lib/generation/generate-attempts";
 
 // Units each demo request costs; defined with the contracts so that the page
 // reads the same numbers (lib/demo/contracts.ts).
@@ -136,6 +137,9 @@ function tooLarge(): NextResponse {
 
 export function modelFailed(err: unknown): NextResponse {
   if (err instanceof DemoSchemaError) return schemaFailed(err);
+  if (err instanceof ModelTimeLimitError) {
+    return NextResponse.json({ error: "model_failed", message: `${err.message} Try again.` }, { status: 502 });
+  }
   return NextResponse.json(
     {
       error: "model_failed",
