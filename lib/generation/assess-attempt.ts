@@ -153,7 +153,7 @@ export interface AssessOptions {
   // several phases are read together.
   phases?: AssessmentPhase[];
   audience?: AssessmentAudience;
-  // Output cap for the model call; set by the public demo route only.
+  // Output cap for the model call; set by every route that calls it.
   maxTokens?: number;
   // Stops the model call when the route's time limit for it passes.
   abortSignal?: AbortSignal;

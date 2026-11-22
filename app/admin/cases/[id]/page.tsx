@@ -93,7 +93,7 @@ export default async function CaseDetailPage({
   const phases = (row.phasesJson as PhaseDefinition[]) ?? [];
   const isReleased = row.status === "released";
   const isApproved = row.status === "approved" || isReleased;
-  // Seeded showcase cases and the walkthrough cases are read-only on the shared
+  // The seeded example cases and the walkthrough cases are read-only on the shared
   // demo sign-in; the API refuses the mutating routes for them, so the controls are taken away here
   // rather than left to fail.
   const seeded = isReadOnlyCase(id);

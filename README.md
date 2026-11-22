@@ -7,7 +7,7 @@ The instructor edits or regenerates any section and approves the case.
 After approval, one variant of the case can be generated per student team, each with its own link, and the instructor moves the cohort through a sequence of phases.
 Three disciplines are included: finance, marketing and social work.
 
-This repository holds the code of the system described in the paper "PersCase: A Retrieval-Augmented LLM Authoring Tool for Personalised Professional Case Studies" by Kwan Hui Lim, Lyndon Lim, Vincent Ng, Marcus Lee and Ding Ding, submitted to the WSDM 2027 Demonstrations Track.
+This repository holds the code of the system described in the paper "PersCase: A Retrieval-Augmented LLM Authoring Tool for Personalised Professional Case Studies" by Kwan Hui Lim, Lyndon Lim, Vincent Ng, Marcus Lee and Ding Ding, which was accepted to the WSDM 2027 Demonstrations Track (notified on 2026-11-22).
 The links given in the paper are:
 
 - hosted instance: https://llmcasegen.vercel.app
@@ -16,9 +16,10 @@ The links given in the paper are:
 - code: https://github.com/kwanhui/public-llmCaseGen-WSDM2027
 
 The hosted instance is built from the `main` branch of this repository; `/api/health` reports the commit it runs.
-To try the instructor view there, sign in with username `admin` and password `demo1234`, as given in the paper.
+To try the instructor view there, sign in with username `admin` and password `demo1234`.
 This demonstration account is shared, so its seeded example cases and the six walkthrough cases of `demo/walkthrough/briefs.json` are read-only.
-The single shared account and its printed password are for demonstration purposes only.
+This is a shared demonstration credential on a public sandbox, for demonstration purposes only.
+A deployment that holds real course or learner data needs proper authentication, with individual accounts, strong unique passwords, rate limiting and rotated secrets.
 A copy of your own must not reuse `demo1234`: choose your own password when you create `ADMIN_PASSWORD_HASH` (step 3 below), and consider further measures such as a password manager-generated secret, rate limiting on sign-in, and a spend cap on the model provider.
 
 ## Run your own copy
@@ -128,7 +129,7 @@ Generation is not, and a re-run of a generating script overwrites the committed 
 | Draft with retrieval against draft without retrieval on the three sample briefs | `pnpm retrieval-ablation` | `demo/retrieval-ablation.json` | no (six generation calls, a few US cents) |
 | Sample drafts and the ten team variants | `pnpm tsx scripts/generate-samples.ts`, `pnpm tsx scripts/generate-demo-variants.ts` | `demo/sample-outputs/`, `demo/sample-variants/` | no (generation calls) |
 | Walkthrough table of the paper: six briefs, time to first approval, regenerations, flagged and resolved concepts, notes reflected, variants passing | `pnpm walkthrough-report --briefs demo/walkthrough/briefs.json --csv-out demo/walkthrough/case-study.csv` | `demo/walkthrough/case-study.csv` | yes on a database seeded with `pnpm seed-demo`, or on the hosted instance's (no model calls) |
-| Figure 2 of the paper | `node scripts/figure2.mjs` | `shot-retrieval.png` and `shot-contrastive.png` in the directory named by `FIG_DIR` | needs a seeded, running instance |
+| Figure 1 of the paper (the four interface panels) | `node scripts/figure-storyboard.mjs` | `panel-trace.png`, `panel-draft.png`, `panel-variants.png` and `panel-contrastive.png` in the directory named by `FIG_DIR` | needs a seeded, running instance; panel (a) makes one embedding call |
 | Smoke check of a deployment: public pages, sign-in, contrastive view | `pnpm smoke-check` | pass or fail per step | needs a running instance |
 
 ### Corpus statistics
@@ -148,6 +149,7 @@ pnpm -s tsx --env-file=.env.local -e 'import { readFileSync } from "node:fs"; im
 For the finance sample brief this printed `fin-pedagogy-assumptions 0.498`, `fin-ddm 0.490`, `fin-esg 0.434`, `fin-terminal-value 0.430` and `fin-dcf 0.423` on 2026-10-20, which are the scores recorded in `demo/sample-outputs/finance.json`.
 A later run can print a score that differs in the third decimal (see "Determinism and model versions").
 It makes one embedding call and needs `OPENAI_API_KEY`.
+The scores in panel (a) of the paper's Figure 1 (0.494, 0.487, 0.433, 0.424 and 0.416, with the left-out note at 0.453) come from a different brief, the `/demo` preset `seed-finance`, whose learner context is "retail banking, Singapore" rather than "retail banking", after "Retrieve notes".
 
 ### Contrastive readings
 
@@ -157,7 +159,7 @@ The two baselines of the three example cases are committed under `demo/sample-co
 `pnpm compare-report` reads the cached baselines and the current draft of each case from the database that `POSTGRES_URL` points at, and makes no model calls.
 With no arguments it reports the three example cases; pass case ids to report others.
 
-### Figure 2 and the smoke check
+### The figure and the smoke check
 
 Both use Playwright, which needs a browser installed once:
 
@@ -165,10 +167,12 @@ Both use Playwright, which needs a browser installed once:
 pnpm exec playwright install chromium
 ```
 
-`node scripts/figure2.mjs` signs in to a running, seeded instance, opens the Retrieval step and the contrastive view of the example finance case, and writes the retrieved-notes table and the readings table as two PNG files at device scale 3 on a white 2.61:1 canvas.
+`node scripts/figure-storyboard.mjs` captures the four panels of the paper's Figure 1 from a running, seeded instance: the retrieval trace on `/demo` for the finance example brief after "Retrieve notes", and the Edit-and-approve step, a team variant card and the contrastive view of the example finance case.
+It only reads the pages, and the comment at the top of the script lists its settings.
+`scripts/figure2.mjs` is an earlier capture of the Retrieval step and the contrastive view of the same case, which the paper no longer uses.
 
 `pnpm smoke-check` automates part of the manual checklist in `scripts/smoke-check.md`: it opens the landing page and `/demo`, then checks the health endpoint, the sign-in, and the contrastive view of an example case with its three outputs and its readings table.
-Both scripts read `BASE_URL`, `SIGNIN_USER` and `SIGNIN_PASS`.
+The figure scripts and the smoke check read `BASE_URL`, `SIGNIN_USER` and `SIGNIN_PASS`.
 
 ## Environment variables
 
@@ -194,7 +198,8 @@ Both scripts read `BASE_URL`, `SIGNIN_USER` and `SIGNIN_PASS`.
 | `VERCEL_GIT_COMMIT_SHA` | no | set by Vercel | Reported as `version` by `/api/health`. Elsewhere the package version is reported. |
 
 The public page `/demo` reads four more, `PUBLIC_DEMO`, `DEMO_UNITS_PER_CLIENT_PER_10MIN`, `DEMO_UNITS_GLOBAL_PER_HOUR` and `DEMO_UNITS_PER_DAY`, all optional; they are described under "Live demo" below.
-The scripts read a few variables of their own, each documented at the top of its file: `BASE_URL`, `SIGNIN_USER`, `SIGNIN_PASS` and `CASE_ID` (`pnpm smoke-check`, `scripts/figure2.mjs`), `FIG_DIR` and `VIEW_WIDTH` (`scripts/figure2.mjs`), `WALKTHROUGH_USER`, `WALKTHROUGH_PASS` and `WALKTHROUGH_STATE` (`pnpm walkthrough-session`, which also reads `BASE_URL`).
+The student and instructor routes that call the model read four more, `CASE_UNITS_PER_CLIENT_PER_10MIN`, `CASE_UNITS_GLOBAL_PER_HOUR`, `ADMIN_UNITS_PER_CLIENT_PER_10MIN` and `ADMIN_UNITS_GLOBAL_PER_HOUR`, also optional; they are described under "Limits on the student and instructor routes" below.
+The scripts read a few variables of their own, each documented at the top of its file: `BASE_URL`, `SIGNIN_USER`, `SIGNIN_PASS` and `CASE_ID` (`pnpm smoke-check` and the two figure scripts), `FIG_DIR` (both figure scripts), `VIEW_WIDTH` (`scripts/figure2.mjs`), `WALKTHROUGH_USER`, `WALKTHROUGH_PASS` and `WALKTHROUGH_STATE` (`pnpm walkthrough-session`, which also reads `BASE_URL`).
 
 ## Seeding the demo data (optional)
 
@@ -233,6 +238,7 @@ Generation is not deterministic.
 No call sets a seed, and the temperatures are 0.8 for the case draft (`lib/generation/generate-case.ts`), for section regeneration (`regenerate-section.ts`) and for the two contrastive baselines (`compare.ts`), 0.5 for team variants (`personalize.ts`), 0.4 for hints (`hint.ts`) and 0.3 for formative feedback (`assess-attempt.ts`).
 `gpt-4o-mini` is a floating alias, so the model behind it can change without notice; set `LLM_GENERATION_MODEL` to a dated snapshot to fix it.
 Every result file under `demo/` written by the current scripts carries the commit, whether the working tree was dirty, the date and, where a model was called, the model id.
+These commit hashes refer to the private development repository from which the public repository is released, so they cannot be looked up in the public repository.
 The sample drafts in `demo/sample-outputs/` were written before that block was added and carry the date and the model names only.
 
 ## Adding a discipline
@@ -277,7 +283,26 @@ Its routes are `/api/demo/generate`, `/api/demo/personalise` and `/api/demo/stud
 A generation, a regeneration of one section or a personalisation costs 2 units per column, and a student message or a retrieval-only request costs 1.
 A full scripted run makes eight `gpt-4o-mini` calls and one embedding call and costs 13 units, or 15 when the regeneration step runs.
 Each model call has a cap on output tokens (6,000 for a draft or a variant, 600 for a student reply).
-The counters are kept in memory per serverless instance, so traffic spread over several instances can exceed them; the only hard ceiling is the monthly budget set on the provider's API key.
+The counters are kept in memory per serverless instance, so traffic spread over several instances can exceed them.
+
+### Limits on the student and instructor routes
+
+The routes outside `/demo` that call the model pass the same limiter (`lib/ratelimit.ts`), with counters of their own, so that neither group can use up the allowance of `/demo` or of the other group.
+The student routes are the hint and feedback routes of a team link (`/api/case/<token>/hint` and `/feedback`); the instructor routes are Generate, section regeneration, team variants, the contrastive view and the assessment of a team's answer.
+A hint or a feedback reading costs 1 unit, an instructor's assessment 1, a generation or a section regeneration 2, each team variant 2, and a run of the contrastive view 4.
+Every model call on these routes has a cap on output tokens (`lib/llm/route-limits.ts`): 6,000 for a draft, a section or a team variant, 1,500 for a rubric-based assessment and 600 for a hint.
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `CASE_UNITS_PER_CLIENT_PER_10MIN` | `30` | Units one address may spend on one team link in ten minutes. `0` disables the check. |
+| `CASE_UNITS_GLOBAL_PER_HOUR` | `600` | Units all team links together may spend in an hour. `0` disables the check. |
+| `ADMIN_UNITS_PER_CLIENT_PER_10MIN` | `80` | Units one address may spend on the instructor routes in ten minutes; a request for 20 team variants costs 40. `0` disables the check. |
+| `ADMIN_UNITS_GLOBAL_PER_HOUR` | `400` | Units all instructor requests together may spend in an hour. `0` disables the check. |
+
+A refused request gets HTTP 429 with a message, and nothing is changed or generated.
+The hint route also enforces the limit of three hints per phase itself, rather than only from the list of earlier hints that the page sends: it counts the hints already given for the phase on the same team link to the same device, identified by the one-way hash of address and browser that the view events use, and refuses a fourth.
+Without `PSEUDONYM_SALT` there is no such hash, and the route checks only the page's list.
+These counters, like those of `/demo`, are in memory per serverless instance, so the only hard ceiling remains the monthly budget set on the provider's API key.
 
 ## Demo materials, stack and version
 
@@ -291,13 +316,19 @@ The version submitted to WSDM 2027 carries the tag `wsdm2027-submission`.
 The code is released under the MIT licence (see `LICENSE`).
 The 97 corpus notes in `lib/retrieval/corpus/` were written based on the domains of finance, marketing and social work, are not extracts from textbooks or papers, and are released under the same licence.
 
+The paper was accepted to the WSDM 2027 Demonstrations Track (Hong Kong, 15 to 19 February 2027).
 To cite PersCase, use `CITATION.cff` or:
 
 ```bibtex
-@unpublished{Lim2027WSDM,
-  author = {Lim, Kwan Hui and Lim, Lyndon and Ng, Vincent and Lee, Marcus and Ding, Ding},
-  title  = {{PersCase}: A Retrieval-Augmented {LLM} Authoring Tool for Personalised Professional Case Studies},
-  note   = {Under review at the WSDM 2027 Demonstrations Track},
-  year   = {2027}
+@inproceedings{Lim2027WSDM,
+  author    = {Lim, Kwan Hui and Lim, Lyndon and Ng, Vincent and Lee, Marcus and Ding, Ding},
+  title     = {{PersCase}: A Retrieval-Augmented {LLM} Authoring Tool for Personalised Professional Case Studies},
+  booktitle = {Proceedings of the Twentieth ACM International Conference on Web Search and Data Mining (WSDM '27)},
+  publisher = {Association for Computing Machinery},
+  address   = {Hong Kong},
+  note      = {Demonstrations Track},
+  year      = {2027}
 }
 ```
+
+The DOI and page numbers will be added here once the proceedings are published.

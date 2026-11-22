@@ -20,7 +20,7 @@ export interface PersonalizeInput {
   override: LearnerProfileOverride;
   // The instructor's note when redrafting one team's variant.
   editorNote?: string;
-  // Output cap for the model call; set by the public demo route only.
+  // Output cap for the model call; set by the demo and instructor routes.
   maxTokens?: number;
   // Stops the model call when the route's time limit for it passes.
   abortSignal?: AbortSignal;

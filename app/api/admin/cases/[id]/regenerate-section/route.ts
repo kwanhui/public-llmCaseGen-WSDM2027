@@ -20,6 +20,8 @@ import {
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import type { CaseInput } from "@/lib/disciplines/types";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 const RequestSchema = z.object({
   section: z.enum(CASE_SECTIONS as [string, ...string[]]),
@@ -94,6 +96,9 @@ export async function POST(
   // The attempts run under the time limits of the Generate case route
   // (lib/generation/generate-attempts.ts), so a stalled model call ends in a
   // reply rather than in the platform's HTTP 504.
+  const limited = enforceRateLimit(req, ROUTE_COST.regenerate, "admin");
+  if (limited) return limited;
+
   const section = parsed.data.section as Parameters<typeof regenerateSection>[0]["section"];
   const pairedSection = section === "discussionQuestions" || section === "modelAnswers";
   let countMismatch = false;
@@ -107,7 +112,7 @@ export async function POST(
         editorNote: parsed.data.editorNote,
         missingConcepts,
         answerCountRetry: countMismatch,
-        options: { abortSignal },
+        options: { maxTokens: ROUTE_MAX_OUTPUT_TOKENS.section, abortSignal },
       }),
     (result): Validation<{ merged: CaseContent; provenance: string[] }> => {
       const candidate = CaseContentSchema.safeParse({

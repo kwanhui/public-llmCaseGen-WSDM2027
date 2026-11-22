@@ -11,6 +11,8 @@ import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import { RETRIEVAL_WEAK_SCORE } from "@/lib/retrieval/embedding-provider";
 import type { CaseInput } from "@/lib/disciplines/types";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 // The retrieval provenance is a list of display strings, one per note, of the
 // form "corpus:<note id> (<score>)". Anything reading the log for analysis then
@@ -65,7 +67,7 @@ function failureReason(failure: AttemptFailure | null): string {
 }
 
 export async function POST(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await auth();
@@ -86,6 +88,11 @@ export async function POST(
       { status: 409 },
     );
   }
+
+  // Charged before the case is marked as generating, so that a refused request
+  // leaves the case as it was.
+  const limited = enforceRateLimit(req, ROUTE_COST.generate, "admin");
+  if (limited) return limited;
 
   await db
     .update(cases)
@@ -116,7 +123,7 @@ export async function POST(
     provenance: string[];
   };
   const run = await runGenerationAttempts(
-    (abortSignal) => generateCase(input, undefined, { abortSignal }),
+    (abortSignal) => generateCase(input, undefined, { maxTokens: ROUTE_MAX_OUTPUT_TOKENS.draft, abortSignal }),
     (result) => {
       const validated = CaseContentSchema.safeParse({ schemaVersion: 1, ...result.output });
       if (validated.success) {

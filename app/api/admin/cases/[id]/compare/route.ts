@@ -17,6 +17,8 @@ import {
   callModelWithinLimits,
   retryAfterTimeoutOnly,
 } from "@/lib/generation/generate-attempts";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 // GET  returns the cached contrastive view for a case (no model calls).
 // POST regenerates the two on-demand arms and overwrites the cache.
@@ -37,7 +39,7 @@ export async function GET(
 }
 
 export async function POST(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await auth();
@@ -60,6 +62,10 @@ export async function POST(
 
   const input = caseInputFromRow(found.row);
 
+  const limited = enforceRateLimit(req, ROUTE_COST.compare, "admin");
+  if (limited) return limited;
+  const maxTokens = ROUTE_MAX_OUTPUT_TOKENS.draft;
+
   // Both arms run against the same brief; running them together keeps the
   // wall-clock cost close to a single generation. Each arm runs under the time
   // limits of the Generate case route (lib/generation/generate-attempts.ts):
@@ -73,12 +79,12 @@ export async function POST(
     [plain, structured] = await Promise.all([
       callModelWithinLimits(
         `compare ${id} plain`,
-        (abortSignal) => generatePlainCase(input, { abortSignal }),
+        (abortSignal) => generatePlainCase(input, { maxTokens, abortSignal }),
         { retryError: retryAfterTimeoutOnly },
       ),
       callModelWithinLimits(
         `compare ${id} structured`,
-        (abortSignal) => generateStructuredNoRetrieval(input, { abortSignal }),
+        (abortSignal) => generateStructuredNoRetrieval(input, { maxTokens, abortSignal }),
         { retryError: retryAfterTimeoutOnly },
       ),
     ]);

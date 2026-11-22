@@ -56,4 +56,3 @@ For a copy outside Vercel, run `pg_dump $POSTGRES_URL > perscase-$(date +%F).sql
 
 There is one instructor account.
 More than one would need a change to the `users` table and a way to invite instructors.
-A generated case costs about US$0.02 to 0.10 at the default settings, most of it the output of the structured generation call.

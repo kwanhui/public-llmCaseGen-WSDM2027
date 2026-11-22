@@ -19,6 +19,8 @@ import { newInviteToken } from "@/lib/case/invite";
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import type { CaseInput } from "@/lib/disciplines/types";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 // Prior knowledge is not collected per team. It stays at the master case's
 // value, which is the one the variant prompt is given.
@@ -104,7 +106,7 @@ async function personaliseWithRetry(
   budgetMs: number,
 ): Promise<PersonaliseOutcome> {
   const run = await runGenerationAttempts(
-    (abortSignal) => personaliseCaseContent({ ...args, abortSignal }),
+    (abortSignal) => personaliseCaseContent({ ...args, maxTokens: ROUTE_MAX_OUTPUT_TOKENS.variant, abortSignal }),
     (content) => ({ ok: true, value: content }),
     { budgetMs },
   );
@@ -194,6 +196,8 @@ export async function POST(
     if (!existing) {
       return NextResponse.json({ error: "variant_not_found" }, { status: 404 });
     }
+    const limitedOne = enforceRateLimit(req, ROUTE_COST.variant, "admin");
+    if (limitedOne) return limitedOne;
     const lp = existing.learnerProfileJson as {
       displayName?: string | null;
       industry?: string;
@@ -287,6 +291,11 @@ export async function POST(
   for (let i = 0; i < count; i++) {
     items.push(overrides[i] ?? {});
   }
+
+  // Charged for every team at once, before any call is made, so that a refused
+  // request creates no variant.
+  const limited = enforceRateLimit(req, ROUTE_COST.variant * items.length, "admin");
+  if (limited) return limited;
 
   // Generate in small parallel batches to stay under the function timeout. Each
   // team returns a result either way, so the caller can report per team rather

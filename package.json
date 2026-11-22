@@ -2,7 +2,7 @@
   "name": "perscase",
   "version": "0.1.0",
   "private": true,
-  "description": "PersCase: a browser-based authoring tool with which instructors draft, edit and approve professional case studies through a four-stage retrieval and generation pipeline. Companion artifact to the WSDM 2027 Demonstrations Track submission.",
+  "description": "PersCase: a browser-based authoring tool with which instructors draft, edit and approve professional case studies through a four-stage retrieval and generation pipeline. Companion artifact to the paper accepted to the WSDM 2027 Demonstrations Track.",
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0",

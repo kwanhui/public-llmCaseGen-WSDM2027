@@ -1,6 +1,6 @@
 # Demo materials
 
-Materials for the WSDM 2027 Demonstrations Track submission.
+Materials for the paper accepted to the WSDM 2027 Demonstrations Track.
 
 ## Hosted instance and video
 

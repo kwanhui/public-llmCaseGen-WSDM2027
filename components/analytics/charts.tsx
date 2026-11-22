@@ -72,7 +72,7 @@ function ChartFrame({
 }
 
 // `oneCase`: the analytics page is filtered to one case, so the captions say
-// "this case" rather than describing the whole lab.
+// "this case" rather than describing all of the instructor's cases.
 export function AuthoringTimeChart({
   data,
   oneCase = false,

@@ -100,7 +100,7 @@ export function normalizeOutput<T extends Partial<GenerationOutput>>(o: T): T {
 }
 
 // Options for a single model call. `maxTokens` caps the output; the public demo
-// routes set it, and the instructor routes leave it to the provider default.
+// routes and the instructor routes set it (lib/llm/route-limits.ts).
 // `abortSignal` stops the embedding and generation calls, so that a route with
 // a time limit can give up on a call that has stalled and still reply.
 export interface ModelCallOptions {

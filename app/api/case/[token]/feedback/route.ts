@@ -12,6 +12,8 @@ import {
 } from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 // Student-facing formative feedback: the learner asks for rubric-grounded
 // feedback on their own answer. Same assessment the instructor can run, exposed
@@ -93,6 +95,9 @@ export async function POST(
       }
     : undefined;
 
+  const limited = enforceRateLimit(req, ROUTE_COST.feedback, "case", token);
+  if (limited) return limited;
+
   // A schema failure or a stalled call is retried once, under the time limits
   // of the Generate case route (lib/generation/generate-attempts.ts); any other
   // error, and a second failure, returns the 502 below with a message written
@@ -105,6 +110,7 @@ export async function POST(
         assessAttempt(content.data, parsed.data.answer, {
           phase,
           audience: "student",
+          maxTokens: ROUTE_MAX_OUTPUT_TOKENS.assessment,
           abortSignal,
         }),
       { retryError: isSchemaFailure },

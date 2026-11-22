@@ -2048,7 +2048,7 @@ export function DemoClient({
                 className="underline underline-offset-2 transition-colors hover:text-foreground"
               >
                 See the three-column contrastive view on a real case (sign in with admin / demo1234,
-                the demonstration account)
+                a shared demonstration account on a public sandbox)
               </Link>
             )}
           </p>

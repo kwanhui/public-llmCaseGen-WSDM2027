@@ -41,7 +41,14 @@ preferred-citation:
       given-names: Marcus
     - family-names: Ding
       given-names: Ding
-  collection-title: "Proceedings of the 20th ACM International Conference on Web Search and Data Mining (WSDM 2027), Demonstrations Track"
+  collection-title: "Proceedings of the Twentieth ACM International Conference on Web Search and Data Mining (WSDM '27)"
+  conference:
+    name: "The Twentieth ACM International Conference on Web Search and Data Mining"
+    city: "Hong Kong"
+    country: HK
+    date-start: "2027-02-15"
+    date-end: "2027-02-19"
+  publisher:
+    name: "Association for Computing Machinery"
   year: 2027
-  status: submitted
-  notes: "Under review."
+  notes: "Accepted to the WSDM 2027 Demonstrations Track (notified on 2026-11-22). The DOI and page numbers will be added once the proceedings are published."

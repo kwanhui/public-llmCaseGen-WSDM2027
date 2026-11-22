@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { caseVariants, cases } from "@/lib/db/schema";
+import { caseEvents, caseVariants, cases } from "@/lib/db/schema";
 import { CaseContentSchema } from "@/lib/generation/schema";
 import { generateHint, MAX_HINTS_PER_PHASE } from "@/lib/generation/hint";
 import {
@@ -12,6 +12,9 @@ import {
 } from "@/lib/generation/generate-attempts";
 import { logCaseEvent } from "@/lib/case/events";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
+import { hashFingerprint } from "@/lib/logging/hmac";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 // Student-facing graduated hint: one nudge short of the model answer, for a
 // student who is stuck but does not want the full answer revealed. Token-scoped
@@ -20,6 +23,13 @@ import type { PhaseDefinition } from "@/lib/disciplines/types";
 // The page sends the open phase and the hints it already holds, so each hint is
 // more specific than the last. Hints are not stored; the ladder lives in the
 // page for as long as it is open.
+//
+// The limit of three hints per phase is also checked here, because the list the
+// page sends can be emptied. Each hint_requested event carries a one-way hash
+// of the requesting device (address and browser, the same hash as the view
+// events), and a device that already has three hints for the phase on this
+// team link is refused. Without PSEUDONYM_SALT there is no hash, and only the
+// page's list is checked.
 const RequestSchema = z.object({
   answer: z.string().max(20000).optional(),
   phaseId: z.string().min(1).max(80).optional(),
@@ -80,6 +90,23 @@ export async function POST(
       }
     : undefined;
 
+  const viewerHash = deviceHash(req);
+  if (viewerHash) {
+    const used = await hintsGiven(row.variantId, phase?.id ?? null, viewerHash);
+    if (used >= MAX_HINTS_PER_PHASE) {
+      return NextResponse.json(
+        {
+          error: "hint_limit",
+          message: `You have used all ${MAX_HINTS_PER_PHASE} hints for this phase.`,
+        },
+        { status: 409 },
+      );
+    }
+  }
+
+  const limited = enforceRateLimit(req, ROUTE_COST.hint, "case", token);
+  if (limited) return limited;
+
   // Under the time limits of the Generate case route
   // (lib/generation/generate-attempts.ts): a stalled call is stopped and tried
   // once more if time allows, so the student gets a reply rather than the
@@ -92,6 +119,7 @@ export async function POST(
         generateHint(content.data, parsed.data.answer ?? "", {
           phase,
           previousHints,
+          maxTokens: ROUTE_MAX_OUTPUT_TOKENS.hint,
           abortSignal,
         }),
       { retryError: retryAfterTimeoutOnly },
@@ -114,7 +142,11 @@ export async function POST(
     caseId: row.caseId,
     variantId: row.variantId,
     eventType: "hint_requested",
-    metadata: { phaseId: phase?.id, step: previousHints.length + 1 },
+    metadata: {
+      phaseId: phase?.id,
+      step: previousHints.length + 1,
+      ...(viewerHash ? { viewerHash } : {}),
+    },
   });
 
   return NextResponse.json({
@@ -124,4 +156,38 @@ export async function POST(
     index: previousHints.length + 1,
     total: MAX_HINTS_PER_PHASE,
   });
+}
+
+// The same one-way hash of address and browser that the view route logs, or
+// null when PSEUDONYM_SALT is not set.
+function deviceHash(req: Request): string | null {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "0.0.0.0";
+  const ua = req.headers.get("user-agent") ?? "unknown";
+  try {
+    return hashFingerprint(`${ip}|${ua}`, process.env.PSEUDONYM_SALT ?? "");
+  } catch {
+    return null;
+  }
+}
+
+// Hints already given to this device for this phase on this team link.
+async function hintsGiven(
+  variantId: string,
+  phaseId: string | null,
+  viewerHash: string,
+): Promise<number> {
+  const [counted] = await db
+    .select({ n: sql<number>`count(*)::int` })
+    .from(caseEvents)
+    .where(
+      and(
+        eq(caseEvents.variantId, variantId),
+        eq(caseEvents.eventType, "hint_requested"),
+        sql`${caseEvents.metadata}->>'viewerHash' = ${viewerHash}`,
+        phaseId === null
+          ? sql`${caseEvents.metadata}->>'phaseId' IS NULL`
+          : sql`${caseEvents.metadata}->>'phaseId' = ${phaseId}`,
+      ),
+    );
+  return counted?.n ?? 0;
 }

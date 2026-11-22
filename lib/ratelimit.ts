@@ -1,4 +1,6 @@
-// Spend guard for the public demo endpoints (/api/demo/*).
+// Spend guard for the public demo endpoints (/api/demo/*) and, in scopes of
+// their own, for the student and instructor routes that call the model (see
+// below).
 //
 // The demo routes are unauthenticated and each one reaches the generation
 // model, so an unattended scripted caller is a billing problem long before it
@@ -21,15 +23,69 @@
 // Ported from lib/ratelimit.ts of SAGE
 // (https://github.com/kwanhui/public-llmLearnFair-CIKM2026), with a ten-minute
 // per-client window and an hourly global window in place of one minute.
+//
+// The same limiter also guards the other routes that call the model, in two
+// further scopes with their own counters, so that one kind of traffic cannot
+// use up another's allowance: "case", the student routes under
+// /api/case/[token] (hint and feedback), where a client is one address on one
+// team link; and "admin", the instructor routes under /api/admin/cases/[id]
+// that call the model, where a client is one address. Their units are in
+// lib/llm/route-limits.ts.
 import { createHash, randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 
 const CLIENT_WINDOW_MS = 10 * 60_000;
 const GLOBAL_WINDOW_MS = 60 * 60_000;
 
+export type RateLimitScope = "demo" | "case" | "admin";
+
+interface ScopeConfig {
+  perClientEnv: string;
+  perClientDefault: number;
+  globalEnv: string;
+  globalDefault: number;
+  busyMessage: string;
+  clientMessage: string;
+}
+
+// The demo defaults allow a visitor two full scripted runs of the demo in ten
+// minutes. The "case" defaults allow a team working on one link several hints
+// and feedback readings per phase. The "admin" defaults allow one full set of
+// 20 team variants (40 units) in ten minutes, which the variants route needs
+// in one request.
+const SCOPES: Record<RateLimitScope, ScopeConfig> = {
+  demo: {
+    perClientEnv: "DEMO_UNITS_PER_CLIENT_PER_10MIN",
+    perClientDefault: 24,
+    globalEnv: "DEMO_UNITS_GLOBAL_PER_HOUR",
+    globalDefault: 240,
+    busyMessage: "The public demo is busy. Try again later.",
+    clientMessage:
+      "You have used this demo's allowance for the moment. Try again in a few minutes.",
+  },
+  case: {
+    perClientEnv: "CASE_UNITS_PER_CLIENT_PER_10MIN",
+    perClientDefault: 30,
+    globalEnv: "CASE_UNITS_GLOBAL_PER_HOUR",
+    globalDefault: 600,
+    busyMessage: "Hints and feedback are busy at the moment. Please try again later.",
+    clientMessage:
+      "You have asked for many hints and feedback readings in a short time. Please try again in a few minutes.",
+  },
+  admin: {
+    perClientEnv: "ADMIN_UNITS_PER_CLIENT_PER_10MIN",
+    perClientDefault: 80,
+    globalEnv: "ADMIN_UNITS_GLOBAL_PER_HOUR",
+    globalDefault: 400,
+    busyMessage:
+      "The model routes have reached their limit for this hour. Nothing was changed. Try again later.",
+    clientMessage:
+      "You have reached the limit on model calls for the moment. Nothing was changed. Try again in a few minutes.",
+  },
+};
+
 // 0 disables a check, which is what local development and the screencast
-// recorder want. Defaults allow a visitor two full scripted runs of the demo
-// in ten minutes.
+// recorder want.
 function num(raw: string | undefined, fallback: number): number {
   if (raw === undefined || raw.trim() === "") return fallback;
   const n = Number(raw);
@@ -38,11 +94,13 @@ function num(raw: string | undefined, fallback: number): number {
 
 // Read on every call rather than at module load, so a test (or a redeploy with
 // new env values) sees the current setting.
-function perClientLimit(): number {
-  return num(process.env.DEMO_UNITS_PER_CLIENT_PER_10MIN, 24);
+function perClientLimit(scope: RateLimitScope = "demo"): number {
+  const c = SCOPES[scope];
+  return num(process.env[c.perClientEnv], c.perClientDefault);
 }
-function globalLimit(): number {
-  return num(process.env.DEMO_UNITS_GLOBAL_PER_HOUR, 240);
+function globalLimit(scope: RateLimitScope = "demo"): number {
+  const c = SCOPES[scope];
+  return num(process.env[c.globalEnv], c.globalDefault);
 }
 
 interface Bucket {
@@ -50,17 +108,38 @@ interface Bucket {
   resetAt: number;
 }
 
-const clients = new Map<string, Bucket>();
-let globalBucket: Bucket = { spent: 0, resetAt: 0 };
+interface ScopeState {
+  clients: Map<string, Bucket>;
+  global: Bucket;
+}
+
+function freshState(): Record<RateLimitScope, ScopeState> {
+  return {
+    demo: { clients: new Map(), global: { spent: 0, resetAt: 0 } },
+    case: { clients: new Map(), global: { spent: 0, resetAt: 0 } },
+    admin: { clients: new Map(), global: { spent: 0, resetAt: 0 } },
+  };
+}
+
+let state = freshState();
 
 // Per process, so a key cannot be correlated across deployments or rebuilt
 // from an IP by anyone reading this code.
 const SALT = randomBytes(16).toString("hex");
 
-function clientKey(req: Request): string {
+// `extra` narrows the client further, such as the team link of a student
+// route, so that one address on one link cannot use up the allowance of the
+// same address on another link.
+function clientKey(req: Request, extra = ""): string {
   const fwd = req.headers.get("x-forwarded-for") ?? "";
   const ip = fwd.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
-  return createHash("sha256").update(SALT).update(ip).digest("hex").slice(0, 16);
+  return createHash("sha256")
+    .update(SALT)
+    .update(ip)
+    .update("\0")
+    .update(extra)
+    .digest("hex")
+    .slice(0, 16);
 }
 
 function take(bucket: Bucket, cost: number, limit: number, windowMs: number, now: number): boolean {
@@ -75,7 +154,7 @@ function take(bucket: Bucket, cost: number, limit: number, windowMs: number, now
 
 // Expiry is lazy, so a burst of unique clients would otherwise grow the map
 // for the life of the instance.
-function evictExpired(now: number): void {
+function evictExpired(clients: Map<string, Bucket>, now: number): void {
   if (clients.size < 5_000) return;
   for (const [key, bucket] of clients) {
     if (now >= bucket.resetAt) clients.delete(key);
@@ -83,33 +162,38 @@ function evictExpired(now: number): void {
 }
 
 /**
- * Charges `cost` units against the per-client and per-instance budgets.
- * Returns a 429 response when either is exhausted, or null to proceed.
+ * Charges `cost` units against the per-client and per-instance budgets of
+ * `scope` (the public demo's when no scope is given). Returns a 429 response
+ * when either is exhausted, or null to proceed. `clientExtra` narrows the
+ * client beyond its address (see clientKey).
  */
-export function enforceRateLimit(req: Request, cost: number): NextResponse | null {
-  const perClient = perClientLimit();
-  const global = globalLimit();
+export function enforceRateLimit(
+  req: Request,
+  cost: number,
+  scope: RateLimitScope = "demo",
+  clientExtra = "",
+): NextResponse | null {
+  const perClient = perClientLimit(scope);
+  const global = globalLimit(scope);
   if (perClient === 0 && global === 0) return null;
   if (cost <= 0) return null;
   const now = Date.now();
-  evictExpired(now);
+  const { clients, global: globalBucket } = state[scope];
+  const messages = SCOPES[scope];
+  evictExpired(clients, now);
 
   if (global > 0 && !take(globalBucket, cost, global, GLOBAL_WINDOW_MS, now)) {
-    return tooMany(globalBucket, now, "The public demo is busy. Try again later.");
+    return tooMany(globalBucket, now, messages.busyMessage);
   }
   if (perClient > 0) {
-    const key = clientKey(req);
+    const key = clientKey(req, clientExtra);
     const bucket = clients.get(key) ?? { spent: 0, resetAt: 0 };
     clients.set(key, bucket);
     if (!take(bucket, cost, perClient, CLIENT_WINDOW_MS, now)) {
       // Refund the global charge: this request never reaches the model, so
       // holding it against the shared budget would penalise everyone else.
       if (global > 0) globalBucket.spent = Math.max(0, globalBucket.spent - cost);
-      return tooMany(
-        bucket,
-        now,
-        "You have used this demo's allowance for the moment. Try again in a few minutes.",
-      );
+      return tooMany(bucket, now, messages.clientMessage);
     }
   }
   return null;
@@ -148,6 +232,7 @@ export function peekRateLimit(req: Request): RateLimitPeek {
   if (perClient === 0) return { remaining: null, perClientLimit: 0, retryAfterSec: null };
   const global = globalLimit();
   const now = Date.now();
+  const { clients, global: globalBucket } = state.demo;
   const client = readBucket(clients.get(clientKey(req)), perClient, now);
   let remaining = client.left;
   let resetAt = client.resetAt;
@@ -163,8 +248,7 @@ export function peekRateLimit(req: Request): RateLimitPeek {
   return { remaining, perClientLimit: perClient, retryAfterSec };
 }
 
-/** Test seam: drops all counters. */
+/** Test seam: drops all counters, in every scope. */
 export function resetRateLimit(): void {
-  clients.clear();
-  globalBucket = { spent: 0, resetAt: 0 };
+  state = freshState();
 }

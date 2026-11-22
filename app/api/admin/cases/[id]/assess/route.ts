@@ -14,6 +14,8 @@ import {
 import { logCaseEvent } from "@/lib/case/events";
 import { seededCaseGuard } from "@/lib/case/seeded";
 import type { PhaseDefinition } from "@/lib/disciplines/types";
+import { enforceRateLimit } from "@/lib/ratelimit";
+import { ROUTE_COST, ROUTE_MAX_OUTPUT_TOKENS } from "@/lib/llm/route-limits";
 
 const RequestSchema = z.object({ variantId: z.string().min(1) });
 
@@ -87,6 +89,9 @@ export async function POST(
       hint: p.disciplineHint,
     }));
 
+  const limited = enforceRateLimit(req, ROUTE_COST.assess, "admin");
+  if (limited) return limited;
+
   // Under the time limits of the Generate case route
   // (lib/generation/generate-attempts.ts): a stalled call is stopped and tried
   // once more if time allows. Nothing is written for an assessment that fails.
@@ -98,6 +103,7 @@ export async function POST(
         assessAttempt(content.data, studentAnswer, {
           phases: answeredPhases,
           audience: "instructor",
+          maxTokens: ROUTE_MAX_OUTPUT_TOKENS.assessment,
           abortSignal,
         }),
       { retryError: retryAfterTimeoutOnly },

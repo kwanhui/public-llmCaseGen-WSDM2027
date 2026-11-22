@@ -1,7 +1,7 @@
 "use client";
 
-// Adapted from the response-progress component of SAGE, an earlier demo by
-// the same authors.
+// Adapted from the response-progress component of SAGE, an earlier LLM
+// tutoring demonstration (https://github.com/kwanhui/public-llmLearnFair-CIKM2026).
 //
 // The demo routes answer one request and return the finished result; they do
 // not stream per-stage events. The readout shows what can be known on the

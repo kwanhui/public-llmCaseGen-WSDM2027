@@ -1,8 +1,10 @@
-// Capture the two panels of the paper's Figure 2 from a running, seeded
-// instance: the retrieved-notes table of the example finance case (header and
-// the five rows) and the inputs strip of its contrastive view (header and the
-// five rows). Each is written at device scale 3 on a white 2.61:1 canvas, which
-// is the box the paper sets the panel in.
+// An earlier capture that the paper no longer uses: the paper has one figure,
+// Figure 1, captured by scripts/figure-storyboard.mjs. This script captures two
+// panels from a running, seeded instance: the retrieved-notes table of the
+// example finance case (header and the five rows) and the inputs strip of its
+// contrastive view (header and the five rows). Each is written at device scale
+// 3 on a white 2.61:1 canvas, the box an earlier draft of the paper set the
+// panel in.
 //
 //   BASE_URL=https://llmcasegen.vercel.app \
 //   SIGNIN_USER=admin SIGNIN_PASS=... \
@@ -23,7 +25,7 @@ const PASS = process.env.SIGNIN_PASS ?? "";
 const CASE_ID = process.env.CASE_ID ?? "seed-case-finance";
 const FIG_DIR = path.resolve(process.env.FIG_DIR ?? "./figures-out");
 // A narrower viewport gives narrower tables and so larger text once the
-// capture is scaled to a column; the paper's panels use 920.
+// capture is scaled to a column; the earlier panels used 920.
 const VIEW_WIDTH = Number(process.env.VIEW_WIDTH ?? 920);
 
 const RATIO = 2.61;

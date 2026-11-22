@@ -56,7 +56,7 @@ const ROWS: Record<Audience, Row[]> = {
       aspect: "Dependencies",
       traditional: "None",
       perscase:
-        "An external model provider, and a corpus of author-written notes for three disciplines",
+        "An external model provider, and a corpus of notes written based on the domains of finance, marketing and social work",
     },
   ],
   student: [
