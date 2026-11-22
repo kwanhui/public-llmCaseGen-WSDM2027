@@ -6,6 +6,7 @@ The environment variables and the first deploy are described in the [README](../
 
 `POSTGRES_URL` is set by Vercel when a Neon database is connected to the project in its Storage tab.
 After the first deploy, every push to `main` deploys to production.
+Deploy only by such a push, so that every production build is a commit of this repository; `vercel --prod` uploads the local working tree instead.
 A deploy does not run migrations, so a schema change needs `pnpm db:migrate` run against the production `POSTGRES_URL`.
 
 ## Rotating the instructor password
@@ -43,7 +44,7 @@ Token counts are not logged.
 
 ## Rollback
 
-In the Vercel dashboard, open Deployments, find the last good deployment and choose "Promote to Production".
+Roll back only to a deployment built from this repository: in the Vercel dashboard, choose Instant Rollback (or open Deployments and choose "Promote to Production"), and pick the last good deployment whose source is Git and whose repository is `kwanhui/public-llmCaseGen-WSDM2027`.
 A promotion does not change the repository, so the next push to `main` deploys over it.
 `drizzle-kit` has no down migrations, so if a migration caused the failure, restore the database from the snapshot taken before it.
 

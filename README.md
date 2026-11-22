@@ -15,7 +15,8 @@ The links given in the paper are:
 - video (2:59): https://youtu.be/imaTWm3BzPE
 - code: https://github.com/kwanhui/public-llmCaseGen-WSDM2027
 
-The hosted instance is built from the `main` branch of this repository; `/api/health` reports the commit it runs.
+The hosted instance is built from the `main` branch of this repository, and the `version` field of `/api/health` names the commit that it runs.
+Each deployed commit is tagged `deployed-YYYY-MM-DD` in this repository, with `-2`, `-3` and so on for a later deploy on the same day.
 To try the instructor view there, sign in with username `admin` and password `demo1234`.
 This demonstration account is shared, so its seeded example cases and the six walkthrough cases of `demo/walkthrough/briefs.json` are read-only.
 This is a shared demonstration credential on a public sandbox, for demonstration purposes only.
