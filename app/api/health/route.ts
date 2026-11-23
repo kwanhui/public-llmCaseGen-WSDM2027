@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 import pkg from "@/package.json";
+import { buildCommit } from "@/lib/build-info";
 
 // Public liveness probe: one request tells whether the deployment can reach
 // its database and has a generation key configured, without exposing any
@@ -24,8 +25,7 @@ function keyPresent(provider: "openai" | "anthropic"): boolean {
 }
 
 function version(): string {
-  const sha = process.env.VERCEL_GIT_COMMIT_SHA?.trim();
-  return sha ? sha.slice(0, 7) : (pkg as { version: string }).version;
+  return buildCommit() ?? (pkg as { version: string }).version;
 }
 
 export async function GET() {

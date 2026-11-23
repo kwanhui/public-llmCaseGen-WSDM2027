@@ -4,6 +4,7 @@ import { WorkflowDiagram } from "@/components/landing/workflow-diagram";
 import { Comparison } from "@/components/landing/comparison";
 import { SiteHeader } from "@/components/site-header";
 import { auth } from "@/lib/auth/config";
+import { SOURCE_URL, buildCommit, paperUrl } from "@/lib/build-info";
 
 const STUDENT_VIEW_CAVEAT =
   "The student view is a shared example case. Other visitors do not see what you type, but the instructor who set this example can, and reloading the page clears it; use Download my work to keep a copy.";
@@ -38,6 +39,9 @@ export default async function LandingPage() {
   // button is left out rather than offering a sign-in to someone signed in.
   const session = await auth().catch(() => null);
   const signedIn = Boolean(session?.user);
+  const commit = buildCommit();
+  // Inlined at build time; the link stays hidden until the variable is set.
+  const paper = paperUrl({ NEXT_PUBLIC_PAPER_URL: process.env.NEXT_PUBLIC_PAPER_URL });
   return (
     <>
     {/* The page has its own sign-in button below, so the header's "Sign in"
@@ -112,7 +116,30 @@ export default async function LandingPage() {
       </details>
 
       <footer className="mt-24 border-t pt-6 text-xs text-muted-foreground">
-        Corpus: 97 notes written based on the domains of finance, marketing and social work (33 finance, 32 marketing, 32 social work).
+        <p>
+          Corpus: 97 notes written based on the domains of finance, marketing and social work (33 finance, 32 marketing, 32 social work).
+        </p>
+        <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+          <a href={SOURCE_URL} className="underline underline-offset-2 hover:text-foreground">
+            Source code
+          </a>
+          {paper ? (
+            <a href={paper} className="underline underline-offset-2 hover:text-foreground">
+              Paper
+            </a>
+          ) : null}
+          {commit ? (
+            <span>
+              Build{" "}
+              <a
+                href={`${SOURCE_URL}/commit/${commit}`}
+                className="font-mono underline underline-offset-2 hover:text-foreground"
+              >
+                {commit}
+              </a>
+            </span>
+          ) : null}
+        </p>
       </footer>
     </main>
     </>
