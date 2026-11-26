@@ -12,7 +12,7 @@ The links given in the paper are:
 
 - hosted instance: https://llmcasegen.vercel.app
 - public demo page, no sign-in: https://llmcasegen.vercel.app/demo
-- video (2:59): https://youtu.be/imaTWm3BzPE
+- video (2:59): https://youtu.be/yfay84TkYn8
 - code: https://github.com/kwanhui/public-llmCaseGen-WSDM2027
 
 The hosted instance is built from the `main` branch of this repository, and the `version` field of `/api/health` names the commit that it runs.
@@ -308,7 +308,7 @@ These counters, like those of `/demo`, are in memory per serverless instance, so
 
 ## Demo materials, stack and version
 
-A video of the tool (2:59) is at https://youtu.be/imaTWm3BzPE.
+A video of the tool (2:59) is at https://youtu.be/yfay84TkYn8.
 `demo/README.md` lists the sample briefs, sample drafts and sample variants, and gives the steps of a manual walkthrough.
 The stack is Next.js 16 (App Router), TypeScript, Tailwind, Auth.js v5, the Vercel AI SDK, Postgres through `@vercel/postgres` with Drizzle, and Recharts; the hosted instance runs on Vercel in region `sin1`.
 The version submitted to WSDM 2027 carries the tag `wsdm2027-submission`.
